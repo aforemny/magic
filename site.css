@@ -1,0 +1,191 @@
+body {
+  padding: 0;
+  margin: 0;
+}
+
+div .player0 {
+  position: absolute;
+  width: 100%;
+  height: 50%;
+  top: 0;
+  left: 0;
+  background: url(noise.png), #3465a4;
+  background-repeat: no-repeat;
+  background-position: cover;
+  z-index: 1;
+}
+
+div .player0flip {
+  position: absolute;
+  width: 100%;
+  height: 50%;
+  top: 0;
+  left: 0;
+  transform: rotate(180deg);
+  background: url(noise.png), #3465a4;
+  background-repeat: no-repeat;
+  background-position: cover;
+}
+
+div .player1 {
+  position: absolute;
+  width: 100%;
+  height: 50%;
+  top: 50%;
+  left: 0;
+  background: url(noise.png), #cc0000;
+  background-repeat: no-repeat;
+  background-position: cover;
+}
+
+div .player1flip {
+  position: absolute;
+  width: 100%;
+  height: 50%;
+  top: 50%;
+  left: 0;
+  transform: rotate(180deg);
+  background: url(noise.png), #cc0000;
+  background-repeat: no-repeat;
+  background-position: cover;
+}
+
+div .overlay {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 32px;
+  height: 32px;
+}
+
+div .button-flip {
+  width: 32px;
+  height: 32px;
+  background-image: url(flip.png);
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+div .display {
+  position: absolute;
+  height: 75%;
+  width: 100%;
+}
+
+div .current {
+  position: absolute;
+  top: 50%;
+  width: 100%;
+  margin: -64px 0px;
+  font-size: 128px;
+  line-height: 128px;
+  text-align: center;
+}
+
+div .life {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 75%;
+}
+
+div .damage-inc {
+  position: absolute;
+  width: 50%;
+  top: 0;
+  left: 50%;
+  height: 75%;
+  background: url(plus.png);
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+div .damage-dec {
+  position: absolute;
+  width: 50%;
+  top: 0;
+  left: 0;
+  height: 75%;
+  background: url(minus.png);
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+div .poison-inc {
+  position: absolute;
+  width: 50%;
+  top: 75%;
+  left: 50%;
+  height: 25%;
+  background: url(miniplus.png);
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+div .poison-dec {
+  position: absolute;
+  width: 50%;
+  top: 75%;
+  left: 0;
+  height: 25%;
+  background: url(miniminus.png);
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+div .buttons {
+  position: absolute;
+  height: 25%;
+  width: 100%;
+  top: 75%;
+  left: 0;
+}
+
+div .undo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 50%;
+  background: url(undo.png);
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+div .reset {
+  position: absolute;
+  height: 100%;
+  width: 50%;
+  top: 0;
+  left: 50%;
+  background: url(reset.png);
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+div .history {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 50%;
+}
+
+div .poison-current {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  height: 100%;
+  top: 50%;
+  margin: -24px 0;
+  font-size: 48px;
+  line-height: 48px;
+}
+
+div .poison {
+  position: absolute;
+  left: 0;
+  top: 75%;
+  height: 25%;
+  width: 100%;
+}
