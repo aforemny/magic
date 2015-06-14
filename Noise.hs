@@ -22,5 +22,5 @@ sample x z =
     fi = fromIntegral
 
 main =
-  savePngImage "noise.png" (ImageRGBA8 $ generateImage sample 1366 768)
+  savePngImage "noise.png" (ImageRGBA8 $ generateImage sample 2080 2080)
 
