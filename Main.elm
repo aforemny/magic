@@ -210,7 +210,8 @@ update (time, action) (Model model) =
         let
           model' = modify i (Model model) <| \player ->
 
-            { player | poison <- n + player.poison }
+            { player | poison <- n + player.poison
+                     , lastUpdate <- time }
 
 
           player = 

@@ -1,5 +1,7 @@
-gh-pages: Main.elm
-	mkdir -p gh-pages
+build: Main.elm
 	elm-make Main.elm
+
+gh-pages: build
+	mkdir -p gh-pages
 	cp index.html gh-pages/
-	cp elm.js gh-pages/html.js
+	cp elm.js gh-pages/
