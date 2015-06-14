@@ -179,9 +179,17 @@ update (time, action) (Model model) =
         modify i (Model model) <| \player ->
           { player | flipy <- not player.flipy }
 
-      Undo -> case model.past of
-                Nothing        -> Model model
-                Just lastModel -> lastModel
+      Undo ->
+        case model.past of
+          Nothing        -> Model model
+          Just (Model lastModel) ->
+            let
+              keep i p =
+                case Dict.get i model.players of
+                  Just p' -> { p | flipy <- p'.flipy }
+                  Nothing -> p
+            in
+              Model { lastModel | players <- Dict.map keep lastModel.players }
 
       Inc i n ->
         let
