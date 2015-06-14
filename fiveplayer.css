@@ -1,0 +1,31 @@
+div .player0, div .player0flip, div .player1, div .player1flip, div .player2, div .player2flip,
+div .player3, div .player3-flip, div .player4, div .player4flip {
+  height: 100%;
+  width: 20%;
+  top: 0;
+}
+
+div .player0, div .player0flip {
+  left: 0;
+}
+
+div .player1, div .player1flip {
+  left: 20%;
+}
+
+div .player2, div .player2flip {
+  left: 40%;
+}
+
+div .player3, div .player3flip {
+  left: 60%;
+}
+
+div .player4, div .player4flip {
+  left: 80%;
+}
+
+div .twoplayerprime, div.threeplayer, div .fiveplayer, div .flip {
+  display: none;
+}
+

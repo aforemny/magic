@@ -17,7 +17,7 @@
    inkscape:export-filename="/home/aforemny/src/magic/plus.png"
    inkscape:export-xdpi="22.5"
    inkscape:export-ydpi="22.5"
-   sodipodi:docname="Neues Dokument 1">
+   sodipodi:docname="icons.svg">
   <defs
      id="defs4" />
   <sodipodi:namedview
@@ -29,9 +29,9 @@
      inkscape:pageshadow="2"
      inkscape:zoom="0.80378154"
      inkscape:cx="-16.205684"
-     inkscape:cy="498.66674"
+     inkscape:cy="604.35482"
      inkscape:document-units="px"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="g3986"
      showgrid="false"
      inkscape:window-width="1364"
      inkscape:window-height="748"
@@ -131,8 +131,8 @@
        id="g3946"
        transform="translate(18.661787,-33.591217)"
        inkscape:export-filename="/home/aforemny/src/magic/undo.png"
-       inkscape:export-xdpi="22.5"
-       inkscape:export-ydpi="22.5">
+       inkscape:export-xdpi="11.25"
+       inkscape:export-ydpi="11.25">
       <rect
          style="fill:#ffffff;fill-opacity:0;stroke:none"
          id="rect3923"
@@ -151,48 +151,54 @@
        inkscape:export-filename="/home/aforemny/src/magic/reset.png"
        inkscape:export-xdpi="22.5"
        inkscape:export-ydpi="22.5">
-      <rect
-         y="153.15112"
-         x="-313.52112"
-         height="256"
-         width="256"
-         id="rect3952"
-         style="fill:#ffffff;fill-opacity:0;stroke:none" />
-      <text
-         transform="scale(0.64782885,1.5436176)"
-         sodipodi:linespacing="125%"
-         id="text3958"
-         y="233.21222"
-         x="-463.56555"
-         style="font-size:155.88732909999998810px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#eeeeec;fill-opacity:0.50196081;stroke:none;font-family:Norican;-inkscape-font-specification:Norican"
-         xml:space="preserve"><tspan
-           style="fill:#eeeeec;font-family:Liberation Serif;-inkscape-font-specification:Liberation Serif;fill-opacity:0.50196081"
-           y="233.21222"
+      <g
+         id="g3087"
+         inkscape:export-filename="/home/aforemny/src/magic/reset.png"
+         inkscape:export-xdpi="11.25"
+         inkscape:export-ydpi="11.25">
+        <rect
+           style="fill:#ffffff;fill-opacity:0;stroke:none"
+           id="rect3952"
+           width="256"
+           height="256"
+           x="-313.52112"
+           y="153.15112" />
+        <text
+           xml:space="preserve"
+           style="font-size:155.88732909999998810px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#eeeeec;fill-opacity:0.50196081;stroke:none;font-family:Norican;-inkscape-font-specification:Norican"
            x="-463.56555"
-           id="tspan3960"
-           sodipodi:role="line">20</tspan></text>
-      <text
-         xml:space="preserve"
-         style="font-size:155.88732909999998810px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#eeeeec;fill-opacity:0.50196081;stroke:none;font-family:Norican;-inkscape-font-specification:Norican"
-         x="-265.98251"
-         y="233.21222"
-         id="text3962"
-         sodipodi:linespacing="125%"
-         transform="scale(0.64782885,1.5436176)"><tspan
-           sodipodi:role="line"
-           id="tspan3964"
-           x="-265.98251"
            y="233.21222"
-           style="fill:#eeeeec;font-family:Liberation Serif;-inkscape-font-specification:Liberation Serif;fill-opacity:0.50196081">20</tspan></text>
-      <rect
-         ry="9.0447502"
-         rx="3.0769234"
-         y="153.15112"
-         x="-191.74171"
-         height="256"
-         width="12.441193"
-         id="rect3966"
-         style="fill:#eeeeec;fill-opacity:0.50196081;stroke:none" />
+           id="text3958"
+           sodipodi:linespacing="125%"
+           transform="scale(0.64782885,1.5436176)"><tspan
+             sodipodi:role="line"
+             id="tspan3960"
+             x="-463.56555"
+             y="233.21222"
+             style="fill:#eeeeec;font-family:Liberation Serif;-inkscape-font-specification:Liberation Serif;fill-opacity:0.50196081">20</tspan></text>
+        <text
+           transform="scale(0.64782885,1.5436176)"
+           sodipodi:linespacing="125%"
+           id="text3962"
+           y="233.21222"
+           x="-265.98251"
+           style="font-size:155.88732909999998810px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#eeeeec;fill-opacity:0.50196081;stroke:none;font-family:Norican;-inkscape-font-specification:Norican"
+           xml:space="preserve"><tspan
+             style="fill:#eeeeec;font-family:Liberation Serif;-inkscape-font-specification:Liberation Serif;fill-opacity:0.50196081"
+             y="233.21222"
+             x="-265.98251"
+             id="tspan3964"
+             sodipodi:role="line">20</tspan></text>
+        <rect
+           style="fill:#eeeeec;fill-opacity:0.50196081;stroke:none"
+           id="rect3966"
+           width="12.441193"
+           height="256"
+           x="-191.74171"
+           y="153.15112"
+           rx="3.0769234"
+           ry="9.0447502" />
+      </g>
     </g>
     <g
        id="g4016"

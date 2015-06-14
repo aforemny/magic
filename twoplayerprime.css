@@ -1,0 +1,16 @@
+div .player0, div .player0flip, div .player1, div .player1flip {
+  height: 50%;
+  width: 100%;
+  left: 0;
+}
+
+div .player0, div .player0flip {
+  top: 0;
+}
+
+div .player1, div .player1flip {
+  bottom: 0;
+}
+
+div .twoplayerprime , div .fourplayer, div .fiveplayer { display: none; }
+
