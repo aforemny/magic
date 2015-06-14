@@ -5,3 +5,4 @@ gh-pages: build
 	mkdir -p gh-pages
 	cp index.html gh-pages/
 	cp elm.js gh-pages/
+	cp *.png gh-pages

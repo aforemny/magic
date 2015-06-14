@@ -92,42 +92,38 @@ single (w, h) player =
         , poisonButtons player.id
         , div
             [ class "overlay" ]
-            [ button [onClick updates.address (FlipY player.id)] [text "Flip"] ]
+            ( if player.id == 0 then
+                [ div
+                    [ class "button-flip"
+                    , onClick updates.address (FlipY player.id)
+                    ]
+                    []
+                ]
+              else
+                [ ]
+            )
         ]
     , div
         [ class "buttons" ]
-        [ undo, reset ]
+        [ div [ class "undo",  onClick updates.address Undo  ] []
+        , div [ class "reset", onClick updates.address Reset ] []
+        ]
     ]
-
-undo : Html
-undo =
-  button
-    [ class "undo"
-    , onClick updates.address Undo ]
-    [ text "Undo" ]
-
-reset : Html
-reset =
-  button
-    [ class "reset"
-    , onClick updates.address Reset
-    ]
-    [ text "Reset" ]
 
 buttons : Id -> Html
 buttons i =
   div
     [ class "buttons-damage" ]
-    [ button [class "damage-inc", onClick updates.address (Inc i   1)]  [ text "+1" ]
-    , button [class "damage-dec", onClick updates.address (Inc i (-1))] [ text "-1" ]
+    [ div [class "damage-inc", onClick updates.address (Inc i   1)]  []
+    , div [class "damage-dec", onClick updates.address (Inc i (-1))] []
     ]
 
 poisonButtons : Id -> Html
 poisonButtons i =
   div
     [ class "buttons-poison" ]
-    [ button [class "poison-inc", onClick updates.address (Poison i   1)]  [ text "+1" ]
-    , button [class "poison-dec", onClick updates.address (Poison i (-1))] [ text "-1" ]
+    [ div [class "poison-inc", onClick updates.address (Poison i   1)]  []
+    , div [class "poison-dec", onClick updates.address (Poison i (-1))] []
     ]
 
 life : (Int,Int) -> Int -> List Int -> Html
@@ -137,7 +133,7 @@ life (w,h) life lifeHistory =
     [
       div
         [ class "history" ]
-        ( List.map (\n -> div [] [text (toString n)]) (List.reverse (List.take 5 lifeHistory)) )
+        ( List.map (\n -> div [] [text (toString n)]) (List.reverse lifeHistory) )
 
     , div
         [ class "current" ]
