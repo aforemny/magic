@@ -57,7 +57,7 @@ div .history {
 
 div .incdamage, div .decdamage, div .incpoison, div .decpoison {
   position: absolute;
-  width: 50%;
+  width: 40%;
   background-repeat: no-repeat !important;
   background-position: center !important;
 }
@@ -69,13 +69,12 @@ div .incdamage, div .decdamage {
 
 div .incdamage {
   right: 0;
-  background: url(plus.png);
+  background: url(miniplus.png);
 }
 
 div .decdamage {
   left: 0;
-  background: url(plus.png);
-  background: url(minus.png);
+  background: url(miniminus.png);
 }
 
 div .incpoison, div .decpoison {

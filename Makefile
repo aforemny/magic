@@ -12,3 +12,6 @@ gh-pages: build
 	cp *.css gh-pages/
 	cp *.png gh-pages
 	cp twoplayer.html gh-pages/index.html
+
+clean:
+	rm *.js
