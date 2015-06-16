@@ -6,11 +6,11 @@ div .player0, div .player0flip, div .player1, div .player1flip {
 
 div .player0, div .player0flip {
   top: 0;
+  transform: rotate(180deg);
 }
 
 div .player1, div .player1flip {
   bottom: 0;
 }
 
-div .twoplayerprime , div .fourplayer, div .fiveplayer { display: none; }
-
+div .history { display: none; }

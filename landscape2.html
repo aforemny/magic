@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+  <meta charset="utf-8"></meta>
+  <title>Magic Life</title>
+  <script type="text/javascript" src="landscape2.js"></script>
+  <script type="text/javascript" src="android.js"></script>
+  <link rel="stylesheet" href="site.css" type="text/css"></link>
+  <link rel="stylesheet" href="landscape2.css" type="text/css"></link>
+</head>
+
+<body>
+</body>
+
+<script type="text/javascript">
+  var app = Elm.fullscreen(Elm.Main, { android:"" });
+
+  function callback(s) {
+    var x = eval('(' + s + ')');
+
+    switch (x.type) {
+      case "click":
+        var e = new MouseEvent("click", {
+          bubbles: true,
+          cancellable: true
+        });
+        document.elementFromPoint(x.x, x.y).dispatchEvent(e);
+        break;
+    }
+  }
+</script>
+
+</html>

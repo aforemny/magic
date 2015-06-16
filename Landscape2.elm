@@ -2,12 +2,10 @@ import Skeleton exposing (..)
 
 import Dict
 import Html exposing (..)
-import Html.Attributes exposing (..)
-import Task exposing (Task)
 import Debug
 
 main =
-  skeleton view [initialPlayer 0, initialPlayer 1]
+  skeleton view [initialPlayer 0, initialPlayer 1] android
 
 view : Model -> Html
 view (Model model) =
@@ -16,4 +14,6 @@ view (Model model) =
 port redirect : Signal (Maybe String)
 port redirect =
   layout.signal
+
+port android : Signal String
 

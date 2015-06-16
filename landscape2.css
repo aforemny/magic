@@ -12,5 +12,4 @@ div .player1, div .player1flip {
   right: 0;
 }
 
-div .fourplayer, div .fiveplayer, div .flip, div .twoplayer { display: none; }
-
+div .history { display: none; }

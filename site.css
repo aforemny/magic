@@ -1,6 +1,81 @@
+@font-face {
+  font-family: 'Roboto Slab';
+  font-style: normal;
+  font-weight: 100;
+  src: url(RobotoSlab-Thin.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'Roboto Slab';
+  font-style: normal;
+  font-weight: 300;
+  src: url(RobotoSlab-Light.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'Roboto Slab';
+  font-style: normal;
+  font-weight: 400;
+  src: url(RobotoSlab-Regular.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'Roboto Slab';
+  font-style: normal;
+  font-weight: 700;
+  src: url(RobotoSlab-Bold.ttf) format('truetype');
+}
+
 body {
   padding: 0;
   margin: 0;
+  font-family: 'Roboto Slab';
+  overflow: hidden;
+}
+
+div .buttons {
+  display: none;
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 50%;
+  opacity: 0.8;
+  transform: translate(0,0);
+  overflow: hidden;
+  height: 100%;
+}
+
+a.button {
+  color: #eeeeec;
+  text-align: center;
+  background: #2e3436;
+  display: block;
+}
+
+a.button:hover {
+  background: #000 !important;
+}
+
+
+a.button > span {
+  font-size: 2em;
+  margin-top: -4px;
+}
+
+div.buttons > div {
+  position: absolute;
+  left: 0;
+  height: 96px;
+  width: 100%;
+  z-index: 1;
+}
+
+div.buttons > div.scrollup {
+  top: 0;
+}
+
+div.buttons > div.scrolldown {
+  bottom: 0;
 }
 
 div .player0, div .player0flip, div .player1, div .player1flip,
@@ -11,41 +86,109 @@ div .player4, div .player4flip {
 
 div .player0flip, div .player1flip, div .player2flip, div .player3flip, div .player4flip {
   transform: rotate(180deg);
+  -webkit-transform: rotate(180deg);
 }
 
-div .life, div .poison {
+div .life, div .poison, div .name {
   position: absolute;
   width: 100%;
   left: 0;
+}
+
+div .name {
+  top: 0;
+  height: 20%;
 }
 
 div .life {
+  height: 50%;
+  top: 20%;
+}
+div .incdamage-icon, div .decdamage-icon {
+  height: 100%;
   top: 0;
-  height: 75%;
 }
 
-div .poison {
+div .incpoison-icon, div .devpoison-icon {
+  display: none;
+}
+
+div .incdamage-trigger, div .decdamage-trigger {
+  height: 80%;
+  top: 0;
+}
+
+div .incdamage-trigger, div .decdamage-trigger,
+div .incpoison-trigger, div .decpoison-trigger {
+  opacity: 0.5;
+}
+
+div .animation-flash {
+  animation-duration: 0.1s;
+  animation-iteration-count: 1;
+  animation-name: flash;
+  -webkit-animation-duration: 0.1s;
+  -webkit-animation-iteration-count: infinite;
+  -webkit-animation-name: flash;
+}
+
+@keyframes flash {
+  from {
+    background: none;
+  }
+
+  to {
+    background: white;
+  }
+}
+
+div .poison, div .incpoison-icon, div .decpoison-icon {
   bottom: 0;
-  height: 25%;
+  height: 30%;
 }
 
-div .life-inner, div .poison-inner {
+div .incpoison-trigger, div .decpoison-trigger {
+  height: 30%;
+  bottom: 0;
+}
+
+div .life-inner, div .name-inner {
   position: absolute;
   width: 100%;
-  left: 0;
   top: 50%;
-  margin: -0.5em auto;
+  left: 0%;
+  color: #2e3436;
   text-align: center;
 }
 
+div .life-inner, div .poison-inner, div .name-inner {
+  text-align: center;
+  vertical-align: middle;
+  color: #2e3436;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+}
+
+div .lethal {
+  color: #a40000;
+}
+
 div .life-inner {
-  line-height: 128px;
-  font-size: 128px;
+  font-size: 12em;
+  font-weight: 700;
 }
 
 div .poison-inner {
-  line-height: 64px;
-  font-size: 64px;
+  font-size: 3.4em;
+  font-weight: 100;
+}
+
+div .name-inner {
+  font-size: 1.5em;
+  font-weight: 300;
 }
 
 div .history {
@@ -55,39 +198,50 @@ div .history {
   left: 0;
 }
 
-div .incdamage, div .decdamage, div .incpoison, div .decpoison {
+div .incdamage-trigger, div .decdamage-trigger, div .incpoison-trigger, div .decpoison-trigger {
   position: absolute;
-  width: 40%;
+  width: 50%;
+}
+
+div .incdamage-icon, div .decdamage-icon, div .incpoison-icon, div .decpoison-icon {
+  position: absolute;
+  width: 20%;
   background-repeat: no-repeat !important;
   background-position: center !important;
 }
 
-div .incdamage, div .decdamage {
-  top: 0;
-  height: 75%;
+div .incdamage-trigger {
+  right: 0;
 }
 
-div .incdamage {
+div .decdamage-trigger {
+  left: 0;
+}
+
+div .incdamage-icon {
   right: 0;
   background: url(miniplus.png);
 }
 
-div .decdamage {
+div .decdamage-icon {
   left: 0;
   background: url(miniminus.png);
 }
 
-div .incpoison, div .decpoison {
-  bottom: 0;
-  height: 25%;
+div .incpoison-trigger {
+  right: 0;
 }
 
-div .incpoison {
+div .decpoison-trigger {
+  left: 0;
+}
+
+div .incpoison-icon {
   right: 0;
   background: url(miniplus.png);
 }
 
-div .decpoison {
+div .decpoison-icon {
   left: 0;
   background: url(miniminus.png);
 }
@@ -96,6 +250,7 @@ div .buttons {
   position: absolute;
   top: 0;
   right: 0;
+  z-index: 1;
 }
 
 div .undo, div .reset, div .flip,
@@ -108,8 +263,6 @@ div .twoplayer, div .twoplayerprime, div .threeplayer, div .fourplayer, div .fiv
   margin: 8px 8px;
 }
 
-div .clear { clear: both; }
-
 div .undo           { background: url(undo.png);           }
 div .reset          { background: url(reset.png);          }
 div .flip           { background: url(flip.png);           }
@@ -118,6 +271,7 @@ div .twoplayerprime { background: url(twoplayerprime.png); }
 div .threeplayer    { background: url(threeplayer.png);    }
 div .fourplayer     { background: url(fourplayer.png);     }
 div .fiveplayer     { background: url(fiveplayer.png);     }
+div .clear          { clear: both; }
 
 div .red, div .blue, div .purple, div .green, div .brown, div .orange, div .yellow {
   position: absolute;
@@ -129,6 +283,7 @@ div .red, div .blue, div .purple, div .green, div .brown, div .orange, div .yell
 }
 
 div .noise {
+  display: none;
   position: absolute;
   top: 0;
   left: 0;
@@ -138,11 +293,10 @@ div .noise {
   z-index: -1;
 }
 
-div .red    { background: #cc0000; }
-div .blue   { background: #3465a4; }
-div .purple { background: #75507b; }
-div .green  { background: #73d216; }
-div .brown  { background: #c17d11; }
-div .orange { background: #f57900; }
-div .yellow { background: #edd400; }
+div .blue   { background: #729fcf; }
+div .purple { background: #ad7fa8; }
+div .green  { background: #8ae234; }
+div .brown  { background: #e9b96e; }
+div .orange { background: #fcaf3e; }
+div .yellow { background: #fce94f; }
 
