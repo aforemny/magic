@@ -32,5 +32,7 @@ deploy: android
 	sudo adb -d install -r result/Magic-debug.apk
 
 clean:
-	rm *.js
+	rm -f *.js
+	rm -rf elm-stuff
+	rm -rf android/assets
 
