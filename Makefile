@@ -22,6 +22,9 @@ android: build
 	cp *.ttf  android/assets/
 	NIX_PATH=nixpkgs=../nixpkgs nix-build default.nix -A magic
 
+firefox-os: build
+	zip package.zip *.html *.js *.css img/*.png *.ttf manifest.webapp
+
 emulate: android
 	NIX_PATH=nixpkgs=../nixpkgs nix-build default.nix -A emulate-magic
 	./result/bin/run-test-emulator
