@@ -16,4 +16,4 @@ earlier versions of Android, although (CSS3) animations are not supported.
 
 ### Firefox OS -- [Try it!](http://aforemny.github.io/magic/get-firefox-os)
 
-Thanks to @kirchner for this.
+Thanks to [@kirchner](https://github.com/kirchner) for this.
