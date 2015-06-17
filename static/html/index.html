@@ -16,6 +16,29 @@
 <script type="text/javascript">
   var app = Elm.fullscreen(Elm.Main, { android:"" });
 
+  app.ports.focus.subscribe(function(x) {
+
+    console.log(x);
+    if (x !== null) {
+      
+      switch (x.tipe) {
+        case 'focus':
+          document.getElementById(x.id).focus();
+          break;
+        case 'blur':
+          if (x.id == "") {
+            var nodes = document.getElementsByTagName('input');
+            for (var i = 0; i < nodes.length; ++i) {
+              nodes[i].blur();
+            }
+          } else {
+            document.getElementById(x.id).blur();
+          }
+          break;
+      }
+    }
+  });
+
   function callback(s) {
     var x = eval('(' + s + ')');
 

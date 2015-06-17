@@ -144,7 +144,10 @@ single p =
                 ("settings",        True),
                 ("animation-blink", p.flashSettings)
               ]
-            , onClick updates.address (Toggle p.id)
+            , if Just True == p.showOptions then
+                  onClick updates.address (Close p.id)
+                else
+                  onClick updates.address (Open p.id)
             ]
             []
 
@@ -181,7 +184,7 @@ options p =
         ("options-layer", True),
         ("animate-open",  p.showOptions == Just True),
         ("animate-close", p.showOptions == Just False),
-        ("hide",          p.showOptions == Nothing)
+        ("hide2",         p.showOptions == Nothing)
       ]
     ]
     [ div
@@ -194,7 +197,7 @@ options p =
             ]
             [ input
                 [ type' "text"
-                , id "input"
+                , id ("input" ++ toString p.id)
                 , onChange updates.address (\s -> Name p.id s)
                 ]
                 [ text "Hello"
@@ -403,8 +406,9 @@ type Action =
   | Color Id Color
   | Close Id
   | Open Id
-  | Toggle Id
   | Name Id String
+  | Blur
+  | NoOp
 
 type Layout = TwoPlayer | TwoPlayerPrime | ThreePlayer | FourPlayer | FivePlayer
 
@@ -432,7 +436,6 @@ model start android =
       case action of
         Inc    i _ -> Clear (Just i)
         Poison i _ -> Clear (Just i)
-        Toggle i   -> Clear (Just i)
         _          -> Clear Nothing
   in
     Signal.foldp update start input
@@ -452,6 +455,10 @@ update (time, action) (Model model) =
   in
     case action of
 
+      NoOp -> Model model
+
+      Blur -> Model model -- cf. focus port
+
       FlipY i ->
         modify i (Model model) <| \player ->
           { player | flipy <- not player.flipy }
@@ -467,10 +474,6 @@ update (time, action) (Model model) =
 
       Open i ->
         modify i (Model model) <| \p -> { p | showOptions   <- Just True
-                                            , flashSettings <- True }
-
-      Toggle i ->
-        modify i (Model model) <| \p -> { p | showOptions   <- Just (not (Maybe.withDefault False p.showOptions))
                                             , flashSettings <- True }
 
       Undo ->
@@ -574,3 +577,4 @@ update (time, action) (Model model) =
 
 onChange a f =
   on "input" (Json.at ["target", "value"] Json.string) (\s -> Signal.message a (f s))
+
