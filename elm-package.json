@@ -1,0 +1,15 @@
+{
+    "version": "0.0.0",
+    "summary": "Magic the Gathering Life Counter written in Elm",
+    "repository": "https://github.com/aforemny/magic.git",
+    "license": "BSD3",
+    "source-directories": [
+        "src"
+    ],
+    "exposed-modules": [],
+    "dependencies": {
+        "elm-lang/core":   "2.0.1 <= v < 3.0.0",
+        "evancz/elm-html": "3.0.0 <= v < 4.0.0"
+    },
+    "elm-version": "0.15.0 <= v < 0.16.0"
+}
