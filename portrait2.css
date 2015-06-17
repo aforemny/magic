@@ -1,23 +1,6 @@
 div .history { display: none; }
 
-/*@media screen and (orientation:portrait) {
-  div .player0, div .player0flip, div .player1, div .player1flip {
-  height: 50%;
-  width: 100%;
-  left: 0;
-  }
-
-  div .player0, div .player0flip {
-  top: 0;
-  transform: rotate(180deg);
-  }
-
-  div .player1, div .player1flip {
-  bottom: 0;
-  }
-}
-
-@media screen and (orientation:landscape) {*/
+@media all and (orientation:landscape) {
   div .player0, div .player0flip, div .player1, div .player1flip {
     height: 100%;
     width: 50%;
@@ -32,8 +15,37 @@ div .history { display: none; }
     right: 0;
   }
 
-/*}*/
+}
 
+@media all and (orientation:portrait) {
+  div .player0, div .player0flip, div .player1, div .player1flip {
+    height: 50%;
+    width: 100%;
+    left: 0;
+  }
+
+  div .player0, div .player0flip {
+    top: 0;
+  }
+
+  div .player1, div .player1flip {
+    bottom: 0;
+  }
+
+  div.name-inner {
+    font-size: 2em !important;
+  }
+
+  div.life-inner {
+    font-size: 14em !important;
+  }
+
+  div.poison-inner {
+    font-size: 4em !important;
+  }
+}
+
+/*
 @media screen and (-webkit-device-pixel-ratio: 1.5) {
   #header {
     background:url(high-density-image.png);
@@ -45,6 +57,7 @@ div .history { display: none; }
 
 @media screen and (-webkit-device-pixel-ratio: 0.75) {
 }
+*/
 
 /* laptop */
 div.name-inner {

@@ -1,5 +1,4 @@
 build: *.elm
-	elm-make Landscape2.elm --output landscape2.js
 	elm-make Portrait2.elm  --output portrait2.js
 	#elm-make ThreePlayer.elm --output threeplayer.js
 	#elm-make FourPlayer.elm --output fourplayer.js
@@ -7,12 +6,12 @@ build: *.elm
 
 gh-pages: build
 	mkdir -p gh-pages
-	cp *.html gh-pages/
 	cp *.js gh-pages/
-	cp *.css gh-pages/
-	cp *.png gh-pages/
 	cp *.ttf gh-pages/
-	cp twoplayer.html gh-pages/index.html
+	cp settings.png gh-pages/
+	cp site.css gh-pages/
+	cp portrait2.css gh-pages/
+	cp portrait2.html gh-pages/index.html
 
 android: build
 	mkdir -p android/assets
@@ -33,6 +32,9 @@ deploy: android
 
 clean:
 	rm -f *.js
+
+dist-clean: clean
 	rm -rf elm-stuff
 	rm -rf android/assets
+	rm -rf gh-pages/*
 
