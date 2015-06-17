@@ -3,8 +3,8 @@
     "description": "Counter for Magic",
     "launch_path": "/portrait2.html",
     "icons": {
-        "512": "/icon-512.png",
-        "128": "/icon-128.png"
+        "512": "/img/icon-512.png",
+        "128": "/img/icon-128.png"
     },
     "developer": {
         "name": "A. Foremny",
