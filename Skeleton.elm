@@ -7,6 +7,7 @@ import Text
 import Window
 import Dict exposing (Dict)
 import Time
+import Json.Decode as Json
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
@@ -70,6 +71,7 @@ type alias Player =
   , scroll : Float
   , scrolling : Maybe Float
   , showOptions: Bool
+  , flashSettings : Bool
   }
 
 type alias Id = Int
@@ -89,10 +91,11 @@ initialPlayer i =
   , flashDamageDec = False
   , flashPoisonInc = False
   , flashPoisonDec = False
-  , name = "Alsbach"
+  , name = ""
   , scroll = -864
   , scrolling = Nothing
   , showOptions = False
+  , flashSettings = False
   }
 
 defaultColor i =
@@ -123,7 +126,14 @@ single p =
     , poison p
     -- , history player.history
     , name p
-    , div [class "settings", onClick updates.address (Open p.id)] []
+    , div
+        [ classList [
+            ("settings",        True),
+            ("animation-blink", p.flashSettings)
+          ]
+        , onClick updates.address (Toggle p.id)
+        ]
+        []
 
     , incDamage p
     , decDamage p
@@ -153,57 +163,64 @@ options' : (Id, Player) -> Html
 options' (_,p) =
   div
     [ classList [
-        ("options", True),
-        ("hide",    not p.showOptions)
+        ("animation-open",     p.showOptions),
+        ("hide",           not p.showOptions)
       ]
     ]
-    [ div
+    [ div [class "cancel", onClick updates.address (Close p.id)] []
+    , div
         [ classList [
-            ("input",  True),
-            ("blue",   p.color == Blue),
-            ("purple", p.color == Purple),
-            ("green",  p.color == Green),
-            ("orange", p.color == Orange),
-            ("yellow", p.color == Yellow)
+            ("options", True)
           ]
         ]
-        [ input [type' "text"] [text "Hello"]
-        ]
-    , div
-        [ class "button0"
-        , onClick updates.address (Color p.id Blue)
-        ]
-        [div [class "blue"] []]
-    , div
-        [ class "button1"
-        , onClick updates.address (Color p.id Purple)
-        ]
-        [ div [class "purple"] []
-        ]
-    , div
-        [ class "button2"
-        , onClick updates.address (Color p.id Green)
-        ]
-        [ div [class "green"] []
-        ]
-    , div
-        [ class "button3"
-        , onClick updates.address (Color p.id Orange)
-        ]
-        [ div [class "orange"] []
-        ]
-    , div
-        [ class "button4"
-        , onClick updates.address (Color p.id Yellow)
-        ]
-        [div [class "yellow"] []
-        ]
-    , div
-        [ class "button5"
-        , onClick updates.address (Close p.id)
-        ]
-        [div [class "close"] []
-        ]
+        [ div
+          [ classList [
+              ("input",  True),
+              ("blue",   p.color == Blue),
+              ("purple", p.color == Purple),
+              ("green",  p.color == Green),
+              ("orange", p.color == Orange),
+              ("yellow", p.color == Yellow)
+            ]
+          ]
+          [ input [type' "text", id "input", on "input" (Json.at ["target", "value"] Json.string) (\s -> Signal.message updates.address (Name p.id s))] [text "Hello"]
+          ]
+      , div
+          [ class "button0"
+          , onClick updates.address (Color p.id Blue)
+          ]
+          [div [class "blue"] []]
+      , div
+          [ class "button1"
+          , onClick updates.address (Color p.id Purple)
+          ]
+          [ div [class "purple"] []
+          ]
+      , div
+          [ class "button2"
+          , onClick updates.address (Color p.id Green)
+          ]
+          [ div [class "green"] []
+          ]
+      , div
+          [ class "button3"
+          , onClick updates.address (Color p.id Orange)
+          ]
+          [ div [class "orange"] []
+          ]
+      , div
+          [ class "button4"
+          , onClick updates.address (Color p.id Yellow)
+          ]
+          [div [class "yellow"] []
+          ]
+      , div
+          [ class "button5"
+          , onClick updates.address (Close p.id)
+          ]
+          [div [class "close"] []
+          ]
+      ]
     ]
 
 buttons : Player -> Html
@@ -380,6 +397,8 @@ type Action =
   | Color Id Color
   | Close Id
   | Open Id
+  | Toggle Id
+  | Name Id String
 
 type Layout = TwoPlayer | TwoPlayerPrime | ThreePlayer | FourPlayer | FivePlayer
 
@@ -407,6 +426,7 @@ model start android =
       case action of
         Inc    i _ -> Clear (Just i)
         Poison i _ -> Clear (Just i)
+        Toggle i   -> Clear (Just i)
         _          -> Clear Nothing
   in
     Signal.foldp update start input
@@ -430,6 +450,9 @@ update (time, action) (Model model) =
         modify i (Model model) <| \player ->
           { player | flipy <- not player.flipy }
 
+      Name i s ->
+        modify i (Model model) <| \p -> { p | name <- s }
+
       Color i c ->
         modify i (Model model) <| \p -> { p | color <- c }
 
@@ -437,7 +460,12 @@ update (time, action) (Model model) =
         modify i (Model model) <| \p -> { p | showOptions <- False }
 
       Open i ->
-        modify i (Model model) <| \p -> { p | showOptions <- True }
+        modify i (Model model) <| \p -> { p | showOptions <- True
+                                            , flashSettings <- True }
+
+      Toggle i ->
+        modify i (Model model) <| \p -> { p | showOptions   <- not p.showOptions
+                                            , flashSettings <- True }
 
       Undo ->
         case model.past of
@@ -470,10 +498,11 @@ update (time, action) (Model model) =
 
       Clear (Just i) ->
         modify i (Model model) <| \player ->
-          { player | flashDamageInc  <- False
+          { player | flashDamageInc <- False
                    , flashDamageDec <- False
-                   , flashPoisonInc  <- False
+                   , flashPoisonInc <- False
                    , flashPoisonDec <- False
+                   , flashSettings  <- False
                    }
 
       ScrollUp i ->

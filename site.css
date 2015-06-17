@@ -159,6 +159,21 @@ div .life {
   height: 50%;
   top: 20%;
 }
+
+div.settings {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 48px;
+  height: 48px;
+  background: black;
+  z-index: 1;
+  background: url(settings.png);
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0.3;
+}
+
 div .incdamage-icon, div .decdamage-icon {
   height: 100%;
   top: 0;
@@ -178,13 +193,93 @@ div .incpoison-trigger, div .decpoison-trigger {
   opacity: 0.5;
 }
 
+div .animation-blink {
+  animation-duration: 0.1s;
+  animation-iteration-count: 1;
+  animation-name: blink;
+  -webkit-animation-duration: 0.1s;
+  -webkit-animation-iteration-count: 1;
+  -webkit-animation-name: blink;
+}
+
 div .animation-flash {
   animation-duration: 0.1s;
   animation-iteration-count: 1;
   animation-name: flash;
   -webkit-animation-duration: 0.1s;
-  -webkit-animation-iteration-count: infinite;
+  -webkit-animation-iteration-count: 1;
   -webkit-animation-name: flash;
+}
+
+div .animation-open > div.options {
+  animation-duration: 1.0s;
+  animation-iteration-count: 1;
+  animation-name: open;
+  -webkit-animation-duration: 1.0s;
+  -webkit-animation-iteration-count: 1;
+  -webkit-animation-name: open;
+}
+
+div .animation-close > div.options {
+  animation-duration: 1.0s;
+  animation-iteration-count: 1;
+  animation-name: open;
+  animation-direction: reverse;
+  -webkit-animation-duration: 1.0s;
+  -webkit-animation-iteration-count: 1;
+  -webkit-animation-name: open;
+  -webkit-animation-direction: reverse;
+}
+
+div.animation-open > div.cancel {
+  animation-duration: 1.0s;
+  animation-iteration-count: 1;
+  animation-name: open-cancel;
+  -webkit-animation-duration: 1.0s;
+  -webkit-animation-iteration-count: 1;
+  -webkit-animation-name: open-cancel;
+}
+
+div.animation-close > div.cancel {
+  animation-duration: 1.0s;
+  animation-iteration-count: 1;
+  animation-name: open-cancel;
+  animation-direction: reverse;
+  -webkit-animation-duration: 1.0s;
+  -webkit-animation-iteration-count: 1;
+  -webkit-animation-name: open-cancel;
+  -webkit-animation-direction: reverse;
+}
+
+div.cancel {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: black;
+  opacity: 0.3;
+  z-index: 1;
+}
+
+@keyframes open-cancel {
+  from {
+    opacity: 0.0;
+  }
+
+  to {
+    opacity: 0.3;
+  }
+}
+
+@keyframes open {
+  from {
+    height: 0%;
+  }
+
+  to {
+    height: 50%;
+  }
 }
 
 @keyframes flash {
@@ -194,6 +289,16 @@ div .animation-flash {
 
   to {
     background: white;
+  }
+}
+
+@keyframes blink {
+  from {
+    opacity: 0.3;
+  }
+
+  to {
+    opacity: 1.0;
   }
 }
 
@@ -350,16 +455,6 @@ div .yellow {
 }
 
 div.hide { display: none; }
-
-div.settings {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 96px;
-  height: 96px;
-  background: black;
-  z-index: 1;
-}
 
 div .noise {
   display: none;
