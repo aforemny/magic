@@ -46,5 +46,5 @@ clean:
 dist-clean: clean
 	rm -rf elm-stuff
 	rm -rf android/assets
-	rm -rf gh-pages
+	rm -rf gh-pages/*
 
