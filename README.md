@@ -11,8 +11,9 @@ you try it, please share your experience with us through the [bug tracker](/issu
 
 ### Android -- [Try it!](http://aforemny.github.io/magic/get-android/magic.apk)
 
-Should be fully compatible with Android 4.4 (KitKat). Should be compatible with
-earlier versions of Android, although (CSS3) animations are not supported.
+Should be fully compatible with Android 4.4 (KitKat) and higher. Should be
+compatible with earlier versions of Android, although (CSS3) animations are not
+supported.
 
 ### Firefox OS -- [Try it!](http://aforemny.github.io/magic/get-firefox-os)
 
