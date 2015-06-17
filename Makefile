@@ -12,6 +12,10 @@ gh-pages: build
 	cp site.css gh-pages/
 	cp portrait2.css gh-pages/
 	cp portrait2.html gh-pages/index.html
+	cp package.zip gh-pages/
+	cp mini-manifest.webapp gh-pages/
+	cp install.html gh-pages/
+
 
 android: build
 	mkdir -p android/assets
@@ -23,7 +27,7 @@ android: build
 	NIX_PATH=nixpkgs=../nixpkgs nix-build default.nix -A magic
 
 firefox-os: build
-	zip package.zip *.html *.js *.css img/*.png *.ttf manifest.webapp
+	zip package.zip *.html *.js *.css img/*.png *.png *.ttf manifest.webapp
 
 emulate: android
 	NIX_PATH=nixpkgs=../nixpkgs nix-build default.nix -A emulate-magic
