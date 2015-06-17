@@ -11,5 +11,6 @@
         "url": "http://github.com/aforemny/magic"
     },
     "default_locale": "en",
-    "type": "web"
+    "type": "web",
+    "fullscreen": "true"
 }
