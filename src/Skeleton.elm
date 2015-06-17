@@ -23,8 +23,8 @@ skeleton view players android =
     view' (Model model) =
       div
         []
-        [ div [ class "noise" ] []
-        , options model.players
+        [ view (Model model)
+        ]
 --        , div
 --            [ class "buttons" ]
 --            [ undo
@@ -37,8 +37,6 @@ skeleton view players android =
 --            -- , flip (player.id == 0) player.id
 --            , div [ class "clear" ] []
 --            ]
-        , view (Model model)
-        ]
   in
     Signal.map view' (model (initialModel (Dict.fromList (List.map idify players))) android)
 
@@ -70,13 +68,21 @@ type alias Player =
   , name : String
   , scroll : Float
   , scrolling : Maybe Float
-  , showOptions: Bool
+  , showOptions: Maybe Bool
   , flashSettings : Bool
   }
 
 type alias Id = Int
 
 type Color = Blue | Purple | Green | Orange | Yellow
+
+toCss c =
+  case c of
+    Blue   -> "blue"
+    Purple -> "purple"
+    Green  -> "green"
+    Orange -> "orange"
+    Yellow -> "yellow"
 
 initialPlayer : Id -> Player
 initialPlayer i =
@@ -94,7 +100,7 @@ initialPlayer i =
   , name = ""
   , scroll = -864
   , scrolling = Nothing
-  , showOptions = False
+  , showOptions = Nothing
   , flashSettings = False
   }
 
@@ -122,24 +128,32 @@ single p =
                  else
                    "player" ++ toString p.id )
      ])
-    [ life p
-    , poison p
-    -- , history player.history
-    , name p
-    , div
+    [ div
         [ classList [
-            ("settings",        True),
-            ("animation-blink", p.flashSettings)
+            ("info-layer",     True),
+            ("animate-openprime",  p.showOptions == Just True),
+            ("animate-closeprime", p.showOptions == Just False)
           ]
-        , onClick updates.address (Toggle p.id)
         ]
-        []
+        [ life p
+        , poison p
+        -- , history player.history
+        , name p
+        , a
+            [ classList [
+                ("settings",        True),
+                ("animation-blink", p.flashSettings)
+              ]
+            , onClick updates.address (Toggle p.id)
+            ]
+            []
 
-    , incDamage p
-    , decDamage p
-    , incPoison p
-    , decPoison p
-    , buttons   p
+        , incDamage p
+        , decDamage p
+        , incPoison p
+        , decPoison p
+        -- , buttons   p
+        ]
 
     , div
         [ classList [
@@ -153,103 +167,95 @@ single p =
         ]
         []
 
+    , options p
     ]
 
-options : Dict Id Player -> Html
-options ps =
-  div [] (List.map options' (Dict.toList ps))
+--options : Dict Id Player -> Html
+--options ps =
+--  div [] (List.map options' (Dict.toList ps))
 
-options' : (Id, Player) -> Html
-options' (_,p) =
+options : Player -> Html
+options p =
   div
     [ classList [
-        ("animation-open",     p.showOptions),
-        ("hide",           not p.showOptions)
+        ("options-layer", True),
+        ("animate-open",  p.showOptions == Just True),
+        ("animate-close", p.showOptions == Just False),
+        ("hide",          p.showOptions == Nothing)
       ]
     ]
-    [ div [class "cancel", onClick updates.address (Close p.id)] []
-    , div
+    [ div
         [ classList [
             ("options", True)
           ]
         ]
         [ div
-          [ classList [
-              ("input",  True),
-              ("blue",   p.color == Blue),
-              ("purple", p.color == Purple),
-              ("green",  p.color == Green),
-              ("orange", p.color == Orange),
-              ("yellow", p.color == Yellow)
+            [ class "input"
             ]
-          ]
-          [ input [type' "text", id "input", on "input" (Json.at ["target", "value"] Json.string) (\s -> Signal.message updates.address (Name p.id s))] [text "Hello"]
-          ]
-      , div
-          [ class "button0"
-          , onClick updates.address (Color p.id Blue)
-          ]
-          [div [class "blue"] []]
-      , div
-          [ class "button1"
-          , onClick updates.address (Color p.id Purple)
-          ]
-          [ div [class "purple"] []
-          ]
-      , div
-          [ class "button2"
-          , onClick updates.address (Color p.id Green)
-          ]
-          [ div [class "green"] []
-          ]
-      , div
-          [ class "button3"
-          , onClick updates.address (Color p.id Orange)
-          ]
-          [ div [class "orange"] []
-          ]
-      , div
-          [ class "button4"
-          , onClick updates.address (Color p.id Yellow)
-          ]
-          [div [class "yellow"] []
-          ]
-      , div
-          [ class "button5"
-          , onClick updates.address (Close p.id)
-          ]
-          [div [class "close"] []
-          ]
-      ]
+            [ input
+                [ type' "text"
+                , id "input"
+                , onChange updates.address (\s -> Name p.id s)
+                ]
+                [ text "Hello"
+                ]
+            ]
+        , div
+            [ class "buttons"
+            ]
+            [ colorButton p Blue
+            , colorButton p Purple
+            , colorButton p Green
+            , colorButton p Orange
+            , colorButton p Yellow
+            ]
+        , a
+            [ class "confirm"
+            , onClick updates.address (Close p.id)
+            ]
+            [ span [] [ text "OK" ]
+            ]
+        ]
     ]
 
-buttons : Player -> Html
-buttons p =
-  let
-    button n =
-      a
-        [ class "button"
-        , style [("transform", "translate(0," ++ toString p.scroll ++ "px)")]
-        ]
-        [ span [] [ text (toString n) ] ]
-  in
-    div
-      [ class "buttons" ]
-      ( [ div
-           [ class "scrollup"
-           , onMouseEnter updates.address (ScrollUp p.id)
-           , onMouseLeave updates.address (ScrollStop p.id)
-           ]
-           []
-        , div
-           [ class "scrolldown"
-           , onMouseEnter updates.address (ScrollDown p.id)
-           , onMouseLeave updates.address (ScrollStop p.id)
-           ]
-           []
-        ]
-        ++ ( List.map button [-20 .. 20 ] )
-      )
+colorButton p c =
+  a
+    [ classList [
+        ("button",  True),
+        (toCss c,   True),
+        ("checked", p.color == c)
+      ]
+    , onClick updates.address (Color p.id c)
+    ]
+    []
+
+--buttons : Player -> Html
+--buttons p =
+--  let
+--    button n =
+--      a
+--        [ class "button"
+--        , style [("transform", "translate(0," ++ toString p.scroll ++ "px)")]
+--        ]
+--        [ span [] [ text (toString n) ] ]
+--  in
+--    div
+--      [ class "buttons" ]
+--      ( [ div
+--           [ class "scrollup"
+--           , onMouseEnter updates.address (ScrollUp p.id)
+--           , onMouseLeave updates.address (ScrollStop p.id)
+--           ]
+--           []
+--        , div
+--           [ class "scrolldown"
+--           , onMouseEnter updates.address (ScrollDown p.id)
+--           , onMouseLeave updates.address (ScrollStop p.id)
+--           ]
+--           []
+--        ]
+--        ++ ( List.map button [-20 .. 20 ] )
+--      )
 
 undo : Html
 undo =
@@ -457,14 +463,14 @@ update (time, action) (Model model) =
         modify i (Model model) <| \p -> { p | color <- c }
 
       Close i ->
-        modify i (Model model) <| \p -> { p | showOptions <- False }
+        modify i (Model model) <| \p -> { p | showOptions <- Just False }
 
       Open i ->
-        modify i (Model model) <| \p -> { p | showOptions <- True
+        modify i (Model model) <| \p -> { p | showOptions   <- Just True
                                             , flashSettings <- True }
 
       Toggle i ->
-        modify i (Model model) <| \p -> { p | showOptions   <- not p.showOptions
+        modify i (Model model) <| \p -> { p | showOptions   <- Just (not (Maybe.withDefault False p.showOptions))
                                             , flashSettings <- True }
 
       Undo ->
@@ -566,3 +572,5 @@ update (time, action) (Model model) =
 
       Noop -> Model model
 
+onChange a f =
+  on "input" (Json.at ["target", "value"] Json.string) (\s -> Signal.message a (f s))

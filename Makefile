@@ -2,7 +2,7 @@ build: src/*.elm
 	mkdir -p build
 	elm-make src/Main.elm --output build/elm.js
 
-gh-pages: build
+dist-web: build
 	mkdir -p gh-pages
 	cp build/elm.js         gh-pages/
 	cp static/fonts/*.ttf   gh-pages/
@@ -10,7 +10,7 @@ gh-pages: build
 	cp static/html/*.html   gh-pages/
 	cp static/images/*.png  gh-pages/
 
-distribute: dist-firefox-os dist-android
+distribute: dist-web dist-firefox-os dist-android
 
 android: build
 	mkdir -p android/assets
@@ -27,14 +27,14 @@ deploy: android
 	sudo adb -d uninstall org.nomath.magic
 	sudo adb -d install -r result/Magic-debug.apk
 
-dist-android: gh-pages android
+dist-android: dist-web android
 	mkdir -p gh-pages/get-android
 	cp -f result/Magic-debug.apk gh-pages/get-android/magic.apk
 
 firefox-os: build
 	zip build/package.zip static/html/*.html build/*.js static/html/*.css resources/*.png static/images/*.png static/fonts/*.ttf firefox-os/manifest.webapp
 
-dist-firefox-os: gh-pages firefox-os
+dist-firefox-os: dist-web firefox-os
 	mkdir -p gh-pages/get-firefox-os
 	cp build/package.zip               gh-pages/get-firefox-os
 	cp firefox-os/mini-manifest.webapp gh-pages/get-firefox-os

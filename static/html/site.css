@@ -31,63 +31,203 @@ body {
   margin: 0;
   font-family: 'Roboto Slab';
   overflow: hidden;
+  cursor: default;
+}
+
+a {
+  cursor: pointer;
+}
+
+div.options-layer {
+  position:absolute;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: #2e3436;
+}
+
+div.animate-open {
+  top: 0;
+  animation-duration: 1.8s;
+  animation-iteration-count: 1;
+  animation-name: open;
+}
+
+div.animate-close {
+  top: -100%;
+  animation-duration: 1.8s;
+  animation-iteration-count: 1;
+  animation-name: close;
+}
+
+div.animate-openprime {
+  top: 0;
+  animation-duration: 1.8s;
+  animation-iteration-count: 1;
+  animation-name: openprime;
+}
+
+div.animate-closeprime {
+  top: 100%;
+  animation-duration: 1.8s;
+  animation-iteration-count: 1;
+  animation-name: closeprime;
+}
+
+div.info-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+@keyframes openprime {
+  from {
+    top: 0;
+  }
+
+  to {
+    top: 100%;
+  }
+}
+
+@keyframes closeprime {
+  from {
+    top: 100%;
+  }
+
+  to {
+    top: 0;
+  }
+}
+
+@keyframes open {
+  from {
+    top: -100%;
+  }
+
+  to {
+    top: 0;
+  }
+}
+
+@keyframes close {
+  from {
+    top: 0;
+  }
+
+  to {
+    top: -100%;
+  }
 }
 
 div.options {
-  position:absolute;
-  top: 25%;
-  left: 25%;
-  height: 50%;
-  width: 50%;
-  background: #000;
-  z-index: 2;
+  position: absolute;
+  top: 10%;
+  left: 10%;
+  height: 80%;
+  width: 80%;
+}
+
+div.options > div.input > input {
+  text-align: center;
+  width: 100%;
+  margin: -4px;
+  padding: 4px;
+  font-size: 4em;
+  font-family: 'Roboto Slab';
+  font-weight: 300;
+  color: #eeeeec;
+  background: transparent;
+  border-width: 0;
+  border-bottom: 2px solid #555753;
 }
 
 div.options > div.input {
   position: absolute;
-  width: 99%;
-  height: 20%;
-  top: 0.5%;
-  left: 0.5%;
-}
-
-div.input > input {
-  position: absolute;
-  height: 100%;
-  width: 100%;
   top: 0;
   left: 0;
-  border-width: 0;
-  padding: 0;
-  margin: 0;
-  font-size: 4em;
-  font-family: 'Roboto Slab';
-  font-weight: 300;
-  background: transparent;
-}
-
-div.options > div.button0,
-div.options > div.button1,
-div.options > div.button2,
-div.options > div.button3,
-div.options > div.button4,
-div.options > div.button5 {
-  position: absolute;
-  width: 33%;
   height: 40%;
-  top: 21%;
+  width: 100%;
 }
 
-div.options > div.button3,
-div.options > div.button4,
-div.options > div.button5 {
-  top: 61%;
+div.options > div.buttons {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  margin-left: -160px;
+  padding-top: 16px;
+  height: 64px;
+  width: 320px;
 }
 
-div.options > div.button0, div.options > div.button3 { left: 0.5%; }
-div.options > div.button1, div.options > div.button4 { left: 33.5%; }
-div.options > div.button2, div.options > div.button5 { left: 66.5%; }
+div.options > a.confirm {
+  position: absolute;
+  top: 80%;
+  left: 0;
+  width: 100%;
+  height: 20%;
+  color: #eeeeec;
+}
 
+div.buttons > a.button {
+  display: block;
+  width: 40px;
+  height: 40px;
+  float: left;
+  border: 4px solid #2e3436;
+  margin: 4px;
+  border-radius: 8px;
+}
+
+a.button:hover { border-color: #d3d7cf !important; }
+
+div.buttons > a.checked { border-color: #eeeeec !important; }
+
+a.confirm > span {
+  display: block;
+  position: absolute;
+  text-align: center;
+  font-size: 2em;
+  width: 100%;
+  top: 50%;
+  transform: translate(0, -50%);
+  -webkit-transform: translate(0, -50%);
+  color: #d3d7cf;
+}
+
+a.confirm:hover > span {
+  color: #eeeeec;
+  background: #555753;
+}
+
+div.player0, div.player1 {
+  overflow: hidden;
+}
+
+div.player0 > div.background,
+div.player1 > div.background {
+  z-index: 0 !important;
+}
+
+div.player0 div,
+div.player0 a,
+div.player1 div,
+div.player1 a {
+  z-index: 1;
+}
+
+a.settings {
+  z-index: 3 !important;
+}
+
+div.player0 > div.options-layer,
+div.player1 > div.options-layer {
+  z-index: 2;
+}
+
+/*
 div .buttons {
   display: none;
   position: absolute;
@@ -133,6 +273,7 @@ div.buttons > div.scrollup {
 div.buttons > div.scrolldown {
   bottom: 0;
 }
+*/
 
 div .player0, div .player0flip, div .player1, div .player1flip,
 div .player2, div .player2flip, div .player3, div .player3flip,
@@ -161,18 +302,21 @@ div .life {
   top: 20%;
 }
 
-div.settings {
+a.settings {
   position: absolute;
   top: 0;
   right: 0;
   width: 48px;
   height: 48px;
   background: black;
-  z-index: 1;
   background: url(settings.png);
   background-repeat: no-repeat;
   background-position: center;
   opacity: 0.3;
+}
+
+a.settings:hover {
+  opacity: 1.0;
 }
 
 div .incdamage-icon, div .decdamage-icon {
@@ -210,77 +354,6 @@ div .animation-flash {
   -webkit-animation-duration: 0.1s;
   -webkit-animation-iteration-count: 1;
   -webkit-animation-name: flash;
-}
-
-div .animation-open > div.options {
-  animation-duration: 1.0s;
-  animation-iteration-count: 1;
-  animation-name: open;
-  -webkit-animation-duration: 1.0s;
-  -webkit-animation-iteration-count: 1;
-  -webkit-animation-name: open;
-}
-
-div .animation-close > div.options {
-  animation-duration: 1.0s;
-  animation-iteration-count: 1;
-  animation-name: open;
-  animation-direction: reverse;
-  -webkit-animation-duration: 1.0s;
-  -webkit-animation-iteration-count: 1;
-  -webkit-animation-name: open;
-  -webkit-animation-direction: reverse;
-}
-
-div.animation-open > div.cancel {
-  animation-duration: 1.0s;
-  animation-iteration-count: 1;
-  animation-name: open-cancel;
-  -webkit-animation-duration: 1.0s;
-  -webkit-animation-iteration-count: 1;
-  -webkit-animation-name: open-cancel;
-}
-
-div.animation-close > div.cancel {
-  animation-duration: 1.0s;
-  animation-iteration-count: 1;
-  animation-name: open-cancel;
-  animation-direction: reverse;
-  -webkit-animation-duration: 1.0s;
-  -webkit-animation-iteration-count: 1;
-  -webkit-animation-name: open-cancel;
-  -webkit-animation-direction: reverse;
-}
-
-div.cancel {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  background: black;
-  opacity: 0.3;
-  z-index: 1;
-}
-
-@keyframes open-cancel {
-  from {
-    opacity: 0.0;
-  }
-
-  to {
-    opacity: 0.3;
-  }
-}
-
-@keyframes open {
-  from {
-    height: 0%;
-  }
-
-  to {
-    height: 50%;
-  }
 }
 
 @keyframes flash {
@@ -408,13 +481,6 @@ div .decpoison-icon {
   background: url(miniminus.png);
 }
 
-div .buttons {
-  position: absolute;
-  top: 0;
-  right: 0;
-  z-index: 1;
-}
-
 div .undo, div .reset, div .flip,
 div .twoplayer, div .twoplayerprime, div .threeplayer, div .fourplayer, div .fiveplayer {
   width: 32px;
@@ -441,7 +507,6 @@ div .background {
   height: 100%;
   top: 0;
   left: 0;
-  z-index: -2;
 }
 
 div .blue,
@@ -449,25 +514,16 @@ div .purple,
 div .green,
 div .orange,
 div .yellow {
+  /*
   position: absolute;
   width: 100%;
   height: 100%;
   top: 0;
   left: 0;
+  */
 }
 
 div.hide { display: none; }
-
-div .noise {
-  display: none;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: url(noise.png);
-  z-index: -1;
-}
 
 div .blue   { background: #729fcf; }
 div .purple { background: #ad7fa8; }
@@ -503,6 +559,7 @@ div .history { display: none; }
 
   div .player0, div .player0flip {
     top: 0;
+    transform: rotate(180deg);
   }
 
   div .player1, div .player1flip {
