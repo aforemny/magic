@@ -96,6 +96,7 @@ div .buttons {
   width: 50%;
   opacity: 0.8;
   transform: translate(0,0);
+  -webkit-transform: translate(0,0);
   overflow: hidden;
   height: 100%;
 }
@@ -330,6 +331,7 @@ div .life-inner, div .poison-inner, div .name-inner {
   left: 50%;
   margin-right: -50%;
   transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
 }
 
 div .lethal {
