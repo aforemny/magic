@@ -18,10 +18,12 @@ skeleton : (Model -> Html) -> List Player -> Signal String -> Signal Html
 skeleton view players android =
   let
     idify player = (player.id, player)
-    view' model =
+    p = initialPlayer 0
+    view' (Model model) =
       div
         []
         [ div [ class "noise" ] []
+        , options model.players
 --        , div
 --            [ class "buttons" ]
 --            [ undo
@@ -34,7 +36,7 @@ skeleton view players android =
 --            -- , flip (player.id == 0) player.id
 --            , div [ class "clear" ] []
 --            ]
-        , view model
+        , view (Model model)
         ]
   in
     Signal.map view' (model (initialModel (Dict.fromList (List.map idify players))) android)
@@ -67,11 +69,12 @@ type alias Player =
   , name : String
   , scroll : Float
   , scrolling : Maybe Float
+  , showOptions: Bool
   }
 
 type alias Id = Int
 
-type Color = Blue | Purple | Green | Brown | Orange | Yellow
+type Color = Blue | Purple | Green | Orange | Yellow
 
 initialPlayer : Id -> Player
 initialPlayer i =
@@ -89,16 +92,16 @@ initialPlayer i =
   , name = "Alsbach"
   , scroll = -864
   , scrolling = Nothing
+  , showOptions = False
   }
 
 defaultColor i =
   case i of
     0 -> Blue
-    1 -> Green
-    2 -> Purple
-    3 -> Yellow
-    4 -> Brown
-    5 -> Orange
+    1 -> Purple
+    2 -> Green
+    3 -> Orange
+    4 -> Yellow
 
 modify : Id -> Model -> (Player -> Player) -> Model
 modify i (Model model) f =
@@ -109,31 +112,98 @@ modify i (Model model) f =
     Nothing -> Debug.crash <| "modify: unknown player (" ++ toString i ++ ")"
 
 single : Player -> Html
-single player =
+single p =
   div
-    ([ class ( if player.flipy then
-                   "player" ++ toString player.id ++ "flip"
+    ([ class ( if p.flipy then
+                   "player" ++ toString p.id ++ "flip"
                  else
-                   "player" ++ toString player.id )
+                   "player" ++ toString p.id )
      ])
-    [ life player
-    , poison player
-    , history player.history
-    , name player
+    [ life p
+    , poison p
+    -- , history player.history
+    , name p
+    , div [class "settings", onClick updates.address (Open p.id)] []
 
-    , incDamage player
-    , decDamage player
-    , incPoison player
-    , decPoison player
-    , buttons   player
+    , incDamage p
+    , decDamage p
+    , incPoison p
+    , decPoison p
+    , buttons   p
 
-    , case player.color of
-        Blue   -> div [ class "blue"   ] []
-        Purple -> div [ class "purple" ] []
-        Green  -> div [ class "green"  ] []
-        Brown  -> div [ class "brown"  ] []
-        Orange -> div [ class "orange" ] []
-        Yellow -> div [ class "yellow" ] []
+    , div
+        [ classList [
+            ("background", True),
+            ("blue",   p.color == Blue),
+            ("purple", p.color == Purple),
+            ("green",  p.color == Green),
+            ("orange", p.color == Orange),
+            ("yellow", p.color == Yellow)
+          ]
+        ]
+        []
+
+    ]
+
+options : Dict Id Player -> Html
+options ps =
+  div [] (List.map options' (Dict.toList ps))
+
+options' : (Id, Player) -> Html
+options' (_,p) =
+  div
+    [ classList [
+        ("options", True),
+        ("hide",    not p.showOptions)
+      ]
+    ]
+    [ div
+        [ classList [
+            ("input",  True),
+            ("blue",   p.color == Blue),
+            ("purple", p.color == Purple),
+            ("green",  p.color == Green),
+            ("orange", p.color == Orange),
+            ("yellow", p.color == Yellow)
+          ]
+        ]
+        [ input [type' "text"] [text "Hello"]
+        ]
+    , div
+        [ class "button0"
+        , onClick updates.address (Color p.id Blue)
+        ]
+        [div [class "blue"] []]
+    , div
+        [ class "button1"
+        , onClick updates.address (Color p.id Purple)
+        ]
+        [ div [class "purple"] []
+        ]
+    , div
+        [ class "button2"
+        , onClick updates.address (Color p.id Green)
+        ]
+        [ div [class "green"] []
+        ]
+    , div
+        [ class "button3"
+        , onClick updates.address (Color p.id Orange)
+        ]
+        [ div [class "orange"] []
+        ]
+    , div
+        [ class "button4"
+        , onClick updates.address (Color p.id Yellow)
+        ]
+        [div [class "yellow"] []
+        ]
+    , div
+        [ class "button5"
+        , onClick updates.address (Close p.id)
+        ]
+        [div [class "close"] []
+        ]
     ]
 
 buttons : Player -> Html
@@ -307,6 +377,9 @@ type Action =
   | ScrollDown Id
   | ScrollStop Id
   | Tick Float
+  | Color Id Color
+  | Close Id
+  | Open Id
 
 type Layout = TwoPlayer | TwoPlayerPrime | ThreePlayer | FourPlayer | FivePlayer
 
@@ -321,22 +394,22 @@ toUrl layout =
 
 model : Model -> Signal String -> Signal Model
 model start android =
-  Signal.foldp update start input
-
-input : Signal (Float, Action)
-input =
   let
+
+    input =
+        Signal.map (\(ms,x) -> (ms/1000.0,x)) <| Time.timestamp <| Signal.mergeMany
+          [ updates.signal
+          , Time.delay (90*Time.millisecond) (Signal.map clear updates.signal)
+          -- , Signal.map (\dt -> Tick (dt/1000)) (Time.fps 24)
+          ]
+
     clear action =
       case action of
         Inc    i _ -> Clear (Just i)
         Poison i _ -> Clear (Just i)
         _          -> Clear Nothing
   in
-    Signal.map (\(ms,x) -> (ms/1000.0,x)) <| Time.timestamp <| Signal.mergeMany
-      [ updates.signal
-      , Time.delay (90*Time.millisecond) (Signal.map clear updates.signal)
-      -- , Signal.map (\dt -> Tick (dt/1000)) (Time.fps 24)
-      ]
+    Signal.foldp update start input
 
 updates : Mailbox Action
 updates =
@@ -356,6 +429,15 @@ update (time, action) (Model model) =
       FlipY i ->
         modify i (Model model) <| \player ->
           { player | flipy <- not player.flipy }
+
+      Color i c ->
+        modify i (Model model) <| \p -> { p | color <- c }
+
+      Close i ->
+        modify i (Model model) <| \p -> { p | showOptions <- False }
+
+      Open i ->
+        modify i (Model model) <| \p -> { p | showOptions <- True }
 
       Undo ->
         case model.past of

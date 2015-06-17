@@ -33,6 +33,61 @@ body {
   overflow: hidden;
 }
 
+div.options {
+  position:absolute;
+  top: 25%;
+  left: 25%;
+  height: 50%;
+  width: 50%;
+  background: #000;
+  z-index: 2;
+}
+
+div.options > div.input {
+  position: absolute;
+  width: 99%;
+  height: 20%;
+  top: 0.5%;
+  left: 0.5%;
+}
+
+div.input > input {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  border-width: 0;
+  padding: 0;
+  margin: 0;
+  font-size: 4em;
+  font-family: 'Roboto Slab';
+  font-weight: 300;
+  background: transparent;
+}
+
+div.options > div.button0,
+div.options > div.button1,
+div.options > div.button2,
+div.options > div.button3,
+div.options > div.button4,
+div.options > div.button5 {
+  position: absolute;
+  width: 33%;
+  height: 40%;
+  top: 21%;
+}
+
+div.options > div.button3,
+div.options > div.button4,
+div.options > div.button5 {
+  top: 61%;
+}
+
+div.options > div.button0, div.options > div.button3 { left: 0.5%; }
+div.options > div.button1, div.options > div.button4 { left: 33.5%; }
+div.options > div.button2, div.options > div.button5 { left: 66.5%; }
+
 div .buttons {
   display: none;
   position: absolute;
@@ -273,13 +328,37 @@ div .fourplayer     { background: url(fourplayer.png);     }
 div .fiveplayer     { background: url(fiveplayer.png);     }
 div .clear          { clear: both; }
 
-div .red, div .blue, div .purple, div .green, div .brown, div .orange, div .yellow {
+div .background {
   position: absolute;
   width: 100%;
   height: 100%;
   top: 0;
   left: 0;
   z-index: -2;
+}
+
+div .blue,
+div .purple,
+div .green,
+div .orange,
+div .yellow {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+
+div.hide { display: none; }
+
+div.settings {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 96px;
+  height: 96px;
+  background: black;
+  z-index: 1;
 }
 
 div .noise {
@@ -296,7 +375,6 @@ div .noise {
 div .blue   { background: #729fcf; }
 div .purple { background: #ad7fa8; }
 div .green  { background: #8ae234; }
-div .brown  { background: #e9b96e; }
 div .orange { background: #fcaf3e; }
 div .yellow { background: #fce94f; }
 
