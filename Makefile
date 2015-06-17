@@ -29,7 +29,7 @@ deploy: android
 
 dist-android: gh-pages android
 	mkdir -p gh-pages/get-android
-	cp result/Magic-debug.apk gh-pages/get-android/magic.apk
+	cp -f result/Magic-debug.apk gh-pages/get-android/magic.apk
 
 firefox-os: build
 	zip build/package.zip static/html/*.html build/*.js static/html/*.css resources/*.png static/images/*.png static/fonts/*.ttf firefox-os/manifest.webapp
