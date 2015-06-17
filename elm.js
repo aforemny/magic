@@ -13450,6 +13450,20 @@ Elm.Skeleton.make = function (_elm) {
    $Maybe = Elm.Maybe.make(_elm),
    $Signal = Elm.Signal.make(_elm),
    $Time = Elm.Time.make(_elm);
+   var onChange = F2(function (a,
+   f) {
+      return A3($Html$Events.on,
+      "input",
+      A2($Json$Decode.at,
+      _L.fromArray(["target"
+                   ,"value"]),
+      $Json$Decode.string),
+      function (s) {
+         return A2($Signal.message,
+         a,
+         f(s));
+      });
+   });
    var layout = $Signal.mailbox($Maybe.Nothing);
    var toUrl = function (layout) {
       return function () {
@@ -13465,7 +13479,7 @@ Elm.Skeleton.make = function (_elm) {
             case "TwoPlayerPrime":
             return $Maybe.Just("./twoplayerprime.html");}
          _U.badCase($moduleName,
-         "between lines 407 and 412");
+         "between lines 413 and 418");
       }();
    };
    var FivePlayer = {ctor: "FivePlayer"};
@@ -13710,48 +13724,36 @@ Elm.Skeleton.make = function (_elm) {
                 updates.address,
                 Undo)]),
    _L.fromArray([]));
-   var buttons = function (p) {
+   var toCss = function (c) {
       return function () {
-         var button = function (n) {
-            return A2($Html.a,
-            _L.fromArray([$Html$Attributes.$class("button")
-                         ,$Html$Attributes.style(_L.fromArray([{ctor: "_Tuple2"
-                                                               ,_0: "transform"
-                                                               ,_1: A2($Basics._op["++"],
-                                                               "translate(0,",
-                                                               A2($Basics._op["++"],
-                                                               $Basics.toString(p.scroll),
-                                                               "px)"))}]))]),
-            _L.fromArray([A2($Html.span,
-            _L.fromArray([]),
-            _L.fromArray([$Html.text($Basics.toString(n))]))]));
-         };
-         return A2($Html.div,
-         _L.fromArray([$Html$Attributes.$class("buttons")]),
-         A2($Basics._op["++"],
-         _L.fromArray([A2($Html.div,
-                      _L.fromArray([$Html$Attributes.$class("scrollup")
-                                   ,A2($Html$Events.onMouseEnter,
-                                   updates.address,
-                                   ScrollUp(p.id))
-                                   ,A2($Html$Events.onMouseLeave,
-                                   updates.address,
-                                   ScrollStop(p.id))]),
-                      _L.fromArray([]))
-                      ,A2($Html.div,
-                      _L.fromArray([$Html$Attributes.$class("scrolldown")
-                                   ,A2($Html$Events.onMouseEnter,
-                                   updates.address,
-                                   ScrollDown(p.id))
-                                   ,A2($Html$Events.onMouseLeave,
-                                   updates.address,
-                                   ScrollStop(p.id))]),
-                      _L.fromArray([]))]),
-         A2($List.map,
-         button,
-         _L.range(-20,20))));
+         switch (c.ctor)
+         {case "Blue": return "blue";
+            case "Green": return "green";
+            case "Orange": return "orange";
+            case "Purple": return "purple";
+            case "Yellow": return "yellow";}
+         _U.badCase($moduleName,
+         "between lines 80 and 85");
       }();
    };
+   var colorButton = F2(function (p,
+   c) {
+      return A2($Html.a,
+      _L.fromArray([$Html$Attributes.classList(_L.fromArray([{ctor: "_Tuple2"
+                                                             ,_0: "button"
+                                                             ,_1: true}
+                                                            ,{ctor: "_Tuple2"
+                                                             ,_0: toCss(c)
+                                                             ,_1: true}
+                                                            ,{ctor: "_Tuple2"
+                                                             ,_0: "checked"
+                                                             ,_1: _U.eq(p.color,
+                                                             c)}]))
+                   ,A2($Html$Events.onClick,
+                   updates.address,
+                   A2(Color,p.id,c))]),
+      _L.fromArray([]));
+   });
    var Yellow = {ctor: "Yellow"};
    var Orange = {ctor: "Orange"};
    var Green = {ctor: "Green"};
@@ -13766,7 +13768,7 @@ Elm.Skeleton.make = function (_elm) {
             case 3: return Orange;
             case 4: return Yellow;}
          _U.badCase($moduleName,
-         "between lines 102 and 107");
+         "between lines 108 and 113");
       }();
    };
    var initialPlayer = function (i) {
@@ -13786,7 +13788,57 @@ Elm.Skeleton.make = function (_elm) {
              ,poison: 0
              ,scroll: -864
              ,scrolling: $Maybe.Nothing
-             ,showOptions: false};
+             ,showOptions: $Maybe.Nothing};
+   };
+   var options = function (p) {
+      return A2($Html.div,
+      _L.fromArray([$Html$Attributes.classList(_L.fromArray([{ctor: "_Tuple2"
+                                                             ,_0: "options-layer"
+                                                             ,_1: true}
+                                                            ,{ctor: "_Tuple2"
+                                                             ,_0: "animate-open"
+                                                             ,_1: _U.eq(p.showOptions,
+                                                             $Maybe.Just(true))}
+                                                            ,{ctor: "_Tuple2"
+                                                             ,_0: "animate-close"
+                                                             ,_1: _U.eq(p.showOptions,
+                                                             $Maybe.Just(false))}
+                                                            ,{ctor: "_Tuple2"
+                                                             ,_0: "hide"
+                                                             ,_1: _U.eq(p.showOptions,
+                                                             $Maybe.Nothing)}]))]),
+      _L.fromArray([A2($Html.div,
+      _L.fromArray([$Html$Attributes.classList(_L.fromArray([{ctor: "_Tuple2"
+                                                             ,_0: "options"
+                                                             ,_1: true}]))]),
+      _L.fromArray([A2($Html.div,
+                   _L.fromArray([$Html$Attributes.$class("input")]),
+                   _L.fromArray([A2($Html.input,
+                   _L.fromArray([$Html$Attributes.type$("text")
+                                ,$Html$Attributes.id("input")
+                                ,A2(onChange,
+                                updates.address,
+                                function (s) {
+                                   return A2(Name,p.id,s);
+                                })]),
+                   _L.fromArray([$Html.text("Hello")]))]))
+                   ,A2($Html.div,
+                   _L.fromArray([$Html$Attributes.$class("buttons")]),
+                   _L.fromArray([A2(colorButton,
+                                p,
+                                Blue)
+                                ,A2(colorButton,p,Purple)
+                                ,A2(colorButton,p,Green)
+                                ,A2(colorButton,p,Orange)
+                                ,A2(colorButton,p,Yellow)]))
+                   ,A2($Html.a,
+                   _L.fromArray([$Html$Attributes.$class("confirm")
+                                ,A2($Html$Events.onClick,
+                                updates.address,
+                                Close(p.id))]),
+                   _L.fromArray([A2($Html.span,
+                   _L.fromArray([]),
+                   _L.fromArray([$Html.text("OK")]))]))]))]));
    };
    var single = function (p) {
       return A2($Html.div,
@@ -13797,25 +13849,36 @@ Elm.Skeleton.make = function (_elm) {
       "flip")) : A2($Basics._op["++"],
       "player",
       $Basics.toString(p.id)))]),
-      _L.fromArray([life(p)
-                   ,poison(p)
-                   ,name(p)
-                   ,A2($Html.div,
+      _L.fromArray([A2($Html.div,
                    _L.fromArray([$Html$Attributes.classList(_L.fromArray([{ctor: "_Tuple2"
-                                                                          ,_0: "settings"
+                                                                          ,_0: "info-layer"
                                                                           ,_1: true}
                                                                          ,{ctor: "_Tuple2"
-                                                                          ,_0: "animation-blink"
-                                                                          ,_1: p.flashSettings}]))
-                                ,A2($Html$Events.onClick,
-                                updates.address,
-                                Toggle(p.id))]),
-                   _L.fromArray([]))
-                   ,incDamage(p)
-                   ,decDamage(p)
-                   ,incPoison(p)
-                   ,decPoison(p)
-                   ,buttons(p)
+                                                                          ,_0: "animate-openprime"
+                                                                          ,_1: _U.eq(p.showOptions,
+                                                                          $Maybe.Just(true))}
+                                                                         ,{ctor: "_Tuple2"
+                                                                          ,_0: "animate-closeprime"
+                                                                          ,_1: _U.eq(p.showOptions,
+                                                                          $Maybe.Just(false))}]))]),
+                   _L.fromArray([life(p)
+                                ,poison(p)
+                                ,name(p)
+                                ,A2($Html.a,
+                                _L.fromArray([$Html$Attributes.classList(_L.fromArray([{ctor: "_Tuple2"
+                                                                                       ,_0: "settings"
+                                                                                       ,_1: true}
+                                                                                      ,{ctor: "_Tuple2"
+                                                                                       ,_0: "animation-blink"
+                                                                                       ,_1: p.flashSettings}]))
+                                             ,A2($Html$Events.onClick,
+                                             updates.address,
+                                             Toggle(p.id))]),
+                                _L.fromArray([]))
+                                ,incDamage(p)
+                                ,decDamage(p)
+                                ,incPoison(p)
+                                ,decPoison(p)]))
                    ,A2($Html.div,
                    _L.fromArray([$Html$Attributes.classList(_L.fromArray([{ctor: "_Tuple2"
                                                                           ,_0: "background"
@@ -13840,136 +13903,8 @@ Elm.Skeleton.make = function (_elm) {
                                                                           ,_0: "yellow"
                                                                           ,_1: _U.eq(p.color,
                                                                           Yellow)}]))]),
-                   _L.fromArray([]))]));
-   };
-   var options$ = function (_v2) {
-      return function () {
-         switch (_v2.ctor)
-         {case "_Tuple2":
-            return A2($Html.div,
-              _L.fromArray([$Html$Attributes.classList(_L.fromArray([{ctor: "_Tuple2"
-                                                                     ,_0: "animation-open"
-                                                                     ,_1: _v2._1.showOptions}
-                                                                    ,{ctor: "_Tuple2"
-                                                                     ,_0: "hide"
-                                                                     ,_1: $Basics.not(_v2._1.showOptions)}]))]),
-              _L.fromArray([A2($Html.div,
-                           _L.fromArray([$Html$Attributes.$class("cancel")
-                                        ,A2($Html$Events.onClick,
-                                        updates.address,
-                                        Close(_v2._1.id))]),
-                           _L.fromArray([]))
-                           ,A2($Html.div,
-                           _L.fromArray([$Html$Attributes.classList(_L.fromArray([{ctor: "_Tuple2"
-                                                                                  ,_0: "options"
-                                                                                  ,_1: true}]))]),
-                           _L.fromArray([A2($Html.div,
-                                        _L.fromArray([$Html$Attributes.classList(_L.fromArray([{ctor: "_Tuple2"
-                                                                                               ,_0: "input"
-                                                                                               ,_1: true}
-                                                                                              ,{ctor: "_Tuple2"
-                                                                                               ,_0: "blue"
-                                                                                               ,_1: _U.eq(_v2._1.color,
-                                                                                               Blue)}
-                                                                                              ,{ctor: "_Tuple2"
-                                                                                               ,_0: "purple"
-                                                                                               ,_1: _U.eq(_v2._1.color,
-                                                                                               Purple)}
-                                                                                              ,{ctor: "_Tuple2"
-                                                                                               ,_0: "green"
-                                                                                               ,_1: _U.eq(_v2._1.color,
-                                                                                               Green)}
-                                                                                              ,{ctor: "_Tuple2"
-                                                                                               ,_0: "orange"
-                                                                                               ,_1: _U.eq(_v2._1.color,
-                                                                                               Orange)}
-                                                                                              ,{ctor: "_Tuple2"
-                                                                                               ,_0: "yellow"
-                                                                                               ,_1: _U.eq(_v2._1.color,
-                                                                                               Yellow)}]))]),
-                                        _L.fromArray([A2($Html.input,
-                                        _L.fromArray([$Html$Attributes.type$("text")
-                                                     ,$Html$Attributes.id("input")
-                                                     ,A3($Html$Events.on,
-                                                     "input",
-                                                     A2($Json$Decode.at,
-                                                     _L.fromArray(["target"
-                                                                  ,"value"]),
-                                                     $Json$Decode.string),
-                                                     function (s) {
-                                                        return A2($Signal.message,
-                                                        updates.address,
-                                                        A2(Name,_v2._1.id,s));
-                                                     })]),
-                                        _L.fromArray([$Html.text("Hello")]))]))
-                                        ,A2($Html.div,
-                                        _L.fromArray([$Html$Attributes.$class("button0")
-                                                     ,A2($Html$Events.onClick,
-                                                     updates.address,
-                                                     A2(Color,
-                                                     _v2._1.id,
-                                                     Blue))]),
-                                        _L.fromArray([A2($Html.div,
-                                        _L.fromArray([$Html$Attributes.$class("blue")]),
-                                        _L.fromArray([]))]))
-                                        ,A2($Html.div,
-                                        _L.fromArray([$Html$Attributes.$class("button1")
-                                                     ,A2($Html$Events.onClick,
-                                                     updates.address,
-                                                     A2(Color,
-                                                     _v2._1.id,
-                                                     Purple))]),
-                                        _L.fromArray([A2($Html.div,
-                                        _L.fromArray([$Html$Attributes.$class("purple")]),
-                                        _L.fromArray([]))]))
-                                        ,A2($Html.div,
-                                        _L.fromArray([$Html$Attributes.$class("button2")
-                                                     ,A2($Html$Events.onClick,
-                                                     updates.address,
-                                                     A2(Color,
-                                                     _v2._1.id,
-                                                     Green))]),
-                                        _L.fromArray([A2($Html.div,
-                                        _L.fromArray([$Html$Attributes.$class("green")]),
-                                        _L.fromArray([]))]))
-                                        ,A2($Html.div,
-                                        _L.fromArray([$Html$Attributes.$class("button3")
-                                                     ,A2($Html$Events.onClick,
-                                                     updates.address,
-                                                     A2(Color,
-                                                     _v2._1.id,
-                                                     Orange))]),
-                                        _L.fromArray([A2($Html.div,
-                                        _L.fromArray([$Html$Attributes.$class("orange")]),
-                                        _L.fromArray([]))]))
-                                        ,A2($Html.div,
-                                        _L.fromArray([$Html$Attributes.$class("button4")
-                                                     ,A2($Html$Events.onClick,
-                                                     updates.address,
-                                                     A2(Color,
-                                                     _v2._1.id,
-                                                     Yellow))]),
-                                        _L.fromArray([A2($Html.div,
-                                        _L.fromArray([$Html$Attributes.$class("yellow")]),
-                                        _L.fromArray([]))]))
-                                        ,A2($Html.div,
-                                        _L.fromArray([$Html$Attributes.$class("button5")
-                                                     ,A2($Html$Events.onClick,
-                                                     updates.address,
-                                                     Close(_v2._1.id))]),
-                                        _L.fromArray([A2($Html.div,
-                                        _L.fromArray([$Html$Attributes.$class("close")]),
-                                        _L.fromArray([]))]))]))]));}
-         _U.badCase($moduleName,
-         "between lines 164 and 224");
-      }();
-   };
-   var options = function (ps) {
-      return A2($Html.div,
-      _L.fromArray([]),
-      A2($List.map,
-      options$,
-      $Dict.toList(ps)));
+                   _L.fromArray([]))
+                   ,options(p)]));
    };
    var Player = function (a) {
       return function (b) {
@@ -14029,23 +13964,23 @@ Elm.Skeleton.make = function (_elm) {
                    ,players: players});
    };
    var modify = F3(function (i,
-   _v6,
+   _v3,
    f) {
       return function () {
-         switch (_v6.ctor)
+         switch (_v3.ctor)
          {case "Model":
             return function () {
-                 var _v9 = A2($Dict.get,
+                 var _v6 = A2($Dict.get,
                  i,
-                 _v6._0.players);
-                 switch (_v9.ctor)
+                 _v3._0.players);
+                 switch (_v6.ctor)
                  {case "Just":
                     return Model(_U.replace([["players"
                                              ,A3($Dict.insert,
                                              i,
-                                             f(_v9._0),
-                                             _v6._0.players)]],
-                      _v6._0));
+                                             f(_v6._0),
+                                             _v3._0.players)]],
+                      _v3._0));
                     case "Nothing":
                     return $Debug.crash(A2($Basics._op["++"],
                       "modify: unknown player (",
@@ -14053,32 +13988,32 @@ Elm.Skeleton.make = function (_elm) {
                       $Basics.toString(i),
                       ")")));}
                  _U.badCase($moduleName,
-                 "between lines 111 and 115");
+                 "between lines 117 and 121");
               }();}
          _U.badCase($moduleName,
-         "between lines 111 and 115");
+         "between lines 117 and 121");
       }();
    });
-   var update = F2(function (_v11,
-   _v12) {
+   var update = F2(function (_v8,
+   _v9) {
       return function () {
-         switch (_v12.ctor)
+         switch (_v9.ctor)
          {case "Model":
             return function () {
-                 switch (_v11.ctor)
+                 switch (_v8.ctor)
                  {case "_Tuple2":
                     return function () {
                          var merge = function (player) {
-                            return _U.cmp(_v11._0 - player.lastUpdate,
+                            return _U.cmp(_v8._0 - player.lastUpdate,
                             2.0) < 0;
                          };
                          return function () {
-                            switch (_v11._1.ctor)
+                            switch (_v8._1.ctor)
                             {case "Clear":
-                               switch (_v11._1._0.ctor)
+                               switch (_v8._1._0.ctor)
                                  {case "Just": return A2(modify,
-                                      _v11._1._0._0,
-                                      Model(_v12._0))(function (player) {
+                                      _v8._1._0._0,
+                                      Model(_v9._0))(function (player) {
                                          return _U.replace([["flashDamageInc"
                                                             ,false]
                                                            ,["flashDamageDec"
@@ -14092,60 +14027,60 @@ Elm.Skeleton.make = function (_elm) {
                                          player);
                                       });
                                     case "Nothing":
-                                    return Model(_v12._0);}
+                                    return Model(_v9._0);}
                                  break;
                                case "Close": return A2(modify,
-                                 _v11._1._0,
-                                 Model(_v12._0))(function (p) {
+                                 _v8._1._0,
+                                 Model(_v9._0))(function (p) {
                                     return _U.replace([["showOptions"
-                                                       ,false]],
+                                                       ,$Maybe.Just(false)]],
                                     p);
                                  });
                                case "Color": return A2(modify,
-                                 _v11._1._0,
-                                 Model(_v12._0))(function (p) {
+                                 _v8._1._0,
+                                 Model(_v9._0))(function (p) {
                                     return _U.replace([["color"
-                                                       ,_v11._1._1]],
+                                                       ,_v8._1._1]],
                                     p);
                                  });
                                case "FlipY": return A2(modify,
-                                 _v11._1._0,
-                                 Model(_v12._0))(function (player) {
+                                 _v8._1._0,
+                                 Model(_v9._0))(function (player) {
                                     return _U.replace([["flipy"
                                                        ,$Basics.not(player.flipy)]],
                                     player);
                                  });
                                case "Inc": return function () {
                                     var player = function () {
-                                       var _v37 = A2($Dict.get,
-                                       _v11._1._0,
-                                       _v12._0.players);
-                                       switch (_v37.ctor)
-                                       {case "Just": return _v37._0;
+                                       var _v34 = A2($Dict.get,
+                                       _v8._1._0,
+                                       _v9._0.players);
+                                       switch (_v34.ctor)
+                                       {case "Just": return _v34._0;
                                           case "Nothing":
                                           return $Debug.crash(A2($Basics._op["++"],
                                             "unknown player (",
                                             A2($Basics._op["++"],
-                                            $Basics.toString(_v11._1._0),
+                                            $Basics.toString(_v8._1._0),
                                             ")")));}
                                        _U.badCase($moduleName,
-                                       "between lines 529 and 533");
+                                       "between lines 535 and 539");
                                     }();
                                     var model$ = A2(modify,
-                                    _v11._1._0,
-                                    Model(_v12._0))(function (player) {
+                                    _v8._1._0,
+                                    Model(_v9._0))(function (player) {
                                        return _U.replace([["life"
-                                                          ,_v11._1._1 + player.life]
+                                                          ,_v8._1._1 + player.life]
                                                          ,["history"
                                                           ,A2($Basics._op["++"],
                                                           merge(player) ? _L.fromArray([]) : _L.fromArray([player.life]),
                                                           player.history)]
-                                                         ,["lastUpdate",_v11._0]
+                                                         ,["lastUpdate",_v8._0]
                                                          ,["flashDamageInc"
-                                                          ,_U.cmp(_v11._1._1,
+                                                          ,_U.cmp(_v8._1._1,
                                                           0) > -1]
                                                          ,["flashDamageDec"
-                                                          ,_U.cmp(_v11._1._1,
+                                                          ,_U.cmp(_v8._1._1,
                                                           0) < 0]],
                                        player);
                                     });
@@ -14153,59 +14088,59 @@ Elm.Skeleton.make = function (_elm) {
                                        switch (model$.ctor)
                                        {case "Model":
                                           return Model(_U.replace([["past"
-                                                                   ,merge(player) ? model$._0.past : $Maybe.Just(Model(_v12._0))]],
+                                                                   ,merge(player) ? model$._0.past : $Maybe.Just(Model(_v9._0))]],
                                             model$._0));}
                                        _U.badCase($moduleName,
-                                       "between lines 534 and 538");
+                                       "between lines 540 and 544");
                                     }();
                                  }();
                                case "Name": return A2(modify,
-                                 _v11._1._0,
-                                 Model(_v12._0))(function (p) {
+                                 _v8._1._0,
+                                 Model(_v9._0))(function (p) {
                                     return _U.replace([["name"
-                                                       ,_v11._1._1]],
+                                                       ,_v8._1._1]],
                                     p);
                                  });
                                case "Noop":
-                               return Model(_v12._0);
+                               return Model(_v9._0);
                                case "Open": return A2(modify,
-                                 _v11._1._0,
-                                 Model(_v12._0))(function (p) {
+                                 _v8._1._0,
+                                 Model(_v9._0))(function (p) {
                                     return _U.replace([["showOptions"
-                                                       ,true]
+                                                       ,$Maybe.Just(true)]
                                                       ,["flashSettings",true]],
                                     p);
                                  });
                                case "Poison":
                                return function () {
                                     var player = function () {
-                                       var _v41 = A2($Dict.get,
-                                       _v11._1._0,
-                                       _v12._0.players);
-                                       switch (_v41.ctor)
-                                       {case "Just": return _v41._0;
+                                       var _v38 = A2($Dict.get,
+                                       _v8._1._0,
+                                       _v9._0.players);
+                                       switch (_v38.ctor)
+                                       {case "Just": return _v38._0;
                                           case "Nothing":
                                           return $Debug.crash(A2($Basics._op["++"],
                                             "unknown player (",
                                             A2($Basics._op["++"],
-                                            $Basics.toString(_v11._1._0),
+                                            $Basics.toString(_v8._1._0),
                                             ")")));}
                                        _U.badCase($moduleName,
-                                       "between lines 550 and 553");
+                                       "between lines 556 and 559");
                                     }();
                                     var model$ = A2(modify,
-                                    _v11._1._0,
-                                    Model(_v12._0))(function (player) {
+                                    _v8._1._0,
+                                    Model(_v9._0))(function (player) {
                                        return _U.replace([["poison"
                                                           ,A2($Basics.max,
                                                           0,
-                                                          _v11._1._1 + player.poison)]
-                                                         ,["lastUpdate",_v11._0]
+                                                          _v8._1._1 + player.poison)]
+                                                         ,["lastUpdate",_v8._0]
                                                          ,["flashPoisonInc"
-                                                          ,_U.cmp(_v11._1._1,
+                                                          ,_U.cmp(_v8._1._1,
                                                           0) > -1]
                                                          ,["flashPoisonDec"
-                                                          ,_U.cmp(_v11._1._1,
+                                                          ,_U.cmp(_v8._1._1,
                                                           0) < 0]],
                                        player);
                                     });
@@ -14213,15 +14148,15 @@ Elm.Skeleton.make = function (_elm) {
                                        switch (model$.ctor)
                                        {case "Model":
                                           return Model(_U.replace([["past"
-                                                                   ,merge(player) ? model$._0.past : $Maybe.Just(Model(_v12._0))]],
+                                                                   ,merge(player) ? model$._0.past : $Maybe.Just(Model(_v9._0))]],
                                             model$._0));}
                                        _U.badCase($moduleName,
-                                       "between lines 554 and 557");
+                                       "between lines 560 and 563");
                                     }();
                                  }();
                                case "Reset":
                                return function () {
-                                    var reset = F2(function (_v45,
+                                    var reset = F2(function (_v42,
                                     player) {
                                        return function () {
                                           return _U.replace([["life"
@@ -14235,29 +14170,29 @@ Elm.Skeleton.make = function (_elm) {
                                     return Model(_U.replace([["players"
                                                              ,A2($Dict.map,
                                                              reset,
-                                                             _v12._0.players)]],
-                                    _v12._0));
+                                                             _v9._0.players)]],
+                                    _v9._0));
                                  }();
                                case "ScrollDown":
                                return A2(modify,
-                                 _v11._1._0,
-                                 Model(_v12._0))(function (p) {
+                                 _v8._1._0,
+                                 Model(_v9._0))(function (p) {
                                     return _U.replace([["scrolling"
                                                        ,$Maybe.Just(1)]],
                                     p);
                                  });
                                case "ScrollStop":
                                return A2(modify,
-                                 _v11._1._0,
-                                 Model(_v12._0))(function (p) {
+                                 _v8._1._0,
+                                 Model(_v9._0))(function (p) {
                                     return _U.replace([["scrolling"
                                                        ,$Maybe.Nothing]],
                                     p);
                                  });
                                case "ScrollUp":
                                return A2(modify,
-                                 _v11._1._0,
-                                 Model(_v12._0))(function (p) {
+                                 _v8._1._0,
+                                 Model(_v9._0))(function (p) {
                                     return _U.replace([["scrolling"
                                                        ,$Maybe.Just(-1)]],
                                     p);
@@ -14266,11 +14201,11 @@ Elm.Skeleton.make = function (_elm) {
                                return function () {
                                     var m0 = A2(modify,
                                     0,
-                                    Model(_v12._0))(function (p) {
+                                    Model(_v9._0))(function (p) {
                                        return _U.replace([["scroll"
                                                           ,$Basics.max(-1968)($Basics.min(3936)(p.scroll + 100 * A2($Maybe.withDefault,
                                                           0,
-                                                          p.scrolling) * _v11._1._0))]],
+                                                          p.scrolling) * _v8._1._0))]],
                                        p);
                                     });
                                     var m1 = A2(modify,
@@ -14279,65 +14214,67 @@ Elm.Skeleton.make = function (_elm) {
                                        return _U.replace([["scroll"
                                                           ,$Debug.log("tick")($Basics.max(-1968)($Basics.min(3936)(p.scroll + 100 * A2($Maybe.withDefault,
                                                           0,
-                                                          p.scrolling) * _v11._1._0)))]],
+                                                          p.scrolling) * _v8._1._0)))]],
                                        p);
                                     });
                                     return m1;
                                  }();
                                case "Toggle": return A2(modify,
-                                 _v11._1._0,
-                                 Model(_v12._0))(function (p) {
+                                 _v8._1._0,
+                                 Model(_v9._0))(function (p) {
                                     return _U.replace([["showOptions"
-                                                       ,$Basics.not(p.showOptions)]
+                                                       ,$Maybe.Just($Basics.not(A2($Maybe.withDefault,
+                                                       false,
+                                                       p.showOptions)))]
                                                       ,["flashSettings",true]],
                                     p);
                                  });
                                case "Undo":
                                return function () {
-                                    var _v47 = _v12._0.past;
-                                    switch (_v47.ctor)
+                                    var _v44 = _v9._0.past;
+                                    switch (_v44.ctor)
                                     {case "Just":
-                                       switch (_v47._0.ctor)
+                                       switch (_v44._0.ctor)
                                          {case "Model":
                                             return function () {
                                                  var keep = F2(function (i,
                                                  p) {
                                                     return function () {
-                                                       var _v50 = A2($Dict.get,
+                                                       var _v47 = A2($Dict.get,
                                                        i,
-                                                       _v12._0.players);
-                                                       switch (_v50.ctor)
+                                                       _v9._0.players);
+                                                       switch (_v47.ctor)
                                                        {case "Just":
                                                           return _U.replace([["flipy"
-                                                                             ,_v50._0.flipy]],
+                                                                             ,_v47._0.flipy]],
                                                             p);
                                                           case "Nothing":
                                                           return p;}
                                                        _U.badCase($moduleName,
-                                                       "between lines 476 and 479");
+                                                       "between lines 482 and 485");
                                                     }();
                                                  });
                                                  return Model(_U.replace([["players"
                                                                           ,A2($Dict.map,
                                                                           keep,
-                                                                          _v47._0._0.players)]],
-                                                 _v47._0._0));
+                                                                          _v44._0._0.players)]],
+                                                 _v44._0._0));
                                               }();}
                                          break;
                                        case "Nothing":
-                                       return Model(_v12._0);}
+                                       return Model(_v9._0);}
                                     _U.badCase($moduleName,
-                                    "between lines 471 and 482");
+                                    "between lines 477 and 488");
                                  }();}
                             _U.badCase($moduleName,
-                            "between lines 447 and 567");
+                            "between lines 453 and 573");
                          }();
                       }();}
                  _U.badCase($moduleName,
-                 "between lines 444 and 567");
+                 "between lines 450 and 573");
               }();}
          _U.badCase($moduleName,
-         "between lines 444 and 567");
+         "between lines 450 and 573");
       }();
    });
    var model = F2(function (start,
@@ -14355,15 +14292,15 @@ Elm.Skeleton.make = function (_elm) {
                return Clear($Maybe.Nothing);
             }();
          };
-         var input = $Signal.map(function (_v58) {
+         var input = $Signal.map(function (_v55) {
             return function () {
-               switch (_v58.ctor)
+               switch (_v55.ctor)
                {case "_Tuple2":
                   return {ctor: "_Tuple2"
-                         ,_0: _v58._0 / 1000.0
-                         ,_1: _v58._1};}
+                         ,_0: _v55._0 / 1000.0
+                         ,_1: _v55._1};}
                _U.badCase($moduleName,
-               "on line 419, column 33 to 44");
+               "on line 425, column 33 to 44");
             }();
          })($Time.timestamp($Signal.mergeMany(_L.fromArray([updates.signal
                                                            ,A2($Time.delay,
@@ -14381,19 +14318,15 @@ Elm.Skeleton.make = function (_elm) {
    players,
    android) {
       return function () {
-         var view$ = function (_v62) {
+         var view$ = function (_v59) {
             return function () {
-               switch (_v62.ctor)
+               switch (_v59.ctor)
                {case "Model":
                   return A2($Html.div,
                     _L.fromArray([]),
-                    _L.fromArray([A2($Html.div,
-                                 _L.fromArray([$Html$Attributes.$class("noise")]),
-                                 _L.fromArray([]))
-                                 ,options(_v62._0.players)
-                                 ,view(Model(_v62._0))]));}
+                    _L.fromArray([view(Model(_v59._0))]));}
                _U.badCase($moduleName,
-               "between lines 24 and 41");
+               "between lines 24 and 27");
             }();
          };
          var p = initialPlayer(0);
@@ -14421,13 +14354,13 @@ Elm.Skeleton.make = function (_elm) {
                           ,Green: Green
                           ,Orange: Orange
                           ,Yellow: Yellow
+                          ,toCss: toCss
                           ,initialPlayer: initialPlayer
                           ,defaultColor: defaultColor
                           ,modify: modify
                           ,single: single
                           ,options: options
-                          ,options$: options$
-                          ,buttons: buttons
+                          ,colorButton: colorButton
                           ,undo: undo
                           ,twoplayer: twoplayer
                           ,twoplayerprime: twoplayerprime
@@ -14471,7 +14404,8 @@ Elm.Skeleton.make = function (_elm) {
                           ,model: model
                           ,updates: updates
                           ,layout: layout
-                          ,update: update};
+                          ,update: update
+                          ,onChange: onChange};
    return _elm.Skeleton.values;
 };
 Elm.String = Elm.String || {};
