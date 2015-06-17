@@ -1,0 +1,450 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="256"
+   height="256"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.4 r9939"
+   inkscape:export-filename="/home/aforemny/src/magic/plus.png"
+   inkscape:export-xdpi="22.5"
+   inkscape:export-ydpi="22.5"
+   sodipodi:docname="icons.svg">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="2.2734375"
+     inkscape:cx="526.24954"
+     inkscape:cy="125.84582"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1364"
+     inkscape:window-height="748"
+     inkscape:window-x="0"
+     inkscape:window-y="18"
+     inkscape:window-maximized="0" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Ebene 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-796.36218)">
+    <g
+       id="g3879"
+       inkscape:export-filename="/home/aforemny/src/magic/miniplus.png"
+       inkscape:export-xdpi="11.249871"
+       inkscape:export-ydpi="11.249871">
+      <path
+         id="rect3773"
+         d="m 115.71875,848.61218 c -3.39814,0 -6.125,2.12726 -6.125,4.75 l 0,52.59375 -52.59375,0 c -2.62274,0 -4.75,2.72686 -4.75,6.125 l 0,24.5625 c 0,3.39814 2.12726,6.125 4.75,6.125 l 52.59375,0 0,52.59375 c 0,2.62274 2.72686,4.75002 6.125,4.75002 l 24.5625,0 c 3.39814,0 6.125,-2.12728 6.125,-4.75002 l 0,-52.59375 52.59375,0 c 2.62274,0 4.75,-2.72686 4.75,-6.125 l 0,-24.5625 c 0,-3.39814 -2.12726,-6.125 -4.75,-6.125 l -52.59375,0 0,-52.59375 c 0,-2.62274 -2.72686,-4.75 -6.125,-4.75 l -24.5625,0 z"
+         style="fill:#eeeeec;fill-opacity:0.50000000000000000;stroke:none"
+         inkscape:connector-curvature="0" />
+      <rect
+         y="796.36365"
+         x="-0.0030724138"
+         height="256"
+         width="256"
+         id="rect3819"
+         style="fill:#ffffff;fill-opacity:0;stroke:none" />
+      <path
+         inkscape:connector-curvature="0"
+         id="path3815"
+         d="m 128.00307,796.3607 c -70.692444,0 -127.99999314,57.30756 -127.99999314,128 0,70.69245 57.30754914,128 127.99999314,128 70.69246,0 128,-57.30755 128,-128 0,-70.69244 -57.30754,-128 -128,-128 z m 0,32 c 53.01934,0 96,42.98067 96,96 0,53.01933 -42.98066,96 -96,96 -53.019334,0 -95.999994,-42.98067 -95.999994,-96 0,-53.01933 42.98066,-96 95.999994,-96 z"
+         style="fill:#eeeeec;fill-opacity:0.50196081;stroke:none" />
+    </g>
+    <g
+       id="g3884"
+       inkscape:export-filename="/home/aforemny/src/magic/miniminus.png"
+       inkscape:export-xdpi="11.249871"
+       inkscape:export-ydpi="11.249871">
+      <rect
+         transform="matrix(0,1,-1,0,0,0)"
+         y="149.58284"
+         x="905.96069"
+         height="151.49399"
+         width="36.802929"
+         id="rect3846"
+         style="fill:#eeeeec;fill-opacity:0.50000000000000000;stroke:none"
+         rx="6.1338215"
+         ry="4.7341871"
+         inkscape:export-filename="/home/aforemny/src/magic/plus.png"
+         inkscape:export-xdpi="8"
+         inkscape:export-ydpi="8" />
+      <rect
+         style="fill:#ffffff;fill-opacity:0;stroke:none"
+         id="rect3850"
+         width="256"
+         height="256"
+         x="-353.33292"
+         y="796.36365" />
+      <path
+         style="fill:#eeeeec;fill-opacity:0.50196081000000004;stroke:none"
+         d="m -225.32677,796.3607 c -70.69245,0 -128,57.30756 -128,128 0,70.69245 57.30755,128 128,128 70.69246,0 128,-57.30755 128,-128 0,-70.69244 -57.30754,-128 -128,-128 z m 0,32 c 53.01934,0 96,42.98067 96,96 0,53.01933 -42.98066,96 -96,96 -53.01934,0 -96,-42.98067 -96,-96 0,-53.01933 42.98066,-96 96,-96 z"
+         id="path3852"
+         inkscape:connector-curvature="0" />
+    </g>
+    <g
+       id="g3917"
+       inkscape:export-filename="/home/aforemny/src/magic/flip.png"
+       inkscape:export-xdpi="11.25"
+       inkscape:export-ydpi="11.25">
+      <rect
+         y="485.33093"
+         x="-343.37997"
+         height="256"
+         width="256"
+         id="rect3893"
+         style="fill:#ffffff;fill-opacity:0;stroke:none" />
+      <path
+         inkscape:connector-curvature="0"
+         id="path3900"
+         d="m -215.36488,485.33093 c -19.45058,0 -106.98896,63.47769 -97.26367,70.53221 3.3097,2.40078 25.91552,3.98967 54.48834,4.75639 l 0,105.4228 c -28.57282,0.76672 -51.17864,2.35561 -54.48834,4.75639 -9.72529,7.05452 77.81309,70.53221 97.26367,70.53221 19.45058,0 106.95853,-63.47769 97.23324,-70.53221 -3.38579,-2.45599 -26.95535,-4.04177 -56.46586,-4.78768 l 0,-105.36022 c 29.51051,-0.74591 53.08007,-2.33169 56.46586,-4.78768 9.72529,-7.05452 -77.78266,-70.53221 -97.23324,-70.53221 z"
+         style="fill:#eeeeec;fill-opacity:0.50196078;stroke:none" />
+    </g>
+    <g
+       id="g3946"
+       transform="translate(18.661787,-33.591217)"
+       inkscape:export-filename="/home/aforemny/src/magic/undo.png"
+       inkscape:export-xdpi="11.25"
+       inkscape:export-ydpi="11.25">
+      <rect
+         style="fill:#ffffff;fill-opacity:0;stroke:none"
+         id="rect3923"
+         width="256"
+         height="256"
+         x="-8.7119246"
+         y="485.33093" />
+      <path
+         inkscape:connector-curvature="0"
+         id="path3935"
+         d="m 127.05712,485.33093 c -29.61449,0 -59.213046,11.565 -82.322979,34.72084 -18.88204,-19.74632 -35.1286575,-34.7137 -39.5464895,-34.63112 -12.2110607,0.22826 -19.6442485,116.98614 -8.2575765,129.7321 11.3866765,12.74598 121.297875,10.70137 122.122255,-2.27285 0.31417,-4.94433 -14.3893,-24.68854 -33.367351,-47.19163 23.908001,-23.58472 61.241281,-23.01521 84.485681,1.73455 23.80468,25.34632 23.80468,66.46501 0,91.81133 -12.0382,12.81782 -27.86969,19.13661 -43.64719,18.9903 l -0.50556,63.10159 c 32.24678,0.29965 63.25576,-13.19263 86.05854,-37.47217 46.94884,-49.98935 46.94883,-131.06143 0,-181.05076 -23.4744,-24.99466 -54.25235,-37.47218 -85.01933,-37.47218 z"
+         style="fill:#eeeeec;fill-opacity:0.50196078;stroke:none" />
+    </g>
+    <g
+       id="g3986"
+       inkscape:export-filename="/home/aforemny/src/magic/reset.png"
+       inkscape:export-xdpi="11.25"
+       inkscape:export-ydpi="11.25">
+      <g
+         id="g3087"
+         inkscape:export-filename="/home/aforemny/src/magic/reset.png"
+         inkscape:export-xdpi="16.875"
+         inkscape:export-ydpi="16.875">
+        <rect
+           style="fill:#ffffff;fill-opacity:0;stroke:none"
+           id="rect3952"
+           width="256"
+           height="256"
+           x="-313.52112"
+           y="153.15112" />
+        <text
+           xml:space="preserve"
+           style="font-size:155.88732909999998810px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#eeeeec;fill-opacity:0.50196081;stroke:none;font-family:Norican;-inkscape-font-specification:Norican"
+           x="-463.56555"
+           y="233.21222"
+           id="text3958"
+           sodipodi:linespacing="125%"
+           transform="scale(0.64782885,1.5436176)"><tspan
+             sodipodi:role="line"
+             id="tspan3960"
+             x="-463.56555"
+             y="233.21222"
+             style="fill:#eeeeec;font-family:Liberation Serif;-inkscape-font-specification:Liberation Serif;fill-opacity:0.50196081">20</tspan></text>
+        <text
+           transform="scale(0.64782885,1.5436176)"
+           sodipodi:linespacing="125%"
+           id="text3962"
+           y="233.21222"
+           x="-265.98251"
+           style="font-size:155.88732909999998810px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#eeeeec;fill-opacity:0.50196081;stroke:none;font-family:Norican;-inkscape-font-specification:Norican"
+           xml:space="preserve"><tspan
+             style="fill:#eeeeec;font-family:Liberation Serif;-inkscape-font-specification:Liberation Serif;fill-opacity:0.50196081"
+             y="233.21222"
+             x="-265.98251"
+             id="tspan3964"
+             sodipodi:role="line">20</tspan></text>
+        <rect
+           style="fill:#eeeeec;fill-opacity:0.50196081;stroke:none"
+           id="rect3966"
+           width="12.441193"
+           height="256"
+           x="-191.74171"
+           y="153.15112"
+           rx="3.0769234"
+           ry="9.0447502" />
+      </g>
+    </g>
+    <g
+       id="g4016"
+       inkscape:export-filename="/home/aforemny/src/magic/miniplus.png"
+       inkscape:export-xdpi="22.5"
+       inkscape:export-ydpi="22.5">
+      <path
+         inkscape:connector-curvature="0"
+         style="fill:#eeeeec;fill-opacity:0.5;stroke:none"
+         d="m 125.59173,1176.3669 c -1.69907,0 -3.0625,1.0637 -3.0625,2.375 l 0,26.2969 -26.296872,0 c -1.31137,0 -2.375,1.3634 -2.375,3.0625 l 0,12.2813 c 0,1.699 1.06363,3.0625 2.375,3.0625 l 26.296872,0 0,26.2968 c 0,1.3114 1.36343,2.3751 3.0625,2.3751 l 12.28125,0 c 1.69907,0 3.0625,-1.0637 3.0625,-2.3751 l 0,-26.2968 26.29688,0 c 1.31137,0 2.375,-1.3635 2.375,-3.0625 l 0,-12.2813 c 0,-1.6991 -1.06363,-3.0625 -2.375,-3.0625 l -26.29688,0 0,-26.2969 c 0,-1.3113 -1.36343,-2.375 -3.0625,-2.375 l -12.28125,0 z"
+         id="path3996" />
+      <rect
+         style="fill:#ffffff;fill-opacity:0;stroke:none"
+         id="rect3998"
+         width="256"
+         height="256"
+         x="3.729285"
+         y="1086.2434" />
+    </g>
+    <g
+       id="g4020"
+       inkscape:export-filename="/home/aforemny/src/magic/miniminus.png"
+       inkscape:export-xdpi="22.5"
+       inkscape:export-ydpi="22.5">
+      <rect
+         inkscape:export-ydpi="8"
+         inkscape:export-xdpi="8"
+         inkscape:export-filename="/home/aforemny/src/magic/plus.png"
+         ry="2.3670936"
+         rx="3.0669107"
+         style="fill:#eeeeec;fill-opacity:0.5;stroke:none"
+         id="rect4004"
+         width="18.401464"
+         height="75.746994"
+         x="1193.8434"
+         y="189.94304"
+         transform="matrix(0,1,-1,0,0,0)" />
+      <rect
+         y="1075.0464"
+         x="-355.82117"
+         height="256"
+         width="256"
+         id="rect4006"
+         style="fill:#ffffff;fill-opacity:0;stroke:none" />
+    </g>
+    <text
+       xml:space="preserve"
+       style="font-size:40px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Liberation Serif;-inkscape-font-specification:Liberation Serif"
+       x="46.03241"
+       y="-557.65393"
+       id="text3865"
+       sodipodi:linespacing="125%"
+       transform="translate(0,796.36218)"><tspan
+         sodipodi:role="line"
+         id="tspan3867"
+         x="46.03241"
+         y="-557.65393" /></text>
+    <g
+       id="g4119"
+       inkscape:export-filename="/home/aforemny/src/magic/threeplayer.png"
+       inkscape:export-xdpi="11.25"
+       inkscape:export-ydpi="11.25">
+      <rect
+         y="108.36284"
+         x="24.879293"
+         height="256"
+         width="256"
+         id="rect3091"
+         style="fill:#ffffff;fill-opacity:0;stroke:none" />
+      <path
+         id="path3871"
+         transform="translate(0,796.36218)"
+         d="M 152.875 -688 C 125.93164 -688 104.09375 -664.38302 104.09375 -635.25 C 104.09375 -625.16939 106.71328 -615.75984 111.25 -607.75 C 92.788895 -594.64907 80.75 -573.06055 80.75 -548.65625 C 80.75 -527.68072 89.651341 -508.80627 103.875 -495.59375 C 105.30565 -485.64356 108.00967 -476.44431 111.75 -468.375 C 108.97798 -465.0785 107.4375 -461.38657 107.4375 -457.5 C 107.4375 -443.41674 127.77084 -432 152.875 -432 C 177.97916 -432 198.34375 -443.41674 198.34375 -457.5 C 198.34375 -461.38657 196.77202 -465.0785 194 -468.375 C 197.74418 -476.45262 200.4768 -485.66306 201.90625 -495.625 C 216.11095 -508.83609 225.03125 -527.69672 225.03125 -548.65625 C 225.03125 -573.06055 212.96111 -594.64907 194.5 -607.75 C 199.03707 -615.76005 201.65625 -625.16897 201.65625 -635.25 C 201.65625 -664.38302 179.81836 -688 152.875 -688 z "
+         style="fill:#eeeeec;fill-opacity:0.50196081000000004;stroke:none" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text3886"
+         y="323.88385"
+         x="104.17293"
+         style="font-size:191.45994568px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#2e3436;fill-opacity:1;stroke:none;font-family:Liberation Serif;-inkscape-font-specification:Liberation Serif"
+         xml:space="preserve"><tspan
+           y="323.88385"
+           x="104.17293"
+           id="tspan3888"
+           sodipodi:role="line">3</tspan></text>
+    </g>
+    <g
+       id="g4134"
+       inkscape:export-filename="/home/aforemny/src/magic/fourplayer.png"
+       inkscape:export-xdpi="11.250001"
+       inkscape:export-ydpi="11.250001">
+      <rect
+         style="fill:#ffffff;fill-opacity:0;stroke:none"
+         id="rect3912"
+         width="256"
+         height="256"
+         x="342.8793"
+         y="107.36284" />
+      <path
+         id="path3916"
+         transform="translate(0,796.36218)"
+         d="M 470.875 -689 C 443.93164 -689 422.09375 -665.38302 422.09375 -636.25 C 422.09375 -626.16939 424.71328 -616.75984 429.25 -608.75 C 410.78889 -595.64907 398.75 -574.06055 398.75 -549.65625 C 398.75 -528.68072 407.65134 -509.80627 421.875 -496.59375 C 423.30565 -486.64356 426.00967 -477.44431 429.75 -469.375 C 426.97798 -466.0785 425.4375 -462.38657 425.4375 -458.5 C 425.4375 -444.41674 445.77084 -433 470.875 -433 C 495.97916 -433 516.34375 -444.41674 516.34375 -458.5 C 516.34375 -462.38657 514.77202 -466.0785 512 -469.375 C 515.74418 -477.45262 518.4768 -486.66306 519.90625 -496.625 C 534.11095 -509.83609 543.03125 -528.69672 543.03125 -549.65625 C 543.03125 -574.06055 530.96111 -595.64907 512.5 -608.75 C 517.03707 -616.76005 519.65625 -626.16897 519.65625 -636.25 C 519.65625 -665.38302 497.81836 -689 470.875 -689 z "
+         style="fill:#eeeeec;fill-opacity:0.50196081000000004;stroke:none" />
+      <text
+         xml:space="preserve"
+         style="font-size:191.45994568px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#2e3436;fill-opacity:1;stroke:none;font-family:Liberation Serif;-inkscape-font-specification:Liberation Serif"
+         x="422.17291"
+         y="322.88385"
+         id="text3924"
+         sodipodi:linespacing="125%"><tspan
+           sodipodi:role="line"
+           id="tspan3926"
+           x="422.17291"
+           y="322.88385">4</tspan></text>
+    </g>
+    <g
+       id="g4157"
+       inkscape:export-filename="/home/aforemny/src/magic/fiveplayer.png"
+       inkscape:export-xdpi="11.25"
+       inkscape:export-ydpi="11.25">
+      <rect
+         y="106.36284"
+         x="651.87927"
+         height="256"
+         width="256"
+         id="rect3950"
+         style="fill:#ffffff;fill-opacity:0;stroke:none" />
+      <path
+         id="path3954"
+         transform="translate(0,796.36218)"
+         d="M 779.875 -690 C 752.93164 -690 731.09375 -666.38302 731.09375 -637.25 C 731.09375 -627.16939 733.71328 -617.75984 738.25 -609.75 C 719.78889 -596.64907 707.75 -575.06055 707.75 -550.65625 C 707.75 -529.68072 716.65134 -510.80627 730.875 -497.59375 C 732.30565 -487.64356 735.00967 -478.44431 738.75 -470.375 C 735.97798 -467.0785 734.4375 -463.38657 734.4375 -459.5 C 734.4375 -445.41674 754.77084 -434 779.875 -434 C 804.97916 -434 825.34375 -445.41674 825.34375 -459.5 C 825.34375 -463.38657 823.77202 -467.0785 821 -470.375 C 824.74418 -478.45262 827.4768 -487.66306 828.90625 -497.625 C 843.11095 -510.83609 852.03125 -529.69672 852.03125 -550.65625 C 852.03125 -575.06055 839.96111 -596.64907 821.5 -609.75 C 826.03707 -617.76005 828.65625 -627.16897 828.65625 -637.25 C 828.65625 -666.38302 806.81836 -690 779.875 -690 z "
+         style="fill:#eeeeec;fill-opacity:0.50196081;stroke:none" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text3963"
+         y="321.88385"
+         x="731.17291"
+         style="font-size:191.45994568px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#2e3436;fill-opacity:1;stroke:none;font-family:Liberation Serif;-inkscape-font-specification:Liberation Serif"
+         xml:space="preserve"><tspan
+           y="321.88385"
+           x="731.17291"
+           id="tspan3965"
+           sodipodi:role="line">5</tspan></text>
+    </g>
+    <g
+       id="g4180"
+       inkscape:export-filename="/home/aforemny/src/magic/twoplayer.png"
+       inkscape:export-xdpi="11.25"
+       inkscape:export-ydpi="11.25">
+      <rect
+         style="fill:#ffffff;fill-opacity:0;stroke:none"
+         id="rect3987"
+         width="256"
+         height="256"
+         x="906.87927"
+         y="100.36284" />
+      <path
+         id="path3991"
+         transform="translate(0,796.36218)"
+         d="M 1034.875 -696 C 1007.9316 -696 986.09375 -672.38302 986.09375 -643.25 C 986.09375 -633.16939 988.71328 -623.75984 993.25 -615.75 C 974.78889 -602.64907 962.75 -581.06055 962.75 -556.65625 C 962.75 -535.68072 971.65134 -516.80627 985.875 -503.59375 C 987.30565 -493.64356 990.00967 -484.44431 993.75 -476.375 C 990.97798 -473.0785 989.4375 -469.38657 989.4375 -465.5 C 989.4375 -451.41674 1009.7708 -440 1034.875 -440 C 1059.9792 -440 1080.3438 -451.41674 1080.3438 -465.5 C 1080.3438 -469.38657 1078.772 -473.0785 1076 -476.375 C 1079.7442 -484.45262 1082.4768 -493.66306 1083.9062 -503.625 C 1098.111 -516.83609 1107.0312 -535.69672 1107.0312 -556.65625 C 1107.0312 -581.06055 1094.9611 -602.64907 1076.5 -615.75 C 1081.0371 -623.76005 1083.6562 -633.16897 1083.6562 -643.25 C 1083.6563 -672.38302 1061.8184 -696 1034.875 -696 z "
+         style="fill:#eeeeec;fill-opacity:0.50196081;stroke:none" />
+      <text
+         xml:space="preserve"
+         style="font-size:191.45994568px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#2e3436;fill-opacity:1;stroke:none;font-family:Liberation Serif;-inkscape-font-specification:Liberation Serif"
+         x="986.17291"
+         y="315.88385"
+         id="text3999"
+         sodipodi:linespacing="125%"><tspan
+           sodipodi:role="line"
+           id="tspan4001"
+           x="986.17291"
+           y="315.88385">2</tspan></text>
+    </g>
+    <g
+       id="g4205"
+       inkscape:export-filename="/home/aforemny/src/magic/twoplayerprime.png"
+       inkscape:export-xdpi="11.25"
+       inkscape:export-ydpi="11.25">
+      <rect
+         y="89.362839"
+         x="1216.8793"
+         height="256"
+         width="256"
+         id="rect4036"
+         style="fill:#ffffff;fill-opacity:0;stroke:none" />
+      <path
+         id="path4040"
+         transform="translate(0,796.36218)"
+         d="M 1344.875 -707 C 1317.9316 -707 1296.0938 -683.38302 1296.0938 -654.25 C 1296.0938 -644.16939 1298.7133 -634.75984 1303.25 -626.75 C 1284.7889 -613.64907 1272.75 -592.06055 1272.75 -567.65625 C 1272.75 -546.68072 1281.6513 -527.80627 1295.875 -514.59375 C 1297.3056 -504.64356 1300.0097 -495.44431 1303.75 -487.375 C 1300.978 -484.0785 1299.4375 -480.38657 1299.4375 -476.5 C 1299.4375 -462.41674 1319.7708 -451 1344.875 -451 C 1369.9792 -451 1390.3438 -462.41674 1390.3438 -476.5 C 1390.3438 -480.38657 1388.772 -484.0785 1386 -487.375 C 1389.7442 -495.45262 1392.4768 -504.66306 1393.9062 -514.625 C 1408.111 -527.83609 1417.0312 -546.69672 1417.0312 -567.65625 C 1417.0312 -592.06055 1404.9611 -613.64907 1386.5 -626.75 C 1391.0371 -634.76005 1393.6562 -644.16897 1393.6562 -654.25 C 1393.6563 -683.38302 1371.8184 -707 1344.875 -707 z "
+         style="fill:#eeeeec;fill-opacity:0.50196081;stroke:none" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text4048"
+         y="304.88385"
+         x="1296.1729"
+         style="font-size:191.45994568px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#2e3436;fill-opacity:1;stroke:none;font-family:Liberation Serif;-inkscape-font-specification:Liberation Serif"
+         xml:space="preserve"><tspan
+           y="304.88385"
+           x="1296.1729"
+           id="tspan4050"
+           sodipodi:role="line">2</tspan></text>
+      <text
+         sodipodi:linespacing="125%"
+         id="text4078"
+         y="312.09192"
+         x="1372.027"
+         style="font-size:206.05404663px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Liberation Serif;-inkscape-font-specification:Liberation Serif"
+         xml:space="preserve"><tspan
+           y="312.09192"
+           x="1372.027"
+           id="tspan4080"
+           sodipodi:role="line">'</tspan></text>
+    </g>
+    <rect
+       y="798.51636"
+       x="398.24954"
+       height="256"
+       width="256"
+       id="rect3167"
+       style="fill:#729fcf;fill-opacity:1;stroke:none" />
+    <g
+       id="g3956">
+      <rect
+         rx="8"
+         y="798.51636"
+         x="398.24954"
+         height="64"
+         width="256"
+         id="rect3942"
+         style="fill:#eeeeec;fill-opacity:1;stroke:none" />
+      <rect
+         style="fill:#eeeeec;fill-opacity:1;stroke:none"
+         id="rect3944"
+         width="256"
+         height="64"
+         x="398.24954"
+         y="894.51636"
+         rx="8" />
+      <rect
+         rx="8"
+         y="990.51636"
+         x="398.24954"
+         height="64"
+         width="256"
+         id="rect3946"
+         style="fill:#eeeeec;fill-opacity:1;stroke:none" />
+    </g>
+  </g>
+</svg>
