@@ -1,7 +1,7 @@
 {
     "name": "Magic Counter",
     "description": "Counter for Magic",
-    "launch_path": "/portrait2.html",
+    "launch_path": "/index.html",
     "icons": {
         "512": "/img/icon-512.png",
         "128": "/img/icon-128.png"
@@ -11,6 +11,5 @@
         "url": "http://github.com/aforemny/magic"
     },
     "default_locale": "en",
-    "type": "web",
     "fullscreen": "true"
 }
