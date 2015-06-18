@@ -8,7 +8,6 @@ dist-web: build
 	cp static/fonts/*.ttf   gh-pages/
 	cp static/html/*.css    gh-pages/
 	cp static/html/*.html   gh-pages/
-	cp static/images/*.png  gh-pages/
 
 distribute: dist-web dist-firefox-os dist-android
 
