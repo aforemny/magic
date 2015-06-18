@@ -13878,7 +13878,7 @@ Elm.Skeleton.make = function (_elm) {
             case "TwoPlayerPrime":
             return $Maybe.Just("./twoplayerprime.html");}
          _U.badCase($moduleName,
-         "between lines 419 and 424");
+         "between lines 420 and 425");
       }();
    };
    var FivePlayer = {ctor: "FivePlayer"};
@@ -14241,8 +14241,9 @@ Elm.Skeleton.make = function (_elm) {
                                 updates.address,
                                 function (s) {
                                    return A2(Name,p.id,s);
-                                })]),
-                   _L.fromArray([$Html.text("Hello")]))]))
+                                })
+                                ,$Html$Attributes.value(p.name)]),
+                   _L.fromArray([]))]))
                    ,A2($Html.div,
                    _L.fromArray([$Html$Attributes.$class("buttons")]),
                    _L.fromArray([A2(colorButton,
@@ -14492,7 +14493,7 @@ Elm.Skeleton.make = function (_elm) {
                                             $Basics.toString(_v9._1._0),
                                             ")")));}
                                        _U.badCase($moduleName,
-                                       "between lines 540 and 544");
+                                       "between lines 541 and 545");
                                     }();
                                     var model$ = A2(modify,
                                     _v9._1._0,
@@ -14519,7 +14520,7 @@ Elm.Skeleton.make = function (_elm) {
                                                                    ,merge(player) ? model$._0.past : $Maybe.Just(Model(_v10._0))]],
                                             model$._0));}
                                        _U.badCase($moduleName,
-                                       "between lines 545 and 549");
+                                       "between lines 546 and 550");
                                     }();
                                  }();
                                case "Name": return A2(modify,
@@ -14556,7 +14557,7 @@ Elm.Skeleton.make = function (_elm) {
                                             $Basics.toString(_v9._1._0),
                                             ")")));}
                                        _U.badCase($moduleName,
-                                       "between lines 561 and 564");
+                                       "between lines 562 and 565");
                                     }();
                                     var model$ = A2(modify,
                                     _v9._1._0,
@@ -14581,7 +14582,7 @@ Elm.Skeleton.make = function (_elm) {
                                                                    ,merge(player) ? model$._0.past : $Maybe.Just(Model(_v10._0))]],
                                             model$._0));}
                                        _U.badCase($moduleName,
-                                       "between lines 565 and 568");
+                                       "between lines 566 and 569");
                                     }();
                                  }();
                                case "Reset":
@@ -14671,7 +14672,7 @@ Elm.Skeleton.make = function (_elm) {
                                                           case "Nothing":
                                                           return p;}
                                                        _U.badCase($moduleName,
-                                                       "between lines 487 and 490");
+                                                       "between lines 488 and 491");
                                                     }();
                                                  });
                                                  return Model(_U.replace([["players"
@@ -14684,17 +14685,17 @@ Elm.Skeleton.make = function (_elm) {
                                        case "Nothing":
                                        return Model(_v10._0);}
                                     _U.badCase($moduleName,
-                                    "between lines 482 and 493");
+                                    "between lines 483 and 494");
                                  }();}
                             _U.badCase($moduleName,
-                            "between lines 458 and 578");
+                            "between lines 459 and 579");
                          }();
                       }();}
                  _U.badCase($moduleName,
-                 "between lines 455 and 578");
+                 "between lines 456 and 579");
               }();}
          _U.badCase($moduleName,
-         "between lines 455 and 578");
+         "between lines 456 and 579");
       }();
    });
    var model = function (start) {
@@ -14717,7 +14718,7 @@ Elm.Skeleton.make = function (_elm) {
                          ,_0: _v54._0 / 1000.0
                          ,_1: _v54._1};}
                _U.badCase($moduleName,
-               "on line 431, column 33 to 44");
+               "on line 432, column 33 to 44");
             }();
          })($Time.timestamp($Signal.mergeMany(_L.fromArray([updates.signal
                                                            ,A2($Time.delay,

@@ -27,7 +27,9 @@
       
       switch (x.tipe) {
         case "focus":
-          document.getElementById(x.id).focus();
+          var node = document.getElementById(x.id);
+          node.focus();
+          node.select();
           break;
         case "blur":
           if (x.id == "") {
