@@ -111,14 +111,13 @@ div.options {
 div.options > div.input > input {
   text-align: center;
   width: 100%;
-  margin: -4px;
-  padding: 4px;
+  padding: 0.05em;
   font-family: 'Roboto Slab';
   font-weight: 300;
   color: #eeeeec;
   background: transparent;
   border-width: 0;
-  border-bottom: 2px solid #555753;
+  border-bottom: 0.05em solid #555753;
 }
 
 div.options > div.input {
@@ -127,15 +126,6 @@ div.options > div.input {
   left: 0;
   height: 40%;
   width: 100%;
-}
-
-div.options > div.buttons {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  margin-left: -160px;
-  height: 64px;
-  width: 320px;
 }
 
 div.options > a.confirm {
@@ -147,19 +137,27 @@ div.options > a.confirm {
   color: #eeeeec;
 }
 
-div.buttons > a.button {
-  display: block;
-  width: 48px;
-  height: 48px;
-  float: left;
-  border: 4px solid #2e3436;
-  margin: 4px;
-  border-radius: 8px;
+div.options > div.buttons {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, 0);
+  -webkit-transform: translate(-50%, 0);
 }
 
-a.button:hover { border-color: #d3d7cf !important; }
+div.buttons > a.button {
+  display: block;
+  width: 4em;
+  height: 4em;
+  float: left;
+  border: 0.7em solid #2e3436;
+  border-radius: 0.15em;
+}
 
-div.buttons > a.checked { border-color: #eeeeec !important; }
+a.button:hover { border-color: #d3d7cf; }
+
+div.buttons > a.checked { border-color: #eeeeec; }
 
 a.confirm > span {
   display: block;
@@ -170,7 +168,7 @@ a.confirm > span {
   transform: translate(0, -50%);
   -webkit-transform: translate(0, -50%);
   color: #d3d7cf;
-  border-radius: 8px;
+  border-radius: 0.15em;
 }
 
 a.confirm:hover > span {
@@ -203,54 +201,6 @@ div.player1 > div.options-layer {
   z-index: 2;
 }
 
-/*
-div .buttons {
-  display: none;
-  position: absolute;
-  left: 50%;
-  top: 0;
-  width: 50%;
-  opacity: 0.8;
-  transform: translate(0,0);
-  -webkit-transform: translate(0,0);
-  overflow: hidden;
-  height: 100%;
-}
-
-a.button {
-  color: #eeeeec;
-  text-align: center;
-  background: #2e3436;
-  display: block;
-}
-
-a.button:hover {
-  background: #000 !important;
-}
-
-
-a.button > span {
-  font-size: 2em;
-  margin-top: -4px;
-}
-
-div.buttons > div {
-  position: absolute;
-  left: 0;
-  height: 96px;
-  width: 100%;
-  z-index: 1;
-}
-
-div.buttons > div.scrollup {
-  top: 0;
-}
-
-div.buttons > div.scrolldown {
-  bottom: 0;
-}
-*/
-
 div .player0, div .player0flip, div .player1, div .player1flip,
 div .player2, div .player2flip, div .player3, div .player3flip,
 div .player4, div .player4flip {
@@ -282,17 +232,22 @@ a.settings {
   position: absolute;
   top: 0;
   right: 0;
-  width: 48px;
-  height: 48px;
-  background: black;
-  background: url(settings.png);
-  background-repeat: no-repeat;
-  background-position: center;
-  opacity: 0.3;
+  width: 4em;
+  height: 3em;
+  margin: 1em;
+  opacity: 0.2;
+}
+
+a.settings > div.bar {
+  width: 100%;
+  height: 30%;
+  border-radius: 0.15em;
+  background: #eeeeec;
+  margin-bottom: 5%;
 }
 
 a.settings:hover {
-  opacity: 1.0;
+  opacity: 0.7;
 }
 
 div .incdamage-icon, div .decdamage-icon {
@@ -428,12 +383,10 @@ div .decdamage-trigger {
 
 div .incdamage-icon {
   right: 0;
-  background: url(miniplus.png);
 }
 
 div .decdamage-icon {
   left: 0;
-  background: url(miniminus.png);
 }
 
 div .incpoison-trigger {
@@ -446,32 +399,12 @@ div .decpoison-trigger {
 
 div .incpoison-icon {
   right: 0;
-  background: url(miniplus.png);
 }
 
 div .decpoison-icon {
   left: 0;
-  background: url(miniminus.png);
 }
 
-div .undo, div .reset, div .flip,
-div .twoplayer, div .twoplayerprime, div .threeplayer, div .fourplayer, div .fiveplayer {
-  width: 32px;
-  height: 32px;
-  background-repeat: no-repeat;
-  background-position: center;
-  float: right;
-  margin: 8px 8px;
-}
-
-div .undo           { background: url(undo.png);           }
-div .reset          { background: url(reset.png);          }
-div .flip           { background: url(flip.png);           }
-div .twoplayer      { background: url(twoplayer.png);      }
-div .twoplayerprime { background: url(twoplayerprime.png); }
-div .threeplayer    { background: url(threeplayer.png);    }
-div .fourplayer     { background: url(fourplayer.png);     }
-div .fiveplayer     { background: url(fiveplayer.png);     }
 div .clear          { clear: both; }
 
 div .background {
@@ -525,6 +458,9 @@ div .history { display: none; }
   div.name-inner   { font-size: 6em; }
   div.life-inner   { font-size: 28em; }
   div.poison-inner { font-size: 10em; }
+  a.confirm        { font-size: 4em; }
+  input            { font-size: 6em; }
+  div.buttons > a.button { margin: 0.9em; }
 
 }
 
@@ -547,6 +483,9 @@ div .history { display: none; }
   div.name-inner   { font-size: 3em; }
   div.life-inner   { font-size: 18em; }
   div.poison-inner { font-size: 5em; }
+  a.confirm        { font-size: 4em; }
+  input            { font-size: 6em; }
+  div.buttons > a.button { margin: 1.2em; }
 }
 
 /*

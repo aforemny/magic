@@ -151,7 +151,10 @@ single p =
                 else
                   onClick updates.address (Open p.id)
             ]
-            []
+            [ div [class "bar"] []
+            , div [class "bar"] []
+            , div [class "bar"] []
+            ]
 
         , incDamage p
         , decDamage p
