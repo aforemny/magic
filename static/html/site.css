@@ -1,37 +1,15 @@
-@font-face {
-  font-family: 'Roboto Slab';
-  font-style: normal;
-  font-weight: 100;
-  src: url(RobotoSlab-Thin.ttf) format('truetype');
-}
-
-@font-face {
-  font-family: 'Roboto Slab';
-  font-style: normal;
-  font-weight: 300;
-  src: url(RobotoSlab-Light.ttf) format('truetype');
-}
-
-@font-face {
-  font-family: 'Roboto Slab';
-  font-style: normal;
-  font-weight: 400;
-  src: url(RobotoSlab-Regular.ttf) format('truetype');
-}
-
-@font-face {
-  font-family: 'Roboto Slab';
-  font-style: normal;
-  font-weight: 700;
-  src: url(RobotoSlab-Bold.ttf) format('truetype');
-}
-
 body {
   padding: 0;
   margin: 0;
   font-family: 'Roboto Slab';
   overflow: hidden;
   cursor: default;
+  font-size: 12pt;
+  font-size: 2vmin;
+}
+
+::-webkit-scrollbar {
+  display: none;
 }
 
 a {
@@ -135,7 +113,6 @@ div.options > div.input > input {
   width: 100%;
   margin: -4px;
   padding: 4px;
-  font-size: 4em;
   font-family: 'Roboto Slab';
   font-weight: 300;
   color: #eeeeec;
@@ -188,7 +165,6 @@ a.confirm > span {
   display: block;
   position: absolute;
   text-align: center;
-  font-size: 2em;
   width: 100%;
   top: 50%;
   transform: translate(0, -50%);
@@ -378,15 +354,15 @@ div .animation-flash {
 
 div .poison, div .incpoison-icon, div .decpoison-icon {
   bottom: 0;
-  height: 30%;
+  height: 25%;
 }
 
 div .incpoison-trigger, div .decpoison-trigger {
-  height: 30%;
+  height: 25%;
   bottom: 0;
 }
 
-div .life-inner, div .name-inner {
+div .life-inner, div .name-inner, div.poison-inner {
   position: absolute;
   width: 100%;
   top: 50%;
@@ -412,18 +388,15 @@ div .lethal {
 }
 
 div .life-inner {
-  font-size: 12em;
   font-weight: 700;
 }
 
 div .poison-inner {
-  font-size: 3.4em;
-  font-weight: 100;
+  font-weight: 300;
 }
 
 div .name-inner {
-  font-size: 1.5em;
-  font-weight: 300;
+  font-weight: 100;
 }
 
 div .history {
@@ -549,6 +522,10 @@ div .history { display: none; }
     right: 0;
   }
 
+  div.name-inner   { font-size: 6em; }
+  div.life-inner   { font-size: 28em; }
+  div.poison-inner { font-size: 10em; }
+
 }
 
 @media all and (orientation:portrait) {
@@ -567,17 +544,9 @@ div .history { display: none; }
     bottom: 0;
   }
 
-  div.name-inner {
-    font-size: 2em !important;
-  }
-
-  div.life-inner {
-    font-size: 14em !important;
-  }
-
-  div.poison-inner {
-    font-size: 4em !important;
-  }
+  div.name-inner   { font-size: 3em; }
+  div.life-inner   { font-size: 18em; }
+  div.poison-inner { font-size: 5em; }
 }
 
 /*
@@ -593,14 +562,3 @@ div .history { display: none; }
 @media screen and (-webkit-device-pixel-ratio: 0.75) {
 }
 */
-
-/* laptop */
-div.name-inner {
-  font-size: 4em;
-}
-div.life-inner {
-  font-size: 18em;
-}
-div.poison-inner {
-  font-size: 8em;
-}
