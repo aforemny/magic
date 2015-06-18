@@ -3809,6 +3809,170 @@ Elm.Json.Encode.make = function (_elm) {
                              ,Value: Value};
    return _elm.Json.Encode.values;
 };
+Elm.Keyboard = Elm.Keyboard || {};
+Elm.Keyboard.make = function (_elm) {
+   "use strict";
+   _elm.Keyboard = _elm.Keyboard || {};
+   if (_elm.Keyboard.values)
+   return _elm.Keyboard.values;
+   var _op = {},
+   _N = Elm.Native,
+   _U = _N.Utils.make(_elm),
+   _L = _N.List.make(_elm),
+   $moduleName = "Keyboard",
+   $Basics = Elm.Basics.make(_elm),
+   $Native$Keyboard = Elm.Native.Keyboard.make(_elm),
+   $Set = Elm.Set.make(_elm),
+   $Signal = Elm.Signal.make(_elm);
+   var presses = A2($Signal.map,
+   function (_) {
+      return _.keyCode;
+   },
+   $Native$Keyboard.presses);
+   var toXY = F2(function (_v0,
+   keyCodes) {
+      return function () {
+         return function () {
+            var is = function (keyCode) {
+               return A2($Set.member,
+               keyCode,
+               keyCodes) ? 1 : 0;
+            };
+            return {_: {}
+                   ,x: is(_v0.right) - is(_v0.left)
+                   ,y: is(_v0.up) - is(_v0.down)};
+         }();
+      }();
+   });
+   var Directions = F4(function (a,
+   b,
+   c,
+   d) {
+      return {_: {}
+             ,down: b
+             ,left: c
+             ,right: d
+             ,up: a};
+   });
+   var dropMap = F2(function (f,
+   signal) {
+      return $Signal.dropRepeats(A2($Signal.map,
+      f,
+      signal));
+   });
+   var EventInfo = F3(function (a,
+   b,
+   c) {
+      return {_: {}
+             ,alt: a
+             ,keyCode: c
+             ,meta: b};
+   });
+   var Blur = {ctor: "Blur"};
+   var Down = function (a) {
+      return {ctor: "Down",_0: a};
+   };
+   var Up = function (a) {
+      return {ctor: "Up",_0: a};
+   };
+   var rawEvents = $Signal.mergeMany(_L.fromArray([A2($Signal.map,
+                                                  Up,
+                                                  $Native$Keyboard.ups)
+                                                  ,A2($Signal.map,
+                                                  Down,
+                                                  $Native$Keyboard.downs)
+                                                  ,A2($Signal.map,
+                                                  $Basics.always(Blur),
+                                                  $Native$Keyboard.blurs)]));
+   var empty = {_: {}
+               ,alt: false
+               ,keyCodes: $Set.empty
+               ,meta: false};
+   var update = F2(function (event,
+   model) {
+      return function () {
+         switch (event.ctor)
+         {case "Blur": return empty;
+            case "Down": return {_: {}
+                                ,alt: event._0.alt
+                                ,keyCodes: A2($Set.insert,
+                                event._0.keyCode,
+                                model.keyCodes)
+                                ,meta: event._0.meta};
+            case "Up": return {_: {}
+                              ,alt: event._0.alt
+                              ,keyCodes: A2($Set.remove,
+                              event._0.keyCode,
+                              model.keyCodes)
+                              ,meta: event._0.meta};}
+         _U.badCase($moduleName,
+         "between lines 68 and 82");
+      }();
+   });
+   var model = A3($Signal.foldp,
+   update,
+   empty,
+   rawEvents);
+   var alt = A2(dropMap,
+   function (_) {
+      return _.alt;
+   },
+   model);
+   var meta = A2(dropMap,
+   function (_) {
+      return _.meta;
+   },
+   model);
+   var keysDown = A2(dropMap,
+   function (_) {
+      return _.keyCodes;
+   },
+   model);
+   var arrows = A2(dropMap,
+   toXY({_: {}
+        ,down: 40
+        ,left: 37
+        ,right: 39
+        ,up: 38}),
+   keysDown);
+   var wasd = A2(dropMap,
+   toXY({_: {}
+        ,down: 83
+        ,left: 65
+        ,right: 68
+        ,up: 87}),
+   keysDown);
+   var isDown = function (keyCode) {
+      return A2(dropMap,
+      $Set.member(keyCode),
+      keysDown);
+   };
+   var ctrl = isDown(17);
+   var shift = isDown(16);
+   var space = isDown(32);
+   var enter = isDown(13);
+   var Model = F3(function (a,
+   b,
+   c) {
+      return {_: {}
+             ,alt: a
+             ,keyCodes: c
+             ,meta: b};
+   });
+   _elm.Keyboard.values = {_op: _op
+                          ,arrows: arrows
+                          ,wasd: wasd
+                          ,enter: enter
+                          ,space: space
+                          ,ctrl: ctrl
+                          ,shift: shift
+                          ,alt: alt
+                          ,meta: meta
+                          ,isDown: isDown
+                          ,keysDown: keysDown
+                          ,presses: presses};
+   return _elm.Keyboard.values;
+};
 Elm.List = Elm.List || {};
 Elm.List.make = function (_elm) {
    "use strict";
@@ -4175,52 +4339,131 @@ Elm.Main.make = function (_elm) {
    _U = _N.Utils.make(_elm),
    _L = _N.List.make(_elm),
    $moduleName = "Main",
+   $Basics = Elm.Basics.make(_elm),
    $Dict = Elm.Dict.make(_elm),
    $Html = Elm.Html.make(_elm),
+   $Keyboard = Elm.Keyboard.make(_elm),
    $List = Elm.List.make(_elm),
    $Maybe = Elm.Maybe.make(_elm),
    $Signal = Elm.Signal.make(_elm),
-   $Skeleton = Elm.Skeleton.make(_elm);
-   var android = Elm.Native.Port.make(_elm).inboundSignal("android",
-   "String",
+   $Skeleton = Elm.Skeleton.make(_elm),
+   $State = Elm.State.make(_elm);
+   var focus = Elm.Native.Port.make(_elm).outboundSignal("focus",
    function (v) {
-      return typeof v === "string" || typeof v === "object" && v instanceof String ? v : _U.badPort("a string",
-      v);
-   });
-   var redirect = Elm.Native.Port.make(_elm).outboundSignal("redirect",
-   function (v) {
-      return v.ctor === "Nothing" ? null : v._0;
+      return v.ctor === "Nothing" ? null : {tipe: v._0.tipe
+                                           ,id: v._0.id
+                                           ,name: v._0.name
+                                           ,color: v._0.color
+                                           ,num: v._0.num};
    },
-   $Skeleton.layout.signal);
-   var view = function (_v0) {
+   function () {
+      var f = F2(function (a,s) {
+         return function () {
+            switch (a.ctor)
+            {case "Blur":
+               return $Maybe.Just({_: {}
+                                  ,color: ""
+                                  ,id: ""
+                                  ,name: ""
+                                  ,num: 0
+                                  ,tipe: "blur"});
+               case "Close":
+               return $Maybe.Just({_: {}
+                                  ,color: ""
+                                  ,id: A2($Basics._op["++"],
+                                  "input",
+                                  $Basics.toString(a._0))
+                                  ,name: ""
+                                  ,num: 0
+                                  ,tipe: "blur"});
+               case "Color":
+               return $Maybe.Just({_: {}
+                                  ,color: $Skeleton.toCss(a._1)
+                                  ,id: ""
+                                  ,name: ""
+                                  ,num: a._0
+                                  ,tipe: "color"});
+               case "Name":
+               return $Maybe.Just({_: {}
+                                  ,color: ""
+                                  ,id: ""
+                                  ,name: a._1
+                                  ,num: a._0
+                                  ,tipe: "name"});
+               case "Open":
+               return $Maybe.Just({_: {}
+                                  ,color: ""
+                                  ,id: A2($Basics._op["++"],
+                                  "input",
+                                  $Basics.toString(a._0))
+                                  ,name: ""
+                                  ,num: 0
+                                  ,tipe: "focus"});}
+            return $Maybe.Nothing;
+         }();
+      });
+      return A2($Signal.foldp,
+      f,
+      $Maybe.Nothing)($Signal.merge(A2($Signal.map,
+      $Basics.always($Skeleton.Blur),
+      $Keyboard.enter))($Skeleton.updates.signal));
+   }());
+   var Call = F5(function (a,
+   b,
+   c,
+   d,
+   e) {
+      return {_: {}
+             ,color: d
+             ,id: b
+             ,name: c
+             ,num: e
+             ,tipe: a};
+   });
+   var getStorage = Elm.Native.Port.make(_elm).inbound("getStorage",
+   "Maybe.Maybe State.State",
+   function (v) {
+      return v === null ? Elm.Maybe.make(_elm).Nothing : Elm.Maybe.make(_elm).Just(typeof v === "object" && "names" in v && "colors" in v ? {_: {}
+                                                                                                                                            ,names: typeof v.names === "object" && v.names instanceof Array ? Elm.Native.List.make(_elm).fromArray(v.names.map(function (v) {
+                                                                                                                                               return typeof v === "string" || typeof v === "object" && v instanceof String ? v : _U.badPort("a string",
+                                                                                                                                               v);
+                                                                                                                                            })) : _U.badPort("an array",
+                                                                                                                                            v.names)
+                                                                                                                                            ,colors: typeof v.colors === "object" && v.colors instanceof Array ? Elm.Native.List.make(_elm).fromArray(v.colors.map(function (v) {
+                                                                                                                                               return typeof v === "string" || typeof v === "object" && v instanceof String ? v : _U.badPort("a string",
+                                                                                                                                               v);
+                                                                                                                                            })) : _U.badPort("an array",
+                                                                                                                                            v.colors)} : _U.badPort("an object with fields \'names\', \'colors\'",
+      v));
+   });
+   var view = function (_v7) {
       return function () {
-         switch (_v0.ctor)
+         switch (_v7.ctor)
          {case "Model":
             return A2($Html.div,
               _L.fromArray([]),
               A2($List.map,
-              function (_v3) {
+              function (_v10) {
                  return function () {
-                    switch (_v3.ctor)
+                    switch (_v10.ctor)
                     {case "_Tuple2":
-                       return $Skeleton.single(_v3._1);}
+                       return $Skeleton.single(_v10._1);}
                     _U.badCase($moduleName,
-                    "on line 14, column 37 to 50");
+                    "on line 16, column 37 to 50");
                  }();
               },
-              $Dict.toList(_v0._0.players)));}
+              $Dict.toList(_v7._0.players)));}
          _U.badCase($moduleName,
-         "on line 14, column 3 to 78");
+         "on line 16, column 3 to 78");
       }();
    };
-   var main = A3($Skeleton.skeleton,
+   var main = A2($Skeleton.skeleton,
    view,
-   _L.fromArray([$Skeleton.initialPlayer(0)
-                ,$Skeleton.initialPlayer(1)]),
-   android);
+   getStorage);
    _elm.Main.values = {_op: _op
                       ,main: main
-                      ,view: view};
+                      ,view: view
+                      ,Call: Call};
    return _elm.Main.values;
 };
 Elm.Maybe = Elm.Maybe || {};
@@ -7878,6 +8121,56 @@ Elm.Native.Json.make = function(localRuntime) {
 		encodeList: List.toArray,
 		encodeObject: encodeObject
 
+	};
+
+};
+
+Elm.Native.Keyboard = {};
+Elm.Native.Keyboard.make = function(localRuntime) {
+
+	localRuntime.Native = localRuntime.Native || {};
+	localRuntime.Native.Keyboard = localRuntime.Native.Keyboard || {};
+	if (localRuntime.Native.Keyboard.values)
+	{
+		return localRuntime.Native.Keyboard.values;
+	}
+
+	var NS = Elm.Native.Signal.make(localRuntime);
+
+
+	function keyEvent(event)
+	{
+		return {
+			_: {},
+			alt: event.altKey,
+			meta: event.metaKey,
+			keyCode: event.keyCode
+		};
+	}
+
+
+	function keyStream(node, eventName, handler)
+	{
+		var stream = NS.input(eventName, '\0');
+
+		localRuntime.addListener([stream.id], node, eventName, function(e) {
+			localRuntime.notify(stream.id, handler(e));
+		});
+
+		return stream;
+	}
+
+	var downs = keyStream(document, 'keydown', keyEvent);
+	var ups = keyStream(document, 'keyup', keyEvent);
+	var presses = keyStream(document, 'keypress', keyEvent);
+	var blurs = keyStream(window, 'blur', function() { return null; });
+
+
+	return localRuntime.Native.Keyboard.values = {
+		downs: downs,
+		ups: ups,
+		blurs: blurs,
+		presses: presses
 	};
 
 };
@@ -13284,6 +13577,111 @@ Elm.Result.make = function (_elm) {
                         ,Err: Err};
    return _elm.Result.values;
 };
+Elm.Set = Elm.Set || {};
+Elm.Set.make = function (_elm) {
+   "use strict";
+   _elm.Set = _elm.Set || {};
+   if (_elm.Set.values)
+   return _elm.Set.values;
+   var _op = {},
+   _N = Elm.Native,
+   _U = _N.Utils.make(_elm),
+   _L = _N.List.make(_elm),
+   $moduleName = "Set",
+   $Dict = Elm.Dict.make(_elm),
+   $List = Elm.List.make(_elm);
+   var partition = F2(function (p,
+   set) {
+      return A2($Dict.partition,
+      F2(function (k,_v0) {
+         return function () {
+            return p(k);
+         }();
+      }),
+      set);
+   });
+   var filter = F2(function (p,
+   set) {
+      return A2($Dict.filter,
+      F2(function (k,_v2) {
+         return function () {
+            return p(k);
+         }();
+      }),
+      set);
+   });
+   var foldr = F3(function (f,
+   b,
+   s) {
+      return A3($Dict.foldr,
+      F3(function (k,_v4,b) {
+         return function () {
+            return A2(f,k,b);
+         }();
+      }),
+      b,
+      s);
+   });
+   var foldl = F3(function (f,
+   b,
+   s) {
+      return A3($Dict.foldl,
+      F3(function (k,_v6,b) {
+         return function () {
+            return A2(f,k,b);
+         }();
+      }),
+      b,
+      s);
+   });
+   var toList = $Dict.keys;
+   var diff = $Dict.diff;
+   var intersect = $Dict.intersect;
+   var union = $Dict.union;
+   var member = $Dict.member;
+   var isEmpty = $Dict.isEmpty;
+   var remove = $Dict.remove;
+   var insert = function (k) {
+      return A2($Dict.insert,
+      k,
+      {ctor: "_Tuple0"});
+   };
+   var singleton = function (k) {
+      return A2($Dict.singleton,
+      k,
+      {ctor: "_Tuple0"});
+   };
+   var empty = $Dict.empty;
+   var fromList = function (xs) {
+      return A3($List.foldl,
+      insert,
+      empty,
+      xs);
+   };
+   var map = F2(function (f,s) {
+      return fromList(A2($List.map,
+      f,
+      toList(s)));
+   });
+   _elm.Set.values = {_op: _op
+                     ,empty: empty
+                     ,singleton: singleton
+                     ,insert: insert
+                     ,remove: remove
+                     ,isEmpty: isEmpty
+                     ,member: member
+                     ,foldl: foldl
+                     ,foldr: foldr
+                     ,map: map
+                     ,filter: filter
+                     ,partition: partition
+                     ,union: union
+                     ,intersect: intersect
+                     ,diff: diff
+                     ,toList: toList
+                     ,fromList: fromList};
+   return _elm.Set.values;
+};
 Elm.Signal = Elm.Signal || {};
 Elm.Signal.make = function (_elm) {
    "use strict";
@@ -13449,6 +13847,7 @@ Elm.Skeleton.make = function (_elm) {
    $List = Elm.List.make(_elm),
    $Maybe = Elm.Maybe.make(_elm),
    $Signal = Elm.Signal.make(_elm),
+   $State = Elm.State.make(_elm),
    $Time = Elm.Time.make(_elm);
    var onChange = F2(function (a,
    f) {
@@ -13479,7 +13878,7 @@ Elm.Skeleton.make = function (_elm) {
             case "TwoPlayerPrime":
             return $Maybe.Just("./twoplayerprime.html");}
          _U.badCase($moduleName,
-         "between lines 413 and 418");
+         "between lines 419 and 424");
       }();
    };
    var FivePlayer = {ctor: "FivePlayer"};
@@ -13487,15 +13886,13 @@ Elm.Skeleton.make = function (_elm) {
    var ThreePlayer = {ctor: "ThreePlayer"};
    var TwoPlayerPrime = {ctor: "TwoPlayerPrime"};
    var TwoPlayer = {ctor: "TwoPlayer"};
+   var NoOp = {ctor: "NoOp"};
+   var Blur = {ctor: "Blur"};
    var Name = F2(function (a,b) {
       return {ctor: "Name"
              ,_0: a
              ,_1: b};
    });
-   var Toggle = function (a) {
-      return {ctor: "Toggle"
-             ,_0: a};
-   };
    var Open = function (a) {
       return {ctor: "Open",_0: a};
    };
@@ -13733,7 +14130,7 @@ Elm.Skeleton.make = function (_elm) {
             case "Purple": return "purple";
             case "Yellow": return "yellow";}
          _U.badCase($moduleName,
-         "between lines 80 and 85");
+         "between lines 73 and 78");
       }();
    };
    var colorButton = F2(function (p,
@@ -13759,21 +14156,27 @@ Elm.Skeleton.make = function (_elm) {
    var Green = {ctor: "Green"};
    var Purple = {ctor: "Purple"};
    var Blue = {ctor: "Blue"};
-   var defaultColor = function (i) {
+   var fromCss = function (s) {
       return function () {
-         switch (i)
-         {case 0: return Blue;
-            case 1: return Purple;
-            case 2: return Green;
-            case 3: return Orange;
-            case 4: return Yellow;}
-         _U.badCase($moduleName,
-         "between lines 108 and 113");
+         switch (s)
+         {case "blue": return Blue;
+            case "green": return Green;
+            case "orange": return Orange;
+            case "purple": return Purple;
+            case "yellow": return Yellow;}
+         return $Debug.crash(A2($Basics._op["++"],
+         "fromCss: unknown color (",
+         A2($Basics._op["++"],s,")")));
       }();
    };
-   var initialPlayer = function (i) {
+   var initialPlayer = F2(function (s,
+   i) {
       return {_: {}
-             ,color: defaultColor(i)
+             ,color: fromCss(A2($Maybe.withDefault,
+             "blue",
+             $List.head(A2($List.drop,
+             i,
+             s.colors))))
              ,flashDamageDec: false
              ,flashDamageInc: false
              ,flashPoisonDec: false
@@ -13784,11 +14187,27 @@ Elm.Skeleton.make = function (_elm) {
              ,id: i
              ,lastUpdate: 0
              ,life: 20
-             ,name: ""
+             ,name: A2($Maybe.withDefault,
+             "",
+             $List.head(A2($List.drop,
+             i,
+             s.names)))
              ,poison: 0
              ,scroll: -864
              ,scrolling: $Maybe.Nothing
              ,showOptions: $Maybe.Nothing};
+   });
+   var defaultColor = function (i) {
+      return function () {
+         switch (i)
+         {case 0: return Blue;
+            case 1: return Purple;
+            case 2: return Green;
+            case 3: return Orange;
+            case 4: return Yellow;}
+         _U.badCase($moduleName,
+         "between lines 110 and 115");
+      }();
    };
    var options = function (p) {
       return A2($Html.div,
@@ -13804,7 +14223,7 @@ Elm.Skeleton.make = function (_elm) {
                                                              ,_1: _U.eq(p.showOptions,
                                                              $Maybe.Just(false))}
                                                             ,{ctor: "_Tuple2"
-                                                             ,_0: "hide"
+                                                             ,_0: "hide2"
                                                              ,_1: _U.eq(p.showOptions,
                                                              $Maybe.Nothing)}]))]),
       _L.fromArray([A2($Html.div,
@@ -13815,7 +14234,9 @@ Elm.Skeleton.make = function (_elm) {
                    _L.fromArray([$Html$Attributes.$class("input")]),
                    _L.fromArray([A2($Html.input,
                    _L.fromArray([$Html$Attributes.type$("text")
-                                ,$Html$Attributes.id("input")
+                                ,$Html$Attributes.id(A2($Basics._op["++"],
+                                "input",
+                                $Basics.toString(p.id)))
                                 ,A2(onChange,
                                 updates.address,
                                 function (s) {
@@ -13871,9 +14292,12 @@ Elm.Skeleton.make = function (_elm) {
                                                                                       ,{ctor: "_Tuple2"
                                                                                        ,_0: "animation-blink"
                                                                                        ,_1: p.flashSettings}]))
-                                             ,A2($Html$Events.onClick,
+                                             ,_U.eq($Maybe.Just(true),
+                                             p.showOptions) ? A2($Html$Events.onClick,
                                              updates.address,
-                                             Toggle(p.id))]),
+                                             Close(p.id)) : A2($Html$Events.onClick,
+                                             updates.address,
+                                             Open(p.id))]),
                                 _L.fromArray([]))
                                 ,incDamage(p)
                                 ,decDamage(p)
@@ -13958,29 +14382,31 @@ Elm.Skeleton.make = function (_elm) {
    var Model = function (a) {
       return {ctor: "Model",_0: a};
    };
-   var initialModel = function (players) {
+   var initialModel = F2(function (state,
+   players) {
       return Model({_: {}
                    ,past: $Maybe.Nothing
-                   ,players: players});
-   };
+                   ,players: players
+                   ,state: state});
+   });
    var modify = F3(function (i,
-   _v3,
+   _v4,
    f) {
       return function () {
-         switch (_v3.ctor)
+         switch (_v4.ctor)
          {case "Model":
             return function () {
-                 var _v6 = A2($Dict.get,
+                 var _v7 = A2($Dict.get,
                  i,
-                 _v3._0.players);
-                 switch (_v6.ctor)
+                 _v4._0.players);
+                 switch (_v7.ctor)
                  {case "Just":
                     return Model(_U.replace([["players"
                                              ,A3($Dict.insert,
                                              i,
-                                             f(_v6._0),
-                                             _v3._0.players)]],
-                      _v3._0));
+                                             f(_v7._0),
+                                             _v4._0.players)]],
+                      _v4._0));
                     case "Nothing":
                     return $Debug.crash(A2($Basics._op["++"],
                       "modify: unknown player (",
@@ -13988,32 +14414,34 @@ Elm.Skeleton.make = function (_elm) {
                       $Basics.toString(i),
                       ")")));}
                  _U.badCase($moduleName,
-                 "between lines 117 and 121");
+                 "between lines 119 and 123");
               }();}
          _U.badCase($moduleName,
-         "between lines 117 and 121");
+         "between lines 119 and 123");
       }();
    });
-   var update = F2(function (_v8,
-   _v9) {
+   var update = F2(function (_v9,
+   _v10) {
       return function () {
-         switch (_v9.ctor)
+         switch (_v10.ctor)
          {case "Model":
             return function () {
-                 switch (_v8.ctor)
+                 switch (_v9.ctor)
                  {case "_Tuple2":
                     return function () {
                          var merge = function (player) {
-                            return _U.cmp(_v8._0 - player.lastUpdate,
+                            return _U.cmp(_v9._0 - player.lastUpdate,
                             2.0) < 0;
                          };
                          return function () {
-                            switch (_v8._1.ctor)
-                            {case "Clear":
-                               switch (_v8._1._0.ctor)
+                            switch (_v9._1.ctor)
+                            {case "Blur":
+                               return Model(_v10._0);
+                               case "Clear":
+                               switch (_v9._1._0.ctor)
                                  {case "Just": return A2(modify,
-                                      _v8._1._0._0,
-                                      Model(_v9._0))(function (player) {
+                                      _v9._1._0._0,
+                                      Model(_v10._0))(function (player) {
                                          return _U.replace([["flashDamageInc"
                                                             ,false]
                                                            ,["flashDamageDec"
@@ -14027,25 +14455,25 @@ Elm.Skeleton.make = function (_elm) {
                                          player);
                                       });
                                     case "Nothing":
-                                    return Model(_v9._0);}
+                                    return Model(_v10._0);}
                                  break;
                                case "Close": return A2(modify,
-                                 _v8._1._0,
-                                 Model(_v9._0))(function (p) {
+                                 _v9._1._0,
+                                 Model(_v10._0))(function (p) {
                                     return _U.replace([["showOptions"
                                                        ,$Maybe.Just(false)]],
                                     p);
                                  });
                                case "Color": return A2(modify,
-                                 _v8._1._0,
-                                 Model(_v9._0))(function (p) {
+                                 _v9._1._0,
+                                 Model(_v10._0))(function (p) {
                                     return _U.replace([["color"
-                                                       ,_v8._1._1]],
+                                                       ,_v9._1._1]],
                                     p);
                                  });
                                case "FlipY": return A2(modify,
-                                 _v8._1._0,
-                                 Model(_v9._0))(function (player) {
+                                 _v9._1._0,
+                                 Model(_v10._0))(function (player) {
                                     return _U.replace([["flipy"
                                                        ,$Basics.not(player.flipy)]],
                                     player);
@@ -14053,34 +14481,34 @@ Elm.Skeleton.make = function (_elm) {
                                case "Inc": return function () {
                                     var player = function () {
                                        var _v34 = A2($Dict.get,
-                                       _v8._1._0,
-                                       _v9._0.players);
+                                       _v9._1._0,
+                                       _v10._0.players);
                                        switch (_v34.ctor)
                                        {case "Just": return _v34._0;
                                           case "Nothing":
                                           return $Debug.crash(A2($Basics._op["++"],
                                             "unknown player (",
                                             A2($Basics._op["++"],
-                                            $Basics.toString(_v8._1._0),
+                                            $Basics.toString(_v9._1._0),
                                             ")")));}
                                        _U.badCase($moduleName,
-                                       "between lines 535 and 539");
+                                       "between lines 540 and 544");
                                     }();
                                     var model$ = A2(modify,
-                                    _v8._1._0,
-                                    Model(_v9._0))(function (player) {
+                                    _v9._1._0,
+                                    Model(_v10._0))(function (player) {
                                        return _U.replace([["life"
-                                                          ,_v8._1._1 + player.life]
+                                                          ,_v9._1._1 + player.life]
                                                          ,["history"
                                                           ,A2($Basics._op["++"],
                                                           merge(player) ? _L.fromArray([]) : _L.fromArray([player.life]),
                                                           player.history)]
-                                                         ,["lastUpdate",_v8._0]
+                                                         ,["lastUpdate",_v9._0]
                                                          ,["flashDamageInc"
-                                                          ,_U.cmp(_v8._1._1,
+                                                          ,_U.cmp(_v9._1._1,
                                                           0) > -1]
                                                          ,["flashDamageDec"
-                                                          ,_U.cmp(_v8._1._1,
+                                                          ,_U.cmp(_v9._1._1,
                                                           0) < 0]],
                                        player);
                                     });
@@ -14088,24 +14516,26 @@ Elm.Skeleton.make = function (_elm) {
                                        switch (model$.ctor)
                                        {case "Model":
                                           return Model(_U.replace([["past"
-                                                                   ,merge(player) ? model$._0.past : $Maybe.Just(Model(_v9._0))]],
+                                                                   ,merge(player) ? model$._0.past : $Maybe.Just(Model(_v10._0))]],
                                             model$._0));}
                                        _U.badCase($moduleName,
-                                       "between lines 540 and 544");
+                                       "between lines 545 and 549");
                                     }();
                                  }();
                                case "Name": return A2(modify,
-                                 _v8._1._0,
-                                 Model(_v9._0))(function (p) {
+                                 _v9._1._0,
+                                 Model(_v10._0))(function (p) {
                                     return _U.replace([["name"
-                                                       ,_v8._1._1]],
+                                                       ,_v9._1._1]],
                                     p);
                                  });
+                               case "NoOp":
+                               return Model(_v10._0);
                                case "Noop":
-                               return Model(_v9._0);
+                               return Model(_v10._0);
                                case "Open": return A2(modify,
-                                 _v8._1._0,
-                                 Model(_v9._0))(function (p) {
+                                 _v9._1._0,
+                                 Model(_v10._0))(function (p) {
                                     return _U.replace([["showOptions"
                                                        ,$Maybe.Just(true)]
                                                       ,["flashSettings",true]],
@@ -14115,32 +14545,32 @@ Elm.Skeleton.make = function (_elm) {
                                return function () {
                                     var player = function () {
                                        var _v38 = A2($Dict.get,
-                                       _v8._1._0,
-                                       _v9._0.players);
+                                       _v9._1._0,
+                                       _v10._0.players);
                                        switch (_v38.ctor)
                                        {case "Just": return _v38._0;
                                           case "Nothing":
                                           return $Debug.crash(A2($Basics._op["++"],
                                             "unknown player (",
                                             A2($Basics._op["++"],
-                                            $Basics.toString(_v8._1._0),
+                                            $Basics.toString(_v9._1._0),
                                             ")")));}
                                        _U.badCase($moduleName,
-                                       "between lines 556 and 559");
+                                       "between lines 561 and 564");
                                     }();
                                     var model$ = A2(modify,
-                                    _v8._1._0,
-                                    Model(_v9._0))(function (player) {
+                                    _v9._1._0,
+                                    Model(_v10._0))(function (player) {
                                        return _U.replace([["poison"
                                                           ,A2($Basics.max,
                                                           0,
-                                                          _v8._1._1 + player.poison)]
-                                                         ,["lastUpdate",_v8._0]
+                                                          _v9._1._1 + player.poison)]
+                                                         ,["lastUpdate",_v9._0]
                                                          ,["flashPoisonInc"
-                                                          ,_U.cmp(_v8._1._1,
+                                                          ,_U.cmp(_v9._1._1,
                                                           0) > -1]
                                                          ,["flashPoisonDec"
-                                                          ,_U.cmp(_v8._1._1,
+                                                          ,_U.cmp(_v9._1._1,
                                                           0) < 0]],
                                        player);
                                     });
@@ -14148,10 +14578,10 @@ Elm.Skeleton.make = function (_elm) {
                                        switch (model$.ctor)
                                        {case "Model":
                                           return Model(_U.replace([["past"
-                                                                   ,merge(player) ? model$._0.past : $Maybe.Just(Model(_v9._0))]],
+                                                                   ,merge(player) ? model$._0.past : $Maybe.Just(Model(_v10._0))]],
                                             model$._0));}
                                        _U.badCase($moduleName,
-                                       "between lines 560 and 563");
+                                       "between lines 565 and 568");
                                     }();
                                  }();
                                case "Reset":
@@ -14170,29 +14600,29 @@ Elm.Skeleton.make = function (_elm) {
                                     return Model(_U.replace([["players"
                                                              ,A2($Dict.map,
                                                              reset,
-                                                             _v9._0.players)]],
-                                    _v9._0));
+                                                             _v10._0.players)]],
+                                    _v10._0));
                                  }();
                                case "ScrollDown":
                                return A2(modify,
-                                 _v8._1._0,
-                                 Model(_v9._0))(function (p) {
+                                 _v9._1._0,
+                                 Model(_v10._0))(function (p) {
                                     return _U.replace([["scrolling"
                                                        ,$Maybe.Just(1)]],
                                     p);
                                  });
                                case "ScrollStop":
                                return A2(modify,
-                                 _v8._1._0,
-                                 Model(_v9._0))(function (p) {
+                                 _v9._1._0,
+                                 Model(_v10._0))(function (p) {
                                     return _U.replace([["scrolling"
                                                        ,$Maybe.Nothing]],
                                     p);
                                  });
                                case "ScrollUp":
                                return A2(modify,
-                                 _v8._1._0,
-                                 Model(_v9._0))(function (p) {
+                                 _v9._1._0,
+                                 Model(_v10._0))(function (p) {
                                     return _U.replace([["scrolling"
                                                        ,$Maybe.Just(-1)]],
                                     p);
@@ -14201,11 +14631,11 @@ Elm.Skeleton.make = function (_elm) {
                                return function () {
                                     var m0 = A2(modify,
                                     0,
-                                    Model(_v9._0))(function (p) {
+                                    Model(_v10._0))(function (p) {
                                        return _U.replace([["scroll"
                                                           ,$Basics.max(-1968)($Basics.min(3936)(p.scroll + 100 * A2($Maybe.withDefault,
                                                           0,
-                                                          p.scrolling) * _v8._1._0))]],
+                                                          p.scrolling) * _v9._1._0))]],
                                        p);
                                     });
                                     var m1 = A2(modify,
@@ -14214,24 +14644,14 @@ Elm.Skeleton.make = function (_elm) {
                                        return _U.replace([["scroll"
                                                           ,$Debug.log("tick")($Basics.max(-1968)($Basics.min(3936)(p.scroll + 100 * A2($Maybe.withDefault,
                                                           0,
-                                                          p.scrolling) * _v8._1._0)))]],
+                                                          p.scrolling) * _v9._1._0)))]],
                                        p);
                                     });
                                     return m1;
                                  }();
-                               case "Toggle": return A2(modify,
-                                 _v8._1._0,
-                                 Model(_v9._0))(function (p) {
-                                    return _U.replace([["showOptions"
-                                                       ,$Maybe.Just($Basics.not(A2($Maybe.withDefault,
-                                                       false,
-                                                       p.showOptions)))]
-                                                      ,["flashSettings",true]],
-                                    p);
-                                 });
                                case "Undo":
                                return function () {
-                                    var _v44 = _v9._0.past;
+                                    var _v44 = _v10._0.past;
                                     switch (_v44.ctor)
                                     {case "Just":
                                        switch (_v44._0.ctor)
@@ -14242,7 +14662,7 @@ Elm.Skeleton.make = function (_elm) {
                                                     return function () {
                                                        var _v47 = A2($Dict.get,
                                                        i,
-                                                       _v9._0.players);
+                                                       _v10._0.players);
                                                        switch (_v47.ctor)
                                                        {case "Just":
                                                           return _U.replace([["flipy"
@@ -14251,7 +14671,7 @@ Elm.Skeleton.make = function (_elm) {
                                                           case "Nothing":
                                                           return p;}
                                                        _U.badCase($moduleName,
-                                                       "between lines 482 and 485");
+                                                       "between lines 487 and 490");
                                                     }();
                                                  });
                                                  return Model(_U.replace([["players"
@@ -14262,23 +14682,22 @@ Elm.Skeleton.make = function (_elm) {
                                               }();}
                                          break;
                                        case "Nothing":
-                                       return Model(_v9._0);}
+                                       return Model(_v10._0);}
                                     _U.badCase($moduleName,
-                                    "between lines 477 and 488");
+                                    "between lines 482 and 493");
                                  }();}
                             _U.badCase($moduleName,
-                            "between lines 453 and 573");
+                            "between lines 458 and 578");
                          }();
                       }();}
                  _U.badCase($moduleName,
-                 "between lines 450 and 573");
+                 "between lines 455 and 578");
               }();}
          _U.badCase($moduleName,
-         "between lines 450 and 573");
+         "between lines 455 and 578");
       }();
    });
-   var model = F2(function (start,
-   android) {
+   var model = function (start) {
       return function () {
          var clear = function (action) {
             return function () {
@@ -14286,21 +14705,19 @@ Elm.Skeleton.make = function (_elm) {
                {case "Inc":
                   return Clear($Maybe.Just(action._0));
                   case "Poison":
-                  return Clear($Maybe.Just(action._0));
-                  case "Toggle":
                   return Clear($Maybe.Just(action._0));}
                return Clear($Maybe.Nothing);
             }();
          };
-         var input = $Signal.map(function (_v55) {
+         var input = $Signal.map(function (_v54) {
             return function () {
-               switch (_v55.ctor)
+               switch (_v54.ctor)
                {case "_Tuple2":
                   return {ctor: "_Tuple2"
-                         ,_0: _v55._0 / 1000.0
-                         ,_1: _v55._1};}
+                         ,_0: _v54._0 / 1000.0
+                         ,_1: _v54._1};}
                _U.badCase($moduleName,
-               "on line 425, column 33 to 44");
+               "on line 431, column 33 to 44");
             }();
          })($Time.timestamp($Signal.mergeMany(_L.fromArray([updates.signal
                                                            ,A2($Time.delay,
@@ -14313,23 +14730,28 @@ Elm.Skeleton.make = function (_elm) {
          start,
          input);
       }();
-   });
-   var skeleton = F3(function (view,
-   players,
-   android) {
+   };
+   var skeleton = F2(function (view,
+   getStorage) {
       return function () {
-         var view$ = function (_v59) {
+         var state = A2($Maybe.withDefault,
+         $State.defaultState,
+         getStorage);
+         var players = _L.fromArray([A2(initialPlayer,
+                                    state,
+                                    0)
+                                    ,A2(initialPlayer,state,1)]);
+         var view$ = function (_v58) {
             return function () {
-               switch (_v59.ctor)
+               switch (_v58.ctor)
                {case "Model":
                   return A2($Html.div,
                     _L.fromArray([]),
-                    _L.fromArray([view(Model(_v59._0))]));}
+                    _L.fromArray([view(Model(_v58._0))]));}
                _U.badCase($moduleName,
                "between lines 24 and 27");
             }();
          };
-         var p = initialPlayer(0);
          var idify = function (player) {
             return {ctor: "_Tuple2"
                    ,_0: player.id
@@ -14337,11 +14759,11 @@ Elm.Skeleton.make = function (_elm) {
          };
          return A2($Signal.map,
          view$,
-         A2(model,
-         initialModel($Dict.fromList(A2($List.map,
+         model(A2(initialModel,
+         state,
+         $Dict.fromList(A2($List.map,
          idify,
-         players))),
-         android));
+         players)))));
       }();
    });
    _elm.Skeleton.values = {_op: _op
@@ -14355,6 +14777,7 @@ Elm.Skeleton.make = function (_elm) {
                           ,Orange: Orange
                           ,Yellow: Yellow
                           ,toCss: toCss
+                          ,fromCss: fromCss
                           ,initialPlayer: initialPlayer
                           ,defaultColor: defaultColor
                           ,modify: modify
@@ -14393,8 +14816,9 @@ Elm.Skeleton.make = function (_elm) {
                           ,Color: Color
                           ,Close: Close
                           ,Open: Open
-                          ,Toggle: Toggle
                           ,Name: Name
+                          ,Blur: Blur
+                          ,NoOp: NoOp
                           ,TwoPlayer: TwoPlayer
                           ,TwoPlayerPrime: TwoPlayerPrime
                           ,ThreePlayer: ThreePlayer
@@ -14407,6 +14831,31 @@ Elm.Skeleton.make = function (_elm) {
                           ,update: update
                           ,onChange: onChange};
    return _elm.Skeleton.values;
+};
+Elm.State = Elm.State || {};
+Elm.State.make = function (_elm) {
+   "use strict";
+   _elm.State = _elm.State || {};
+   if (_elm.State.values)
+   return _elm.State.values;
+   var _op = {},
+   _N = Elm.Native,
+   _U = _N.Utils.make(_elm),
+   _L = _N.List.make(_elm),
+   $moduleName = "State";
+   var defaultState = {_: {}
+                      ,colors: _L.fromArray(["blue"
+                                            ,"purple"])
+                      ,names: _L.fromArray(["",""])};
+   var State = F2(function (a,b) {
+      return {_: {}
+             ,colors: b
+             ,names: a};
+   });
+   _elm.State.values = {_op: _op
+                       ,State: State
+                       ,defaultState: defaultState};
+   return _elm.State.values;
 };
 Elm.String = Elm.String || {};
 Elm.String.make = function (_elm) {
