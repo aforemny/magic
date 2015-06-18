@@ -201,8 +201,9 @@ options p =
                 [ type' "text"
                 , id ("input" ++ toString p.id)
                 , onChange updates.address (\s -> Name p.id s)
+                , value p.name
                 ]
-                [ text "Hello"
+                [
                 ]
             ]
         , div
