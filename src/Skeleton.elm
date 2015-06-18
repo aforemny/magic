@@ -14,43 +14,36 @@ import Html.Attributes exposing (..)
 import Html.Events exposing (..)
 
 import Debug
+import State exposing (..)
 
-skeleton : (Model -> Html) -> List Player -> Signal String -> Signal Html
-skeleton view players android =
+skeleton : (Model -> Html) -> Maybe State -> Signal Html
+skeleton view getStorage =
   let
     idify player = (player.id, player)
-    p = initialPlayer 0
     view' (Model model) =
       div
         []
         [ view (Model model)
         ]
---        , div
---            [ class "buttons" ]
---            [ undo
---            , reset
---            , twoplayer
---            , twoplayerprime
---            , threeplayer
---            , fourplayer
---            , fiveplayer
---            -- , flip (player.id == 0) player.id
---            , div [ class "clear" ] []
---            ]
+    state = Maybe.withDefault defaultState getStorage
+    players =
+      [initialPlayer state 0, initialPlayer state 1]
   in
-    Signal.map view' (model (initialModel (Dict.fromList (List.map idify players))) android)
+    Signal.map view' (model (initialModel state (Dict.fromList (List.map idify players))))
 
 -- model
 
 type Model = Model
   { players    : Dict Id Player
   , past       : Maybe Model
+  , state      : State
   }
 
-initialModel : Dict Id Player -> Model
-initialModel players = Model
+initialModel : State -> Dict Id Player -> Model
+initialModel state players = Model
   { players    = players
   , past       = Nothing
+  , state      = state
   }
 
 type alias Player =
@@ -84,20 +77,29 @@ toCss c =
     Orange -> "orange"
     Yellow -> "yellow"
 
-initialPlayer : Id -> Player
-initialPlayer i =
+fromCss s =
+  case s of
+    "blue"   -> Blue
+    "purple" -> Purple
+    "green"  -> Green
+    "orange" -> Orange
+    "yellow" -> Yellow
+    _        -> Debug.crash <| "fromCss: unknown color (" ++ s ++ ")"
+
+initialPlayer : State -> Id -> Player
+initialPlayer s i =
   { id         = i
   , life       = 20
   , history    = []
   , poison     = 0
   , lastUpdate = 0
   , flipy      = False
-  , color      = defaultColor i
+  , color      = fromCss (Maybe.withDefault "blue" (List.head (List.drop i s.colors)))
   , flashDamageInc = False
   , flashDamageDec = False
   , flashPoisonInc = False
   , flashPoisonDec = False
-  , name = ""
+  , name = Maybe.withDefault "" (List.head (List.drop i s.names))
   , scroll = -864
   , scrolling = Nothing
   , showOptions = Nothing
@@ -421,8 +423,8 @@ toUrl layout =
     FourPlayer     -> Just "./fourplayer.html"
     FivePlayer     -> Just "./fiveplayer.html"
 
-model : Model -> Signal String -> Signal Model
-model start android =
+model : Model -> Signal Model
+model start =
   let
 
     input =
