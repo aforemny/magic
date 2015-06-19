@@ -45,27 +45,19 @@ decodePlayer =
 decodeContext : Decoder Context
 decodeContext =
   at ["id"]              int          `andThen` \id ->
-  at ["lastUpdate"]      float        `andThen` \lastUpdate ->
-  at ["flipy"]           bool         `andThen` \flipy ->
   at ["flashDamageInc"]  bool         `andThen` \flashDamageInc ->
   at ["flashDamageDec"]  bool         `andThen` \flashDamageDec ->
   at ["flashPoisonInc"]  bool         `andThen` \flashPoisonInc ->
   at ["flashPoisonDec"]  bool         `andThen` \flashPoisonDec ->
   at ["flashSettings"]   bool         `andThen` \flashSettings ->
-  at ["scroll"]          float        `andThen` \scroll ->
-  at ["scrolling"]      (maybe float) `andThen` \scrolling ->
   at ["showOptions"]    (maybe bool)  `andThen` \showOptions ->
   succeed { id             = id
-          , lastUpdate     = lastUpdate
-          , flipy          = flipy
-          , flashDamageInc = flashDamageInc
-          , flashDamageDec = flashDamageDec
-          , flashPoisonInc = flashPoisonInc
-          , flashPoisonDec = flashPoisonDec
-          , flashSettings  = flashSettings
-          , scroll         = scroll
-          , scrolling      = scrolling
-          , showOptions    = showOptions
+          , flashDamageInc = False
+          , flashDamageDec = False
+          , flashPoisonInc = False
+          , flashPoisonDec = False
+          , flashSettings  = False
+          , showOptions    = Nothing
           }
 
 idify x =

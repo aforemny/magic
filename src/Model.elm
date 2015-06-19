@@ -68,29 +68,21 @@ type alias Id = Int
 
 type alias Context =
   { id             : Id
-  , lastUpdate     : Float
-  , flipy          : Bool
   , flashDamageInc : Bool
   , flashDamageDec : Bool
   , flashPoisonInc : Bool
   , flashPoisonDec : Bool
   , flashSettings  : Bool
-  , scroll         : Float
-  , scrolling      : Maybe Float
   , showOptions    : Maybe Bool
   }
 
 initialContext : Id -> Context
 initialContext i = 
   { id             = i
-  , lastUpdate     = 0
-  , flipy          = False
   , flashDamageInc = False
   , flashDamageDec = False
   , flashPoisonInc = False
   , flashPoisonDec = False
-  , scroll         = -864
-  , scrolling      = Nothing
   , showOptions    = Nothing
   , flashSettings  = False
   }

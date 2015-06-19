@@ -53,28 +53,44 @@ update (time, action) model =
 
       Inc i n ->
         modify i model <| \c p ->
-          { noModification | player <- Just { p | life <- n + p.life } }
+          { noModification |
+              player  <- Just { p | life <- n + p.life },
+              context <- Just { c | flashDamageInc <- (n >= 0)
+                                  , flashDamageDec <- (n <  0) }
+          }
 
 --      FlipY i ->
 --        modify i model <| \c p -> { p | flipy <- not p.flipy }
 -- , history    <- (if merge player then [] else [player.life]) ++ player.history
 -- , lastUpdate <- time
--- , flashDamageInc  <- (n >= 0)
--- , flashDamageDec <- (n <  0)
 
 -- { model' | past <- if merge player then model''.past else Just (Model model) }
 
       Poison i n ->
         modify i model <| \c p ->
-          { noModification | player <- Just { p | poison <- Basics.max 0 (n + p.poison) } }
-
-      _ -> model
+          { noModification |
+              player  <- Just { p | poison <- Basics.max 0 (n + p.poison) },
+              context <- Just { c | flashPoisonInc <- (n >= 0)
+                                  , flashPoisonDec <- (n <  0) }
+          }
 
 --                     , lastUpdate <- time
---                     , flashPoisonInc <- (n >= 0)
---                     , flashPoisonDec <- (n <  0)
 --                     }
 -- { model'' | past <- if merge player then model''.past else Just (Model model) }
+
+      Clear Nothing -> model
+
+      Clear (Just i) ->
+        modify i model <| \c p ->
+          { noModification |
+              context <- Just { c | flashDamageInc <- False
+                                  , flashDamageDec <- False
+                                  , flashPoisonInc <- False
+                                  , flashPoisonDec <- False
+                                  , flashSettings  <- False }
+          }
+
+      _ -> model
 
 --      Tick dt ->
 --        let
@@ -112,17 +128,6 @@ update (time, action) model =
 --                  Nothing -> p
 --            in
 --              { lastModel | players <- Dict.map keep lastModel.players }
-
---      Clear Nothing  -> Model model
---
---      Clear (Just i) ->
---        modify i (Model model) <| \player ->
---          { player | flashDamageInc <- False
---                   , flashDamageDec <- False
---                   , flashPoisonInc <- False
---                   , flashPoisonDec <- False
---                   , flashSettings  <- False
---                   }
 --
 --      ScrollUp i ->
 --        modify i (Model model) <| \p -> { p | scrolling <- Just (-1) }

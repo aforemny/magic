@@ -23,11 +23,8 @@ import Action exposing (..)
 single : Context -> Player -> Html
 single c p =
   div
-    ([ class ( if c.flipy then
-                   "player" ++ toString p.id ++ "flip"
-                 else
-                   "player" ++ toString p.id )
-     ])
+    [ class ("player" ++ toString p.id)
+    ]
     [ div
         [ classList [
             ("info-layer",     True),

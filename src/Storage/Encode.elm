@@ -43,15 +43,11 @@ encodeContext : Id -> Context -> Value
 encodeContext _ c =
   object [
     ("id", int c.id),
-    ("lastUpdate", float c.lastUpdate),
-    ("flipy", bool c.flipy),
     ("flashDamageInc", bool c.flashDamageInc),
     ("flashDamageDec", bool c.flashDamageDec),
     ("flashPoisonInc", bool c.flashPoisonInc),
     ("flashPoisonDec", bool c.flashPoisonDec),
     ("flashSettings",  bool c.flashSettings),
-    ("scroll",         float c.scroll),
-    ("scrolling",      Maybe.withDefault null (Maybe.map float c.scrolling)),
     ("showOptions",    Maybe.withDefault null (Maybe.map bool c.showOptions))
   ]
 
