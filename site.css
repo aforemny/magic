@@ -4,8 +4,6 @@ body {
   font-family: 'Roboto Slab';
   overflow: hidden;
   cursor: default;
-  font-size: 12pt;
-  font-size: 2vmin;
 }
 
 ::-webkit-scrollbar {
@@ -135,6 +133,7 @@ div.options > a.confirm {
   width: 100%;
   height: 20%;
   color: #eeeeec;
+  font-size: 0.6em;
 }
 
 div.options > div.buttons {
@@ -148,14 +147,15 @@ div.options > div.buttons {
 
 div.buttons > a.button {
   display: block;
-  width: 4em;
-  height: 4em;
+  width: 1em;
+  height: 1em;
   float: left;
-  border: 0.7em solid #2e3436;
-  border-radius: 0.15em;
+  border: 0.1em solid #2e3436;
+  border-radius: 0.05em;
+  margin: 0.2em;
 }
 
-a.button:hover { border-color: #d3d7cf; }
+a.button:hover { border-color: #d3d7cf !important; }
 
 div.buttons > a.checked { border-color: #eeeeec; }
 
@@ -232,18 +232,17 @@ a.settings {
   position: absolute;
   top: 0;
   right: 0;
-  width: 4em;
-  height: 3em;
-  margin: 1em;
-  opacity: 0.2;
+  width: 1em;
+  height: 1em;
+  margin: 0.25em;
 }
 
 a.settings > div.bar {
   width: 100%;
-  height: 30%;
-  border-radius: 0.15em;
+  height: 25%;
+  border-radius: 0.05em;
   background: #eeeeec;
-  margin-bottom: 5%;
+  margin-bottom: 12.5%;
 }
 
 a.settings:hover {
@@ -438,8 +437,6 @@ div .green  { background: #8ae234; }
 div .orange { background: #fcaf3e; }
 div .yellow { background: #fce94f; }
 
-div .history { display: none; }
-
 @media all and (orientation:landscape) {
   div .player0, div .player0flip, div .player1, div .player1flip {
     height: 100%;
@@ -455,13 +452,9 @@ div .history { display: none; }
     right: 0;
   }
 
-  div.name-inner   { font-size: 6em; }
-  div.life-inner   { font-size: 28em; }
-  div.poison-inner { font-size: 10em; }
-  a.confirm        { font-size: 4em; }
-  input            { font-size: 6em; }
-  div.buttons > a.button { margin: 0.9em; }
-
+  body, input { font-size: 12pt; font-size: 8vmin; }
+  .life { font-size: 8em; }
+  .poison { font-size: 2em; }
 }
 
 @media all and (orientation:portrait) {
@@ -480,24 +473,22 @@ div .history { display: none; }
     bottom: 0;
   }
 
-  div.name-inner   { font-size: 3em; }
-  div.life-inner   { font-size: 18em; }
-  div.poison-inner { font-size: 5em; }
-  a.confirm        { font-size: 4em; }
-  input            { font-size: 6em; }
-  div.buttons > a.button { margin: 1.2em; }
+  body, input { font-size: 12pt; font-size: 12vmin; }
+  .life { font-size: 4em; }
+  .poison { font-size: 1.2em; }
 }
 
-/*
-@media screen and (-webkit-device-pixel-ratio: 1.5) {
-  #header {
-    background:url(high-density-image.png);
-  }
+@media screen and (-webkit-device-pixel-ratio: 1.5) and (orientation:landscape) {
 }
 
-@media screen and (-webkit-device-pixel-ratio: 1.0) {
+@media screen and (-webkit-device-pixel-ratio: 1.5) and (orientation:portrait) {
+}
+
+@media screen and (-webkit-device-pixel-ratio: 1.0) and (orientation:landscape) {
+}
+@media screen and (-webkit-device-pixel-ratio: 1.0) and (orientation:portrait) {
+  body, input { font-size: 12pt; font-size: 12vmin; }
 }
 
 @media screen and (-webkit-device-pixel-ratio: 0.75) {
 }
-*/
