@@ -30,9 +30,9 @@ dist-android: dist-web android
 	mkdir -p gh-pages/get-android
 	cp -f result/Magic-debug.apk gh-pages/get-android/magic.apk
 
-dist-firefox-os: dist-web firefox-os
-	mkdir -p gh-pages/get-firefox-os
+dist-firefox-os: dist-web
 	zip -j build/package.zip static/html/*.html build/*.js static/html/*.css resources/*.png static/images/*.png static/fonts/*.ttf firefox-os/manifest.webapp build/package/
+	mkdir -p gh-pages/get-firefox-os
 	cp build/package.zip               gh-pages/get-firefox-os
 	cp firefox-os/mini-manifest.webapp gh-pages/get-firefox-os
 	cp firefox-os/install.html         gh-pages/get-firefox-os/index.html
