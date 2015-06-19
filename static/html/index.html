@@ -16,9 +16,17 @@
 </body>
 
 <script type="text/javascript">
-  var initialState  = { names:['', ''], colors:['blue','purple'] };
   var storedState   = localStorage.getItem('state');
-  var startingState = storedState ? JSON.parse(storedState) : initialState;
+  var startingState = null;
+  if (storedState !== null) {
+    try {
+      startingState = JSON.parse(storedState);
+    } catch (e) {
+      console.log("JSON.parse failed");
+      startingState = null;
+    }
+  }
+  console.log(startingState);
 
   var app = Elm.fullscreen(Elm.Main, { getStorage:startingState });
 
@@ -42,19 +50,13 @@
             document.getElementById(x.id).blur();
           }
           break;
-        case "name":
-          storedState = localStorage.getItem('state');
-          var state = storedState ? JSON.parse(storedState) : initialState;
-          state.names[x.num] = x.name;
-          localStorage.setItem('state', JSON.stringify(state));
-          break;
-        case "color":
-          storedState = localStorage.getItem('state');
-          var state = storedState ? JSON.parse(storedState) : initialState;
-          state.colors[x.num] = x.color;
-          localStorage.setItem('state', JSON.stringify(state));
-          break;
       }
+    }
+  });
+
+  app.ports.setStorage.subscribe(function(x) {
+    if (x !== null) {
+      localStorage.setItem('state', JSON.stringify(x));
     }
   });
 

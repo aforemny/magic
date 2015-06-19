@@ -473,9 +473,9 @@ div .yellow { background: #fce94f; }
     bottom: 0;
   }
 
-  body, input { font-size: 12pt; font-size: 8vmin; }
+  body, input { font-size: 12pt; font-size: 12vmin; }
   .life { font-size: 4em; }
-  .poison { font-size: 1.2em;
+  .poison { font-size: 1.2em; }
 }
 
 @media screen and (-webkit-device-pixel-ratio: 1.5) and (orientation:landscape) {
@@ -487,6 +487,7 @@ div .yellow { background: #fce94f; }
 @media screen and (-webkit-device-pixel-ratio: 1.0) and (orientation:landscape) {
 }
 @media screen and (-webkit-device-pixel-ratio: 1.0) and (orientation:portrait) {
+  body, input { font-size: 12pt; font-size: 12vmin; }
 }
 
 @media screen and (-webkit-device-pixel-ratio: 0.75) {
