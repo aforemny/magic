@@ -27,6 +27,9 @@ div.animate-open {
   animation-duration: 1.8s;
   animation-iteration-count: 1;
   animation-name: open;
+  -webkit-animation-duration: 1.8s;
+  -webkit-animation-iteration-count: 1;
+  -webkit-animation-name: open;
 }
 
 div.animate-close {
@@ -34,6 +37,9 @@ div.animate-close {
   animation-duration: 1.8s;
   animation-iteration-count: 1;
   animation-name: close;
+  -webkit-animation-duration: 1.8s;
+  -webkit-animation-iteration-count: 1;
+  -webkit-animation-name: close;
 }
 
 div.animate-openprime {
@@ -41,6 +47,9 @@ div.animate-openprime {
   animation-duration: 1.8s;
   animation-iteration-count: 1;
   animation-name: openprime;
+  -webkit-animation-duration: 1.8s;
+  -webkit-animation-iteration-count: 1;
+  -webkit-animation-name: openprime;
 }
 
 div.animate-closeprime {
@@ -48,6 +57,9 @@ div.animate-closeprime {
   animation-duration: 1.8s;
   animation-iteration-count: 1;
   animation-name: closeprime;
+  -webkit-animation-duration: 1.8s;
+  -webkit-animation-iteration-count: 1;
+  -webkit-animation-name: closeprime;
 }
 
 div.info-layer {
