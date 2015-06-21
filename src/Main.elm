@@ -17,6 +17,7 @@ import Update exposing (..)
 import Theme exposing (..)
 import Action exposing (..)
 import Result exposing (..)
+import Gesture exposing (gesture,Gesture)
 
 main : Signal Html
 main =
@@ -42,7 +43,20 @@ model =
           [ updates.signal
           , Time.delay (90*Time.millisecond) (Signal.map clear updates.signal)
           -- , Signal.map (\dt -> Tick (dt/1000)) (Time.fps 24)
+          , Signal.map handleGesture gesture
           ]
+
+    handleGesture g =
+      case g of
+
+        Just (Gesture.Swipe {x,y}) ->
+
+          case (x,y) of
+            (-1,0) -> GoNext
+            ( 1,0) -> GoPrev
+            _      -> NoOp
+
+        _ -> NoOp
 
     clear action =
       case action of
