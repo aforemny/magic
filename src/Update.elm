@@ -31,6 +31,11 @@ update (time, action) model =
 
       NoOp -> model
 
+      Delete n ->
+        { model | history <-
+           List.take n model.history ++ List.drop (n+1) model.history
+        }
+
       Blur -> model -- cf. focus port
 
       Name i s ->
@@ -78,7 +83,11 @@ update (time, action) model =
           Play ->
             { model | mode <- History 0 }
           History n ->
-            { model | mode <- History (n+1) }
+            { model | mode <- if List.length model.history > n then
+                                  History (n+1)
+                                else
+                                  History n
+            }
 
 --      FlipY i ->
 --        modify i model <| \c p -> { p | flipy <- not p.flipy }

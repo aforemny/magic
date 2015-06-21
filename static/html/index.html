@@ -31,15 +31,7 @@
   }
   console.log(startingState);
 
-  var app = Elm.fullscreen(Elm.Main, { getStorage:startingState, android:null });
-
-  function swiperight() {
-    app.ports.android.send('gonext');
-  }
-
-  function swipeleft() {
-    app.ports.android.send('goprev');
-  }
+  var app = Elm.fullscreen(Elm.Main, { getStorage:startingState });
 
   app.ports.focus.subscribe(function(x) {
 
@@ -70,20 +62,6 @@
       localStorage.setItem('state', JSON.stringify(x));
     }
   });
-
-  function callback(s) {
-    var x = eval('(' + s + ')');
-
-    switch (x.type) {
-      case "click":
-        var e = new MouseEvent("click", {
-          bubbles: true,
-          cancellable: true
-        });
-        document.elementFromPoint(x.x, x.y).dispatchEvent(e);
-        break;
-    }
-  }
 </script>
 
 </html>

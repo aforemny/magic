@@ -49,20 +49,20 @@ h2 { font-size: 20.0em; font-weight: 300; }
 
 /* */
 
-h1, h2, h3 {
+.player h1, .player h2, .player h3 {
   position: absolute;
   width: 100%;
   left: 0;
   line-height: 100%;
 }
 
-h3 { top: 0; }
-h1 {
+.player h3 { top: 0; }
+.player h1 {
   top: 42.5%;
   margin-right: -50%;
   transform: translate(0, -50%);
 }
-h2 { bottom: 0; }
+.player h2 { bottom: 0; }
 
 input {
   font-size: 4em;

@@ -42,7 +42,6 @@ model =
           [ updates.signal
           , Time.delay (90*Time.millisecond) (Signal.map clear updates.signal)
           -- , Signal.map (\dt -> Tick (dt/1000)) (Time.fps 24)
-          , Signal.map callback android
           ]
 
     clear action =
@@ -50,13 +49,6 @@ model =
         Inc    i _ -> Clear (Just i)
         Poison i _ -> Clear (Just i)
         _          -> Clear Nothing
-    
-    callback s =
-      case s of
-        Just "gonext" -> GoNext
-        Just "goprev" -> GoPrev
-        Nothing       -> NoOp
-        _             -> Debug.crash "callback"
 
     start =
       case getStorage of
@@ -64,7 +56,7 @@ model =
           case decode stored of
             Ok  s -> s
             Err e -> initialModel -- Debug.crash e
-        Nothing     -> initialModel
+        Nothing -> initialModel
 
   in
     Signal.foldp update start input
@@ -95,4 +87,3 @@ port setStorage : Signal (Maybe Value)
 port setStorage =
   Signal.map (\s -> Just (encode s)) model
 
-port android : Signal (Maybe String)

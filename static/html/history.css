@@ -1,7 +1,15 @@
+.history-layer {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  background: #3e3436;
+}
+
 .history-layer .player {
   position: absolute;
   text-align: center;
-  background: #3e3436;
 }
 
 @media screen and (orientation:portrait) {
@@ -53,3 +61,23 @@
 }
 
 .lethal { color: #a40000 !important; }
+
+.history-layer .info {
+  position: absolute;
+  width: 100%;
+  top: 50%;
+  margin-right: 50%;
+  transform: translate(0, -50%);
+}
+
+.history-layer .info h1 {
+  width: 100%;
+  text-align: center;
+  font-size: 10em;
+}
+
+.history-layer .info h2 {
+  width: 100%;
+  text-align: center;
+  font-size: 10em;
+}

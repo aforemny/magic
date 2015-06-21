@@ -43,6 +43,7 @@ single c p =
         ("orange", p.color == Orange),
         ("yellow", p.color == Yellow),
         ("blue",   True),
+        ("lethal", died p),
         ("animate-openprime",  c.showOptions == Just True),
         ("animate-closeprime", c.showOptions == Just False)
       ]

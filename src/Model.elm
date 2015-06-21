@@ -15,11 +15,9 @@ model mode match history =
 
 initialModel : Model
 initialModel =
-  { mode    = History 0
+  { mode    = Play
   , match   = initialMatch
-  , history = [
-      initialMatch
-    ]
+  , history = []
   }
 
 type Mode =
