@@ -7,9 +7,12 @@
   <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no" />
   <title>Magic Life</title>
   <script type="text/javascript" src="elm.js"></script>
-  <link rel="stylesheet" href="fonts.css" type="text/css" />
+  <link rel="stylesheet" href="fonts.css"      type="text/css" />
   <link rel="stylesheet" href="animations.css" type="text/css" />
-  <link rel="stylesheet" href="site.css" type="text/css" />
+  <link rel="stylesheet" href="site.css"       type="text/css" />
+  <link rel="stylesheet" href="play.css"       type="text/css" />
+  <link rel="stylesheet" href="history.css"    type="text/css" />
+  <link rel="stylesheet" href="tango.css"      type="text/css" />
 </head>
 
 <body>
@@ -28,7 +31,15 @@
   }
   console.log(startingState);
 
-  var app = Elm.fullscreen(Elm.Main, { getStorage:startingState });
+  var app = Elm.fullscreen(Elm.Main, { getStorage:startingState, android:null });
+
+  function swiperight() {
+    app.ports.android.send('gonext');
+  }
+
+  function swipeleft() {
+    app.ports.android.send('goprev');
+  }
 
   app.ports.focus.subscribe(function(x) {
 

@@ -4,9 +4,9 @@ import Dict exposing (Dict)
 import Theme exposing (Color)
 
 type alias Model =
-  { mode    : Mode
-  , match   : Match
-  , history : List Match
+  { mode      : Mode
+  , match     : Match
+  , history   : List Match
   }
 
 model : Mode -> Match -> List Match -> Model
@@ -15,9 +15,11 @@ model mode match history =
 
 initialModel : Model
 initialModel =
-  { mode    = Play
+  { mode    = History 0
   , match   = initialMatch
-  , history = []
+  , history = [
+      initialMatch
+    ]
   }
 
 type Mode =
@@ -39,6 +41,16 @@ initialMatch =
   , contexts = Dict.fromList [ (0, initialContext 0), (1, initialContext 1) ]
   }
 
+reset : Match -> Match
+reset m =
+  { m | players  <- Dict.map (\i p -> { p | life <- 20, poison <- 0 }) m.players
+      , contexts <- Dict.map (\i _ -> initialContext i)                m.players
+  }
+
+completed : Match -> Bool
+completed m =
+  Dict.foldl (\_ p b -> b || died p) False m.players
+
 type alias Player =
   { id          : Id
   , life        : Int
@@ -46,6 +58,8 @@ type alias Player =
   , name        : String
   , color       : Color
   }
+
+died p = (p.life <= 0) || (p.poison >= 10)
 
 player id life poison name color =
   { id      = id

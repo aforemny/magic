@@ -59,6 +59,27 @@ update (time, action) model =
                                   , flashDamageDec <- (n <  0) }
           }
 
+      GoNext ->
+        case model.mode of
+          Play ->
+            { model | match   <- reset model.match
+                    , history <- if completed model.match then
+                                     model.match :: model.history
+                                   else
+                                     model.history
+            }
+          History 0 ->
+            { model | mode <- Play }
+          History n ->
+            { model | mode <- History (n-1) }
+
+      GoPrev ->
+        case model.mode of
+          Play ->
+            { model | mode <- History 0 }
+          History n ->
+            { model | mode <- History (n+1) }
+
 --      FlipY i ->
 --        modify i model <| \c p -> { p | flipy <- not p.flipy }
 -- , history    <- (if merge player then [] else [player.life]) ++ player.history

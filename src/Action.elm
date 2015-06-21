@@ -22,4 +22,9 @@ type Action =
   | Open Id
   | Name Id String
   | Blur
+  | Peek String
+  | Unpeek String
+  | GoPrev
+  | GoNext
+  | Delete Int
 

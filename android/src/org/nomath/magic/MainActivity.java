@@ -35,38 +35,7 @@ public class MainActivity extends Activity
             Log.d("MagicLife", msg + " -- From line " + ln + " of " + id);
           }
         });
-
-        view.setOnTouchListener(new OnTouchListener() {
-
-          @Override
-          public boolean onTouch(View v, MotionEvent e) {
-            if (e.getAction() == MotionEvent.ACTION_DOWN) {
-
-              /*
-              view.loadUrl(String.format(
-                "javascript:callback('{type:\"click\",x:%d,y:%d}')",
-                Math.round(e.getX()),
-                Math.round(e.getY())
-              ));
-              */
-
-            } else if (e.getAction() == MotionEvent.ACTION_MOVE) {
-
-              /*
-              view.loadUrl(String.format(
-                "javascript:callback('{type:\"move\",x:%d,y:%d}')",
-                Math.round(e.getX()),
-                Math.round(e.getY())
-              ));
-              */
-
-            }
-
-            return false;
-          }
-
-        });
-        view.loadUrl("file:///android_asset/index.html");
+      view.loadUrl("file:///android_asset/index.html");
     }
 }
 
