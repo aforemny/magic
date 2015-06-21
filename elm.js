@@ -4448,7 +4448,6 @@ Elm.Main.make = function (_elm) {
    $moduleName = "Main",
    $Action = Elm.Action.make(_elm),
    $Basics = Elm.Basics.make(_elm),
-   $Debug = Elm.Debug.make(_elm),
    $Html = Elm.Html.make(_elm),
    $Json$Decode = Elm.Json.Decode.make(_elm),
    $Keyboard = Elm.Keyboard.make(_elm),
@@ -4460,12 +4459,6 @@ Elm.Main.make = function (_elm) {
    $Time = Elm.Time.make(_elm),
    $Update = Elm.Update.make(_elm),
    $View = Elm.View.make(_elm);
-   var android = Elm.Native.Port.make(_elm).inboundSignal("android",
-   "Maybe.Maybe String",
-   function (v) {
-      return v === null ? Elm.Maybe.make(_elm).Nothing : Elm.Maybe.make(_elm).Just(typeof v === "string" || typeof v === "object" && v instanceof String ? v : _U.badPort("a string",
-      v));
-   });
    var focus = Elm.Native.Port.make(_elm).outboundSignal("focus",
    function (v) {
       return v.ctor === "Nothing" ? null : {tipe: v._0.tipe
@@ -4540,27 +4533,13 @@ Elm.Main.make = function (_elm) {
                     return $Model.initialModel;
                     case "Ok": return _v5._0;}
                  _U.badCase($moduleName,
-                 "between lines 64 and 67");
+                 "between lines 56 and 59");
               }();
             case "Nothing":
             return $Model.initialModel;}
          _U.badCase($moduleName,
-         "between lines 62 and 69");
+         "between lines 54 and 61");
       }();
-      var callback = function (s) {
-         return function () {
-            switch (s.ctor)
-            {case "Just": switch (s._0)
-                 {case "gonext":
-                    return $Action.GoNext;
-                    case "goprev":
-                    return $Action.GoPrev;}
-                 break;
-               case "Nothing":
-               return $Action.NoOp;}
-            return $Debug.crash("callback");
-         }();
-      };
       var clear = function (action) {
          return function () {
             switch (action.ctor)
@@ -4571,13 +4550,13 @@ Elm.Main.make = function (_elm) {
             return $Action.Clear($Maybe.Nothing);
          }();
       };
-      var input = $Signal.map(function (_v15) {
+      var input = $Signal.map(function (_v13) {
          return function () {
-            switch (_v15.ctor)
+            switch (_v13.ctor)
             {case "_Tuple2":
                return {ctor: "_Tuple2"
-                      ,_0: _v15._0 / 1000.0
-                      ,_1: _v15._1};}
+                      ,_0: _v13._0 / 1000.0
+                      ,_1: _v13._1};}
             _U.badCase($moduleName,
             "on line 41, column 33 to 44");
          }();
@@ -4586,10 +4565,7 @@ Elm.Main.make = function (_elm) {
                                                         90 * $Time.millisecond,
                                                         A2($Signal.map,
                                                         clear,
-                                                        $Update.updates.signal))
-                                                        ,A2($Signal.map,
-                                                        callback,
-                                                        android)]))));
+                                                        $Update.updates.signal))]))));
       return A3($Signal.foldp,
       $Update.update,
       start,
@@ -4865,9 +4841,9 @@ Elm.Model.make = function (_elm) {
    };
    var Play = {ctor: "Play"};
    var initialModel = {_: {}
-                      ,history: _L.fromArray([initialMatch])
+                      ,history: _L.fromArray([])
                       ,match: initialMatch
-                      ,mode: History(0)};
+                      ,mode: Play};
    var model = F3(function (mode,
    match,
    history) {
@@ -15200,18 +15176,28 @@ Elm.Update.make = function (_elm) {
                                                p))]],
                             $Model.noModification);
                          }));
+                       case "Delete":
+                       return _U.replace([["history"
+                                          ,A2($Basics._op["++"],
+                                          A2($List.take,
+                                          _v0._1._0,
+                                          model.history),
+                                          A2($List.drop,
+                                          _v0._1._0 + 1,
+                                          model.history))]],
+                         model);
                        case "GoNext":
                        return function () {
-                            var _v17 = model.mode;
-                            switch (_v17.ctor)
+                            var _v18 = model.mode;
+                            switch (_v18.ctor)
                             {case "History":
-                               switch (_v17._0)
+                               switch (_v18._0)
                                  {case 0:
                                     return _U.replace([["mode"
                                                        ,$Model.Play]],
                                       model);}
                                  return _U.replace([["mode"
-                                                    ,$Model.History(_v17._0 - 1)]],
+                                                    ,$Model.History(_v18._0 - 1)]],
                                  model);
                                case "Play":
                                return _U.replace([["match"
@@ -15222,22 +15208,23 @@ Elm.Update.make = function (_elm) {
                                                   model.history) : model.history]],
                                  model);}
                             _U.badCase($moduleName,
-                            "between lines 63 and 76");
+                            "between lines 68 and 81");
                          }();
                        case "GoPrev":
                        return function () {
-                            var _v19 = model.mode;
-                            switch (_v19.ctor)
+                            var _v20 = model.mode;
+                            switch (_v20.ctor)
                             {case "History":
                                return _U.replace([["mode"
-                                                  ,$Model.History(_v19._0 + 1)]],
+                                                  ,_U.cmp($List.length(model.history),
+                                                  _v20._0) > 0 ? $Model.History(_v20._0 + 1) : $Model.History(_v20._0)]],
                                  model);
                                case "Play":
                                return _U.replace([["mode"
                                                   ,$Model.History(0)]],
                                  model);}
                             _U.badCase($moduleName,
-                            "between lines 77 and 90");
+                            "between lines 82 and 99");
                          }();
                        case "Inc":
                        return A2($Model.modify,
@@ -15304,7 +15291,7 @@ Elm.Update.make = function (_elm) {
                  }();
               }();}
          _U.badCase($moduleName,
-         "between lines 27 and 114");
+         "between lines 27 and 123");
       }();
    });
    var updates = $Signal.mailbox($Action.NoOp);
@@ -15499,10 +15486,17 @@ Elm.View.History.make = function (_elm) {
                            _L.fromArray([$Html.text("X")]))]))]));
             case "Nothing":
             return A2($Html.div,
-              _L.fromArray([$Html$Attributes.$class("information")]),
-              _L.fromArray([$Html.text("No History")]));}
+              _L.fromArray([$Html$Attributes.$class("history-layer")]),
+              _L.fromArray([A2($Html.div,
+              _L.fromArray([$Html$Attributes.$class("info")]),
+              _L.fromArray([A2($Html.h1,
+                           _L.fromArray([]),
+                           _L.fromArray([$Html.text("You do not have any history.")]))
+                           ,A2($Html.h2,
+                           _L.fromArray([]),
+                           _L.fromArray([$Html.text("If a player died, reset the game to add it to your history.")]))]))]));}
          _U.badCase($moduleName,
-         "between lines 13 and 39");
+         "between lines 13 and 41");
       }();
    });
    _elm.View.History.values = {_op: _op
@@ -15740,6 +15734,9 @@ Elm.View.Play.make = function (_elm) {
                                                             ,{ctor: "_Tuple2"
                                                              ,_0: "blue"
                                                              ,_1: true}
+                                                            ,{ctor: "_Tuple2"
+                                                             ,_0: "lethal"
+                                                             ,_1: $Model.died(p)}
                                                             ,{ctor: "_Tuple2"
                                                              ,_0: "animate-openprime"
                                                              ,_1: _U.eq(c.showOptions,
