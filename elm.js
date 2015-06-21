@@ -13,6 +13,19 @@ Elm.Action.make = function (_elm) {
    $Maybe = Elm.Maybe.make(_elm),
    $Model = Elm.Model.make(_elm),
    $Theme = Elm.Theme.make(_elm);
+   var Delete = function (a) {
+      return {ctor: "Delete"
+             ,_0: a};
+   };
+   var GoNext = {ctor: "GoNext"};
+   var GoPrev = {ctor: "GoPrev"};
+   var Unpeek = function (a) {
+      return {ctor: "Unpeek"
+             ,_0: a};
+   };
+   var Peek = function (a) {
+      return {ctor: "Peek",_0: a};
+   };
    var Blur = {ctor: "Blur"};
    var Name = F2(function (a,b) {
       return {ctor: "Name"
@@ -85,7 +98,12 @@ Elm.Action.make = function (_elm) {
                         ,Close: Close
                         ,Open: Open
                         ,Name: Name
-                        ,Blur: Blur};
+                        ,Blur: Blur
+                        ,Peek: Peek
+                        ,Unpeek: Unpeek
+                        ,GoPrev: GoPrev
+                        ,GoNext: GoNext
+                        ,Delete: Delete};
    return _elm.Action.values;
 };
 Elm.Array = Elm.Array || {};
@@ -4430,11 +4448,10 @@ Elm.Main.make = function (_elm) {
    $moduleName = "Main",
    $Action = Elm.Action.make(_elm),
    $Basics = Elm.Basics.make(_elm),
-   $Dict = Elm.Dict.make(_elm),
+   $Debug = Elm.Debug.make(_elm),
    $Html = Elm.Html.make(_elm),
    $Json$Decode = Elm.Json.Decode.make(_elm),
    $Keyboard = Elm.Keyboard.make(_elm),
-   $List = Elm.List.make(_elm),
    $Maybe = Elm.Maybe.make(_elm),
    $Model = Elm.Model.make(_elm),
    $Result = Elm.Result.make(_elm),
@@ -4443,6 +4460,12 @@ Elm.Main.make = function (_elm) {
    $Time = Elm.Time.make(_elm),
    $Update = Elm.Update.make(_elm),
    $View = Elm.View.make(_elm);
+   var android = Elm.Native.Port.make(_elm).inboundSignal("android",
+   "Maybe.Maybe String",
+   function (v) {
+      return v === null ? Elm.Maybe.make(_elm).Nothing : Elm.Maybe.make(_elm).Just(typeof v === "string" || typeof v === "object" && v instanceof String ? v : _U.badPort("a string",
+      v));
+   });
    var focus = Elm.Native.Port.make(_elm).outboundSignal("focus",
    function (v) {
       return v.ctor === "Nothing" ? null : {tipe: v._0.tipe
@@ -4517,13 +4540,27 @@ Elm.Main.make = function (_elm) {
                     return $Model.initialModel;
                     case "Ok": return _v5._0;}
                  _U.badCase($moduleName,
-                 "between lines 56 and 59");
+                 "between lines 64 and 67");
               }();
             case "Nothing":
             return $Model.initialModel;}
          _U.badCase($moduleName,
-         "between lines 54 and 61");
+         "between lines 62 and 69");
       }();
+      var callback = function (s) {
+         return function () {
+            switch (s.ctor)
+            {case "Just": switch (s._0)
+                 {case "gonext":
+                    return $Action.GoNext;
+                    case "goprev":
+                    return $Action.GoPrev;}
+                 break;
+               case "Nothing":
+               return $Action.NoOp;}
+            return $Debug.crash("callback");
+         }();
+      };
       var clear = function (action) {
          return function () {
             switch (action.ctor)
@@ -4534,13 +4571,13 @@ Elm.Main.make = function (_elm) {
             return $Action.Clear($Maybe.Nothing);
          }();
       };
-      var input = $Signal.map(function (_v13) {
+      var input = $Signal.map(function (_v15) {
          return function () {
-            switch (_v13.ctor)
+            switch (_v15.ctor)
             {case "_Tuple2":
                return {ctor: "_Tuple2"
-                      ,_0: _v13._0 / 1000.0
-                      ,_1: _v13._1};}
+                      ,_0: _v15._0 / 1000.0
+                      ,_1: _v15._1};}
             _U.badCase($moduleName,
             "on line 41, column 33 to 44");
          }();
@@ -4549,7 +4586,10 @@ Elm.Main.make = function (_elm) {
                                                         90 * $Time.millisecond,
                                                         A2($Signal.map,
                                                         clear,
-                                                        $Update.updates.signal))]))));
+                                                        $Update.updates.signal))
+                                                        ,A2($Signal.map,
+                                                        callback,
+                                                        android)]))));
       return A3($Signal.foldp,
       $Update.update,
       start,
@@ -4564,20 +4604,11 @@ Elm.Main.make = function (_elm) {
       return $Maybe.Just($Storage.encode(s));
    },
    model));
-   var view = function (s) {
-      return A2($Html.div,
-      _L.fromArray([]),
-      A3($List.map2,
-      $View.single,
-      $Dict.values(s.match.contexts),
-      $Dict.values(s.match.players)));
-   };
    var main = A2($Signal.map,
-   view,
+   $View.view,
    model);
    _elm.Main.values = {_op: _op
                       ,main: main
-                      ,view: view
                       ,model: model
                       ,Call: Call};
    return _elm.Main.values;
@@ -4686,47 +4717,25 @@ Elm.Model.make = function (_elm) {
              ,flashPoisonDec: false
              ,flashPoisonInc: false
              ,flashSettings: false
-             ,flipy: false
              ,id: i
-             ,lastUpdate: 0
-             ,scroll: -864
-             ,scrolling: $Maybe.Nothing
              ,showOptions: $Maybe.Nothing};
    };
-   var Context = function (a) {
-      return function (b) {
-         return function (c) {
-            return function (d) {
-               return function (e) {
-                  return function (f) {
-                     return function (g) {
-                        return function (h) {
-                           return function (i) {
-                              return function (j) {
-                                 return function (k) {
-                                    return {_: {}
-                                           ,flashDamageDec: e
-                                           ,flashDamageInc: d
-                                           ,flashPoisonDec: g
-                                           ,flashPoisonInc: f
-                                           ,flashSettings: h
-                                           ,flipy: c
-                                           ,id: a
-                                           ,lastUpdate: b
-                                           ,scroll: i
-                                           ,scrolling: j
-                                           ,showOptions: k};
-                                 };
-                              };
-                           };
-                        };
-                     };
-                  };
-               };
-            };
-         };
-      };
-   };
+   var Context = F7(function (a,
+   b,
+   c,
+   d,
+   e,
+   f,
+   g) {
+      return {_: {}
+             ,flashDamageDec: c
+             ,flashDamageInc: b
+             ,flashPoisonDec: e
+             ,flashPoisonInc: d
+             ,flashSettings: f
+             ,id: a
+             ,showOptions: g};
+   });
    var initialPlayer = function (i) {
       return {_: {}
              ,color: $Theme.$default(i)
@@ -4779,6 +4788,11 @@ Elm.Model.make = function (_elm) {
              ,name: name
              ,poison: poison};
    });
+   var died = function (p) {
+      return _U.cmp(p.life,
+      0) < 1 || _U.cmp(p.poison,
+      10) > -1;
+   };
    var Player = F5(function (a,
    b,
    c,
@@ -4791,6 +4805,36 @@ Elm.Model.make = function (_elm) {
              ,name: d
              ,poison: c};
    });
+   var completed = function (m) {
+      return A3($Dict.foldl,
+      F3(function (_v0,p,b) {
+         return function () {
+            return b || died(p);
+         }();
+      }),
+      false,
+      m.players);
+   };
+   var reset = function (m) {
+      return _U.replace([["players"
+                         ,A2($Dict.map,
+                         F2(function (i,p) {
+                            return _U.replace([["life"
+                                               ,20]
+                                              ,["poison",0]],
+                            p);
+                         }),
+                         m.players)]
+                        ,["contexts"
+                         ,A2($Dict.map,
+                         F2(function (i,_v2) {
+                            return function () {
+                               return initialContext(i);
+                            }();
+                         }),
+                         m.players)]],
+      m);
+   };
    var initialMatch = {_: {}
                       ,contexts: $Dict.fromList(_L.fromArray([{ctor: "_Tuple2"
                                                               ,_0: 0
@@ -4821,9 +4865,9 @@ Elm.Model.make = function (_elm) {
    };
    var Play = {ctor: "Play"};
    var initialModel = {_: {}
-                      ,history: _L.fromArray([])
+                      ,history: _L.fromArray([initialMatch])
                       ,match: initialMatch
-                      ,mode: Play};
+                      ,mode: History(0)};
    var model = F3(function (mode,
    match,
    history) {
@@ -4849,7 +4893,10 @@ Elm.Model.make = function (_elm) {
                        ,Match: Match
                        ,match: match
                        ,initialMatch: initialMatch
+                       ,reset: reset
+                       ,completed: completed
                        ,Player: Player
+                       ,died: died
                        ,player: player
                        ,initialPlayer: initialPlayer
                        ,Context: Context
@@ -14185,6 +14232,7 @@ Elm.Storage.Decode.make = function (_elm) {
    $Dict = Elm.Dict.make(_elm),
    $Json$Decode = Elm.Json.Decode.make(_elm),
    $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
    $Model = Elm.Model.make(_elm),
    $Result = Elm.Result.make(_elm),
    $Theme = Elm.Theme.make(_elm);
@@ -14200,70 +14248,42 @@ Elm.Storage.Decode.make = function (_elm) {
    function (id) {
       return A2($Json$Decode.andThen,
       A2($Json$Decode.at,
-      _L.fromArray(["lastUpdate"]),
-      $Json$Decode.$float),
-      function (lastUpdate) {
+      _L.fromArray(["flashDamageInc"]),
+      $Json$Decode.bool),
+      function (flashDamageInc) {
          return A2($Json$Decode.andThen,
          A2($Json$Decode.at,
-         _L.fromArray(["flipy"]),
+         _L.fromArray(["flashDamageDec"]),
          $Json$Decode.bool),
-         function (flipy) {
+         function (flashDamageDec) {
             return A2($Json$Decode.andThen,
             A2($Json$Decode.at,
-            _L.fromArray(["flashDamageInc"]),
+            _L.fromArray(["flashPoisonInc"]),
             $Json$Decode.bool),
-            function (flashDamageInc) {
+            function (flashPoisonInc) {
                return A2($Json$Decode.andThen,
                A2($Json$Decode.at,
-               _L.fromArray(["flashDamageDec"]),
+               _L.fromArray(["flashPoisonDec"]),
                $Json$Decode.bool),
-               function (flashDamageDec) {
+               function (flashPoisonDec) {
                   return A2($Json$Decode.andThen,
                   A2($Json$Decode.at,
-                  _L.fromArray(["flashPoisonInc"]),
+                  _L.fromArray(["flashSettings"]),
                   $Json$Decode.bool),
-                  function (flashPoisonInc) {
+                  function (flashSettings) {
                      return A2($Json$Decode.andThen,
                      A2($Json$Decode.at,
-                     _L.fromArray(["flashPoisonDec"]),
-                     $Json$Decode.bool),
-                     function (flashPoisonDec) {
-                        return A2($Json$Decode.andThen,
-                        A2($Json$Decode.at,
-                        _L.fromArray(["flashSettings"]),
-                        $Json$Decode.bool),
-                        function (flashSettings) {
-                           return A2($Json$Decode.andThen,
-                           A2($Json$Decode.at,
-                           _L.fromArray(["scroll"]),
-                           $Json$Decode.$float),
-                           function (scroll) {
-                              return A2($Json$Decode.andThen,
-                              A2($Json$Decode.at,
-                              _L.fromArray(["scrolling"]),
-                              $Json$Decode.maybe($Json$Decode.$float)),
-                              function (scrolling) {
-                                 return A2($Json$Decode.andThen,
-                                 A2($Json$Decode.at,
-                                 _L.fromArray(["showOptions"]),
-                                 $Json$Decode.maybe($Json$Decode.bool)),
-                                 function (showOptions) {
-                                    return $Json$Decode.succeed({_: {}
-                                                                ,flashDamageDec: flashDamageDec
-                                                                ,flashDamageInc: flashDamageInc
-                                                                ,flashPoisonDec: flashPoisonDec
-                                                                ,flashPoisonInc: flashPoisonInc
-                                                                ,flashSettings: flashSettings
-                                                                ,flipy: flipy
-                                                                ,id: id
-                                                                ,lastUpdate: lastUpdate
-                                                                ,scroll: scroll
-                                                                ,scrolling: scrolling
-                                                                ,showOptions: showOptions});
-                                 });
-                              });
-                           });
-                        });
+                     _L.fromArray(["showOptions"]),
+                     $Json$Decode.maybe($Json$Decode.bool)),
+                     function (showOptions) {
+                        return $Json$Decode.succeed({_: {}
+                                                    ,flashDamageDec: false
+                                                    ,flashDamageInc: false
+                                                    ,flashPoisonDec: false
+                                                    ,flashPoisonInc: false
+                                                    ,flashSettings: false
+                                                    ,id: id
+                                                    ,showOptions: $Maybe.Nothing});
                      });
                   });
                });
@@ -14388,12 +14408,6 @@ Elm.Storage.Encode.make = function (_elm) {
                                                   ,_0: "id"
                                                   ,_1: $Json$Encode.$int(c.id)}
                                                  ,{ctor: "_Tuple2"
-                                                  ,_0: "lastUpdate"
-                                                  ,_1: $Json$Encode.$float(c.lastUpdate)}
-                                                 ,{ctor: "_Tuple2"
-                                                  ,_0: "flipy"
-                                                  ,_1: $Json$Encode.bool(c.flipy)}
-                                                 ,{ctor: "_Tuple2"
                                                   ,_0: "flashDamageInc"
                                                   ,_1: $Json$Encode.bool(c.flashDamageInc)}
                                                  ,{ctor: "_Tuple2"
@@ -14408,16 +14422,6 @@ Elm.Storage.Encode.make = function (_elm) {
                                                  ,{ctor: "_Tuple2"
                                                   ,_0: "flashSettings"
                                                   ,_1: $Json$Encode.bool(c.flashSettings)}
-                                                 ,{ctor: "_Tuple2"
-                                                  ,_0: "scroll"
-                                                  ,_1: $Json$Encode.$float(c.scroll)}
-                                                 ,{ctor: "_Tuple2"
-                                                  ,_0: "scrolling"
-                                                  ,_1: A2($Maybe.withDefault,
-                                                  $Json$Encode.$null,
-                                                  A2($Maybe.map,
-                                                  $Json$Encode.$float,
-                                                  c.scrolling))}
                                                  ,{ctor: "_Tuple2"
                                                   ,_0: "showOptions"
                                                   ,_1: A2($Maybe.withDefault,
@@ -15137,6 +15141,7 @@ Elm.Update.make = function (_elm) {
    $moduleName = "Update",
    $Action = Elm.Action.make(_elm),
    $Basics = Elm.Basics.make(_elm),
+   $List = Elm.List.make(_elm),
    $Maybe = Elm.Maybe.make(_elm),
    $Model = Elm.Model.make(_elm),
    $Signal = Elm.Signal.make(_elm);
@@ -15153,6 +15158,28 @@ Elm.Update.make = function (_elm) {
                  return function () {
                     switch (_v0._1.ctor)
                     {case "Blur": return model;
+                       case "Clear":
+                       switch (_v0._1._0.ctor)
+                         {case "Just":
+                            return A2($Model.modify,
+                              _v0._1._0._0,
+                              model)(F2(function (c,p) {
+                                 return _U.replace([["context"
+                                                    ,$Maybe.Just(_U.replace([["flashDamageInc"
+                                                                             ,false]
+                                                                            ,["flashDamageDec"
+                                                                             ,false]
+                                                                            ,["flashPoisonInc"
+                                                                             ,false]
+                                                                            ,["flashPoisonDec"
+                                                                             ,false]
+                                                                            ,["flashSettings"
+                                                                             ,false]],
+                                                    c))]],
+                                 $Model.noModification);
+                              }));
+                            case "Nothing": return model;}
+                         break;
                        case "Close":
                        return A2($Model.modify,
                          _v0._1._0,
@@ -15173,6 +15200,45 @@ Elm.Update.make = function (_elm) {
                                                p))]],
                             $Model.noModification);
                          }));
+                       case "GoNext":
+                       return function () {
+                            var _v17 = model.mode;
+                            switch (_v17.ctor)
+                            {case "History":
+                               switch (_v17._0)
+                                 {case 0:
+                                    return _U.replace([["mode"
+                                                       ,$Model.Play]],
+                                      model);}
+                                 return _U.replace([["mode"
+                                                    ,$Model.History(_v17._0 - 1)]],
+                                 model);
+                               case "Play":
+                               return _U.replace([["match"
+                                                  ,$Model.reset(model.match)]
+                                                 ,["history"
+                                                  ,$Model.completed(model.match) ? A2($List._op["::"],
+                                                  model.match,
+                                                  model.history) : model.history]],
+                                 model);}
+                            _U.badCase($moduleName,
+                            "between lines 63 and 76");
+                         }();
+                       case "GoPrev":
+                       return function () {
+                            var _v19 = model.mode;
+                            switch (_v19.ctor)
+                            {case "History":
+                               return _U.replace([["mode"
+                                                  ,$Model.History(_v19._0 + 1)]],
+                                 model);
+                               case "Play":
+                               return _U.replace([["mode"
+                                                  ,$Model.History(0)]],
+                                 model);}
+                            _U.badCase($moduleName,
+                            "between lines 77 and 90");
+                         }();
                        case "Inc":
                        return A2($Model.modify,
                          _v0._1._0,
@@ -15180,7 +15246,15 @@ Elm.Update.make = function (_elm) {
                             return _U.replace([["player"
                                                ,$Maybe.Just(_U.replace([["life"
                                                                         ,_v0._1._1 + p.life]],
-                                               p))]],
+                                               p))]
+                                              ,["context"
+                                               ,$Maybe.Just(_U.replace([["flashDamageInc"
+                                                                        ,_U.cmp(_v0._1._1,
+                                                                        0) > -1]
+                                                                       ,["flashDamageDec"
+                                                                        ,_U.cmp(_v0._1._1,
+                                                                        0) < 0]],
+                                               c))]],
                             $Model.noModification);
                          }));
                        case "Name":
@@ -15215,14 +15289,22 @@ Elm.Update.make = function (_elm) {
                                                                         ,A2($Basics.max,
                                                                         0,
                                                                         _v0._1._1 + p.poison)]],
-                                               p))]],
+                                               p))]
+                                              ,["context"
+                                               ,$Maybe.Just(_U.replace([["flashPoisonInc"
+                                                                        ,_U.cmp(_v0._1._1,
+                                                                        0) > -1]
+                                                                       ,["flashPoisonDec"
+                                                                        ,_U.cmp(_v0._1._1,
+                                                                        0) < 0]],
+                                               c))]],
                             $Model.noModification);
                          }));}
                     return model;
                  }();
               }();}
          _U.badCase($moduleName,
-         "between lines 27 and 71");
+         "between lines 27 and 114");
       }();
    });
    var updates = $Signal.mailbox($Action.NoOp);
@@ -15244,10 +15326,211 @@ Elm.View.make = function (_elm) {
    $moduleName = "View",
    $Action = Elm.Action.make(_elm),
    $Basics = Elm.Basics.make(_elm),
+   $Debug = Elm.Debug.make(_elm),
+   $Html = Elm.Html.make(_elm),
+   $Html$Attributes = Elm.Html.Attributes.make(_elm),
+   $Html$Events = Elm.Html.Events.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Model = Elm.Model.make(_elm),
+   $Update = Elm.Update.make(_elm),
+   $View$History = Elm.View.History.make(_elm),
+   $View$Play = Elm.View.Play.make(_elm);
+   var view = function (s) {
+      return function () {
+         var m = function (n) {
+            return $List.head(A2($List.drop,
+            n,
+            s.history));
+         };
+         var main = function () {
+            var _v0 = s.mode;
+            switch (_v0.ctor)
+            {case "History":
+               return A2($View$History.view,
+                 _v0._0,
+                 A2($Debug.log,
+                 "history",
+                 m(_v0._0)));
+               case "Play":
+               return $View$Play.view(A2($Debug.log,
+                 "play",
+                 s.match));}
+            _U.badCase($moduleName,
+            "between lines 32 and 36");
+         }();
+         var prev = function () {
+            var n = function () {
+               var _v2 = s.mode;
+               switch (_v2.ctor)
+               {case "History":
+                  return _v2._0 + 1;
+                  case "Play": return 0;}
+               _U.badCase($moduleName,
+               "between lines 37 and 41");
+            }();
+            return A2($View$History.view,
+            n,
+            m(n));
+         }();
+         var next = function () {
+            var _v4 = s.mode;
+            switch (_v4.ctor)
+            {case "History": switch (_v4._0)
+                 {case 0:
+                    return $View$Play.view(s.match);}
+                 return A2($View$History.view,
+                 _v4._0,
+                 m(_v4._0 - 1));
+               case "Play":
+               return $View$Play.view($Model.initialMatch);}
+            _U.badCase($moduleName,
+            "between lines 44 and 48");
+         }();
+         return A2($Html.div,
+         _L.fromArray([$Html$Attributes.$class("body")]),
+         _L.fromArray([A2($Html.div,
+                      _L.fromArray([$Html$Attributes.$class("main")]),
+                      _L.fromArray([main]))
+                      ,A2($Html.div,
+                      _L.fromArray([$Html$Attributes.$class("prev")]),
+                      _L.fromArray([prev]))
+                      ,A2($Html.div,
+                      _L.fromArray([$Html$Attributes.$class("next")]),
+                      _L.fromArray([next]))
+                      ,A2($Html.div,
+                      _L.fromArray([$Html$Attributes.$class("buttons")]),
+                      _L.fromArray([A2($Html.div,
+                                   _L.fromArray([$Html$Attributes.id("go-prev")
+                                                ,A2($Html$Events.onMouseEnter,
+                                                $Update.updates.address,
+                                                $Action.Peek("go-prev"))
+                                                ,A2($Html$Events.onMouseLeave,
+                                                $Update.updates.address,
+                                                $Action.Unpeek("go-prev"))
+                                                ,A2($Html$Events.onClick,
+                                                $Update.updates.address,
+                                                $Action.GoPrev)]),
+                                   _L.fromArray([]))
+                                   ,A2($Html.div,
+                                   _L.fromArray([$Html$Attributes.id("go-next")
+                                                ,A2($Html$Events.onMouseEnter,
+                                                $Update.updates.address,
+                                                $Action.Peek("go-next"))
+                                                ,A2($Html$Events.onMouseLeave,
+                                                $Update.updates.address,
+                                                $Action.Unpeek("go-next"))
+                                                ,A2($Html$Events.onClick,
+                                                $Update.updates.address,
+                                                $Action.GoNext)]),
+                                   _L.fromArray([]))]))]));
+      }();
+   };
+   _elm.View.values = {_op: _op
+                      ,view: view};
+   return _elm.View.values;
+};
+Elm.View = Elm.View || {};
+Elm.View.History = Elm.View.History || {};
+Elm.View.History.make = function (_elm) {
+   "use strict";
+   _elm.View = _elm.View || {};
+   _elm.View.History = _elm.View.History || {};
+   if (_elm.View.History.values)
+   return _elm.View.History.values;
+   var _op = {},
+   _N = Elm.Native,
+   _U = _N.Utils.make(_elm),
+   _L = _N.List.make(_elm),
+   $moduleName = "View.History",
+   $Action = Elm.Action.make(_elm),
+   $Basics = Elm.Basics.make(_elm),
+   $Dict = Elm.Dict.make(_elm),
+   $Html = Elm.Html.make(_elm),
+   $Html$Attributes = Elm.Html.Attributes.make(_elm),
+   $Html$Events = Elm.Html.Events.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $Model = Elm.Model.make(_elm),
+   $Update = Elm.Update.make(_elm);
+   var single = function (p) {
+      return A2($Html.div,
+      _L.fromArray([$Html$Attributes.id(A2($Basics._op["++"],
+                   "player",
+                   $Basics.toString(p.id)))
+                   ,$Html$Attributes.classList(_L.fromArray([{ctor: "_Tuple2"
+                                                             ,_0: "player"
+                                                             ,_1: true}
+                                                            ,{ctor: "_Tuple2"
+                                                             ,_0: "lethal"
+                                                             ,_1: $Model.died(p)}]))]),
+      _L.fromArray([A2($Html.h3,
+                   _L.fromArray([]),
+                   _L.fromArray([$Html.text(p.name)]))
+                   ,A2($Html.h1,
+                   _L.fromArray([]),
+                   _L.fromArray([$Html.text($Basics.toString(p.life))]))
+                   ,A2($Html.h2,
+                   _L.fromArray([]),
+                   _L.fromArray([$Html.text($Basics.toString(p.poison))]))]));
+   };
+   var view = F2(function (n,m) {
+      return function () {
+         switch (m.ctor)
+         {case "Just":
+            return A2($Html.div,
+              _L.fromArray([$Html$Attributes.$class("history-layer")]),
+              _L.fromArray([A2($Html.div,
+                           _L.fromArray([$Html$Attributes.$class("players")]),
+                           A2($List.map,
+                           single,
+                           $Dict.values(m._0.players)))
+                           ,A2($Html.div,
+                           _L.fromArray([$Html$Attributes.id("match")]),
+                           _L.fromArray([$Html.text(A2($Basics._op["++"],
+                           "#",
+                           $Basics.toString(n)))]))
+                           ,A2($Html.a,
+                           _L.fromArray([$Html$Attributes.id("delete")
+                                        ,A2($Html$Events.onClick,
+                                        $Update.updates.address,
+                                        $Action.Delete(n))]),
+                           _L.fromArray([A2($Html.span,
+                           _L.fromArray([]),
+                           _L.fromArray([$Html.text("X")]))]))]));
+            case "Nothing":
+            return A2($Html.div,
+              _L.fromArray([$Html$Attributes.$class("information")]),
+              _L.fromArray([$Html.text("No History")]));}
+         _U.badCase($moduleName,
+         "between lines 13 and 39");
+      }();
+   });
+   _elm.View.History.values = {_op: _op
+                              ,view: view
+                              ,single: single};
+   return _elm.View.History.values;
+};
+Elm.View = Elm.View || {};
+Elm.View.Play = Elm.View.Play || {};
+Elm.View.Play.make = function (_elm) {
+   "use strict";
+   _elm.View = _elm.View || {};
+   _elm.View.Play = _elm.View.Play || {};
+   if (_elm.View.Play.values)
+   return _elm.View.Play.values;
+   var _op = {},
+   _N = Elm.Native,
+   _U = _N.Utils.make(_elm),
+   _L = _N.List.make(_elm),
+   $moduleName = "View.Play",
+   $Action = Elm.Action.make(_elm),
+   $Basics = Elm.Basics.make(_elm),
+   $Dict = Elm.Dict.make(_elm),
    $Html = Elm.Html.make(_elm),
    $Html$Attributes = Elm.Html.Attributes.make(_elm),
    $Html$Events = Elm.Html.Events.make(_elm),
    $Json$Decode = Elm.Json.Decode.make(_elm),
+   $List = Elm.List.make(_elm),
    $Maybe = Elm.Maybe.make(_elm),
    $Model = Elm.Model.make(_elm),
    $Signal = Elm.Signal.make(_elm),
@@ -15267,116 +15550,61 @@ Elm.View.make = function (_elm) {
          f(s));
       });
    });
-   var name = F2(function (c,p) {
-      return A2($Html.div,
-      _L.fromArray([$Html$Attributes.$class("name")]),
-      _L.fromArray([A2($Html.div,
-      _L.fromArray([$Html$Attributes.$class("name-inner")]),
-      _L.fromArray([$Html.text(p.name)]))]));
-   });
-   var poison = F2(function (c,p) {
-      return A2($Html.div,
-      _L.fromArray([$Html$Attributes.$class("poison")]),
-      _L.fromArray([A2($Html.div,
-      _L.fromArray([$Html$Attributes.classList(_L.fromArray([{ctor: "_Tuple2"
-                                                             ,_0: "poison-inner"
-                                                             ,_1: true}
-                                                            ,{ctor: "_Tuple2"
-                                                             ,_0: "lethal"
-                                                             ,_1: _U.cmp(p.life,
-                                                             0) < 1 || _U.cmp(p.poison,
-                                                             10) > -1}]))]),
-      _L.fromArray([$Html.text($Basics.toString(p.poison))]))]));
-   });
-   var life = F2(function (c,p) {
-      return A2($Html.div,
-      _L.fromArray([$Html$Attributes.$class("life")]),
-      _L.fromArray([A2($Html.div,
-      _L.fromArray([$Html$Attributes.classList(_L.fromArray([{ctor: "_Tuple2"
-                                                             ,_0: "life-inner"
-                                                             ,_1: true}
-                                                            ,{ctor: "_Tuple2"
-                                                             ,_0: "lethal"
-                                                             ,_1: _U.cmp(p.life,
-                                                             0) < 1 || _U.cmp(p.poison,
-                                                             10) > -1}]))]),
-      _L.fromArray([$Html.text($Basics.toString(p.life))]))]));
-   });
    var decPoison = F2(function (c,
    p) {
       return A2($Html.div,
-      _L.fromArray([$Html$Attributes.$class("decpoison")]),
-      _L.fromArray([A2($Html.div,
-                   _L.fromArray([$Html$Attributes.$class("incpoison-icon")]),
-                   _L.fromArray([]))
-                   ,A2($Html.div,
-                   _L.fromArray([$Html$Attributes.classList(_L.fromArray([{ctor: "_Tuple2"
-                                                                          ,_0: "decpoison-trigger"
-                                                                          ,_1: true}
-                                                                         ,{ctor: "_Tuple2"
-                                                                          ,_0: "animation-flash"
-                                                                          ,_1: c.flashPoisonDec}]))
-                                ,A2($Html$Events.onClick,
-                                $Update.updates.address,
-                                A2($Action.Poison,p.id,-1))]),
-                   _L.fromArray([]))]));
+      _L.fromArray([$Html$Attributes.classList(_L.fromArray([{ctor: "_Tuple2"
+                                                             ,_0: "decpoison-trigger"
+                                                             ,_1: true}
+                                                            ,{ctor: "_Tuple2"
+                                                             ,_0: "animation-flash"
+                                                             ,_1: c.flashPoisonDec}]))
+                   ,A2($Html$Events.onClick,
+                   $Update.updates.address,
+                   A2($Action.Poison,p.id,-1))]),
+      _L.fromArray([]));
    });
    var incPoison = F2(function (c,
    p) {
       return A2($Html.div,
-      _L.fromArray([$Html$Attributes.$class("incpoison")]),
-      _L.fromArray([A2($Html.div,
-                   _L.fromArray([$Html$Attributes.$class("incpoison-icon")]),
-                   _L.fromArray([]))
-                   ,A2($Html.div,
-                   _L.fromArray([$Html$Attributes.classList(_L.fromArray([{ctor: "_Tuple2"
-                                                                          ,_0: "incpoison-trigger"
-                                                                          ,_1: true}
-                                                                         ,{ctor: "_Tuple2"
-                                                                          ,_0: "animation-flash"
-                                                                          ,_1: c.flashPoisonInc}]))
-                                ,A2($Html$Events.onClick,
-                                $Update.updates.address,
-                                A2($Action.Poison,p.id,1))]),
-                   _L.fromArray([]))]));
+      _L.fromArray([$Html$Attributes.classList(_L.fromArray([{ctor: "_Tuple2"
+                                                             ,_0: "incpoison-trigger"
+                                                             ,_1: true}
+                                                            ,{ctor: "_Tuple2"
+                                                             ,_0: "animation-flash"
+                                                             ,_1: c.flashPoisonInc}]))
+                   ,A2($Html$Events.onClick,
+                   $Update.updates.address,
+                   A2($Action.Poison,p.id,1))]),
+      _L.fromArray([]));
    });
    var decDamage = F2(function (c,
    p) {
       return A2($Html.div,
-      _L.fromArray([$Html$Attributes.$class("decdamage")]),
-      _L.fromArray([A2($Html.div,
-                   _L.fromArray([$Html$Attributes.$class("decdamage-icon")]),
-                   _L.fromArray([]))
-                   ,A2($Html.div,
-                   _L.fromArray([$Html$Attributes.classList(_L.fromArray([{ctor: "_Tuple2"
-                                                                          ,_0: "decdamage-trigger"
-                                                                          ,_1: true}
-                                                                         ,{ctor: "_Tuple2"
-                                                                          ,_0: "animation-flash"
-                                                                          ,_1: c.flashDamageDec}]))
-                                ,A2($Html$Events.onClick,
-                                $Update.updates.address,
-                                A2($Action.Inc,p.id,-1))]),
-                   _L.fromArray([]))]));
+      _L.fromArray([$Html$Attributes.classList(_L.fromArray([{ctor: "_Tuple2"
+                                                             ,_0: "decdamage-trigger"
+                                                             ,_1: true}
+                                                            ,{ctor: "_Tuple2"
+                                                             ,_0: "animation-flash"
+                                                             ,_1: c.flashDamageDec}]))
+                   ,A2($Html$Events.onClick,
+                   $Update.updates.address,
+                   A2($Action.Inc,p.id,-1))]),
+      _L.fromArray([]));
    });
    var incDamage = F2(function (c,
    p) {
       return A2($Html.div,
-      _L.fromArray([$Html$Attributes.$class("incdamage")]),
-      _L.fromArray([A2($Html.div,
-                   _L.fromArray([$Html$Attributes.$class("incdamage-icon")]),
-                   _L.fromArray([]))
-                   ,A2($Html.div,
-                   _L.fromArray([$Html$Attributes.classList(_L.fromArray([{ctor: "_Tuple2"
-                                                                          ,_0: "incdamage-trigger"
-                                                                          ,_1: true}
-                                                                         ,{ctor: "_Tuple2"
-                                                                          ,_0: "animation-flash"
-                                                                          ,_1: c.flashDamageInc}]))
-                                ,A2($Html$Events.onClick,
-                                $Update.updates.address,
-                                A2($Action.Inc,p.id,1))]),
-                   _L.fromArray([]))]));
+      _L.fromArray([$Html$Attributes.classList(_L.fromArray([{ctor: "_Tuple2"
+                                                             ,_0: "incdamage-trigger"
+                                                             ,_1: true}
+                                                            ,{ctor: "_Tuple2"
+                                                             ,_0: "animation-flash"
+                                                             ,_1: c.flashDamageInc}]))
+                   ,A2($Html$Events.onClick,
+                   $Update.updates.address,
+                   A2($Action.Inc,p.id,1))]),
+      _L.fromArray([]));
    });
    var flip = F2(function (pred,
    i) {
@@ -15429,15 +15657,15 @@ Elm.View.make = function (_elm) {
                                                              ,_0: "options-layer"
                                                              ,_1: true}
                                                             ,{ctor: "_Tuple2"
-                                                             ,_0: "animate-open"
+                                                             ,_0: "options-layer-open"
                                                              ,_1: _U.eq(c.showOptions,
                                                              $Maybe.Just(true))}
                                                             ,{ctor: "_Tuple2"
-                                                             ,_0: "animate-close"
+                                                             ,_0: "options-layer-close"
                                                              ,_1: _U.eq(c.showOptions,
                                                              $Maybe.Just(false))}
                                                             ,{ctor: "_Tuple2"
-                                                             ,_0: "hide2"
+                                                             ,_0: "hidetop"
                                                              ,_1: _U.eq(c.showOptions,
                                                              $Maybe.Nothing)}]))]),
       _L.fromArray([A2($Html.div,
@@ -15461,16 +15689,17 @@ Elm.View.make = function (_elm) {
                                 ,$Html$Attributes.value(p.name)]),
                    _L.fromArray([]))]))
                    ,A2($Html.div,
-                   _L.fromArray([$Html$Attributes.$class("buttons")]),
+                   _L.fromArray([$Html$Attributes.$class("colors")]),
                    _L.fromArray([A2(colorButton,
                                 p,
                                 $Theme.Blue)
                                 ,A2(colorButton,p,$Theme.Purple)
                                 ,A2(colorButton,p,$Theme.Green)
                                 ,A2(colorButton,p,$Theme.Orange)
-                                ,A2(colorButton,
-                                p,
-                                $Theme.Yellow)]))
+                                ,A2(colorButton,p,$Theme.Yellow)
+                                ,A2($Html.div,
+                                _L.fromArray([$Html$Attributes.$class("clear")]),
+                                _L.fromArray([]))]))
                    ,A2($Html.a,
                    _L.fromArray([$Html$Attributes.$class("confirm")
                                 ,A2($Html$Events.onClick,
@@ -15482,29 +15711,56 @@ Elm.View.make = function (_elm) {
    });
    var single = F2(function (c,p) {
       return A2($Html.div,
-      _L.fromArray([$Html$Attributes.$class(c.flipy ? A2($Basics._op["++"],
-      "player",
-      A2($Basics._op["++"],
-      $Basics.toString(p.id),
-      "flip")) : A2($Basics._op["++"],
-      "player",
-      $Basics.toString(p.id)))]),
-      _L.fromArray([A2($Html.div,
-                   _L.fromArray([$Html$Attributes.classList(_L.fromArray([{ctor: "_Tuple2"
-                                                                          ,_0: "info-layer"
-                                                                          ,_1: true}
-                                                                         ,{ctor: "_Tuple2"
-                                                                          ,_0: "animate-openprime"
-                                                                          ,_1: _U.eq(c.showOptions,
-                                                                          $Maybe.Just(true))}
-                                                                         ,{ctor: "_Tuple2"
-                                                                          ,_0: "animate-closeprime"
-                                                                          ,_1: _U.eq(c.showOptions,
-                                                                          $Maybe.Just(false))}]))]),
-                   _L.fromArray([A2(life,c,p)
-                                ,A2(poison,c,p)
-                                ,A2(name,c,p)
-                                ,A2($Html.a,
+      _L.fromArray([$Html$Attributes.id(A2($Basics._op["++"],
+                   "player",
+                   $Basics.toString(p.id)))
+                   ,$Html$Attributes.classList(_L.fromArray([{ctor: "_Tuple2"
+                                                             ,_0: "player"
+                                                             ,_1: true}
+                                                            ,{ctor: "_Tuple2"
+                                                             ,_0: "blue"
+                                                             ,_1: _U.eq(p.color,
+                                                             $Theme.Blue)}
+                                                            ,{ctor: "_Tuple2"
+                                                             ,_0: "purple"
+                                                             ,_1: _U.eq(p.color,
+                                                             $Theme.Purple)}
+                                                            ,{ctor: "_Tuple2"
+                                                             ,_0: "green"
+                                                             ,_1: _U.eq(p.color,
+                                                             $Theme.Green)}
+                                                            ,{ctor: "_Tuple2"
+                                                             ,_0: "orange"
+                                                             ,_1: _U.eq(p.color,
+                                                             $Theme.Orange)}
+                                                            ,{ctor: "_Tuple2"
+                                                             ,_0: "yellow"
+                                                             ,_1: _U.eq(p.color,
+                                                             $Theme.Yellow)}
+                                                            ,{ctor: "_Tuple2"
+                                                             ,_0: "blue"
+                                                             ,_1: true}
+                                                            ,{ctor: "_Tuple2"
+                                                             ,_0: "animate-openprime"
+                                                             ,_1: _U.eq(c.showOptions,
+                                                             $Maybe.Just(true))}
+                                                            ,{ctor: "_Tuple2"
+                                                             ,_0: "animate-closeprime"
+                                                             ,_1: _U.eq(c.showOptions,
+                                                             $Maybe.Just(false))}]))]),
+      _L.fromArray([A2(options,c,p)
+                   ,A2($Html.h3,
+                   _L.fromArray([]),
+                   _L.fromArray([$Html.text(p.name)]))
+                   ,A2($Html.h1,
+                   _L.fromArray([]),
+                   _L.fromArray([$Html.text($Basics.toString(p.life))]))
+                   ,A2($Html.h2,
+                   _L.fromArray([]),
+                   _L.fromArray([$Html.text($Basics.toString(p.poison))]))
+                   ,A2($Html.div,
+                   _L.fromArray([$Html$Attributes.$class("buttons")]),
+                   _L.fromArray([A2($Html.a,
                                 _L.fromArray([$Html$Attributes.classList(_L.fromArray([{ctor: "_Tuple2"
                                                                                        ,_0: "settings"
                                                                                        ,_1: true}
@@ -15529,50 +15785,32 @@ Elm.View.make = function (_elm) {
                                 ,A2(incDamage,c,p)
                                 ,A2(decDamage,c,p)
                                 ,A2(incPoison,c,p)
-                                ,A2(decPoison,c,p)]))
-                   ,A2($Html.div,
-                   _L.fromArray([$Html$Attributes.classList(_L.fromArray([{ctor: "_Tuple2"
-                                                                          ,_0: "background"
-                                                                          ,_1: true}
-                                                                         ,{ctor: "_Tuple2"
-                                                                          ,_0: "blue"
-                                                                          ,_1: _U.eq(p.color,
-                                                                          $Theme.Blue)}
-                                                                         ,{ctor: "_Tuple2"
-                                                                          ,_0: "purple"
-                                                                          ,_1: _U.eq(p.color,
-                                                                          $Theme.Purple)}
-                                                                         ,{ctor: "_Tuple2"
-                                                                          ,_0: "green"
-                                                                          ,_1: _U.eq(p.color,
-                                                                          $Theme.Green)}
-                                                                         ,{ctor: "_Tuple2"
-                                                                          ,_0: "orange"
-                                                                          ,_1: _U.eq(p.color,
-                                                                          $Theme.Orange)}
-                                                                         ,{ctor: "_Tuple2"
-                                                                          ,_0: "yellow"
-                                                                          ,_1: _U.eq(p.color,
-                                                                          $Theme.Yellow)}]))]),
-                   _L.fromArray([]))
-                   ,A2(options,c,p)]));
+                                ,A2(decPoison,c,p)]))]));
    });
-   _elm.View.values = {_op: _op
-                      ,single: single
-                      ,options: options
-                      ,colorButton: colorButton
-                      ,undo: undo
-                      ,reset: reset
-                      ,flip: flip
-                      ,incDamage: incDamage
-                      ,decDamage: decDamage
-                      ,incPoison: incPoison
-                      ,decPoison: decPoison
-                      ,life: life
-                      ,poison: poison
-                      ,name: name
-                      ,onChange: onChange};
-   return _elm.View.values;
+   var view = function (m) {
+      return A2($Html.div,
+      _L.fromArray([$Html$Attributes.$class("play-layer")]),
+      _L.fromArray([A2($Html.div,
+      _L.fromArray([$Html$Attributes.$class("players")]),
+      A3($List.map2,
+      single,
+      $Dict.values(m.contexts),
+      $Dict.values(m.players)))]));
+   };
+   _elm.View.Play.values = {_op: _op
+                           ,view: view
+                           ,single: single
+                           ,options: options
+                           ,colorButton: colorButton
+                           ,undo: undo
+                           ,reset: reset
+                           ,flip: flip
+                           ,incDamage: incDamage
+                           ,decDamage: decDamage
+                           ,incPoison: incPoison
+                           ,decPoison: decPoison
+                           ,onChange: onChange};
+   return _elm.View.Play.values;
 };
 Elm.VirtualDom = Elm.VirtualDom || {};
 Elm.VirtualDom.make = function (_elm) {

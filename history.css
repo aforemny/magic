@@ -1,0 +1,55 @@
+.history-layer .player {
+  position: absolute;
+  text-align: center;
+  background: #3e3436;
+}
+
+@media screen and (orientation:portrait) {
+  .history-layer .player {
+    height: 50%;
+    width: 100%;
+    left: 0;
+  }
+  .history-layer #player0 { bottom: 0; }
+  .history-layer #player1 { top:    0; }
+}
+
+@media screen and (orientation:landscape) {
+  .history-layer .player {
+    height: 100%;
+    width: 50%;
+    top: 0;
+  }
+  .history-layer #player0 { left:  0; }
+  .history-layer #player1 { right: 0; }
+}
+
+.history-layer #match {
+  position: absolute;
+  top: 0;
+  left: 5%;
+  width: 8vmin;
+  height: 8vmin;
+  margin: 2vmin;
+  z-index: 1;
+  font-size: 8vh;
+  line-height: 100%;
+  font-weight: 100;
+}
+
+.history-layer #delete {
+  position: absolute;
+  top: 0;
+  right: 5%;
+  width: 8vmin;
+  height: 8vmin;
+  margin: 2vmin;
+  background: gray;
+  z-index: 1;
+}
+
+.history-layer #delete span {
+  display: none;
+}
+
+.lethal { color: #a40000 !important; }
