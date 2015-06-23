@@ -45,6 +45,11 @@ reset m =
       , contexts <- Dict.map (\i _ -> initialContext i)                m.players
   }
 
+resetContexts : Match -> Match
+resetContexts m =
+  { m | contexts <- Dict.map (\i _ -> initialContext i)                m.players
+  }
+
 completed : Match -> Bool
 completed m =
   Dict.foldl (\_ p b -> b || died p) False m.players
@@ -84,8 +89,8 @@ type alias Context =
   , flashDamageDec : Bool
   , flashPoisonInc : Bool
   , flashPoisonDec : Bool
-  , flashSettings  : Bool
   , showOptions    : Maybe Bool
+  , flashSettings  : Bool
   }
 
 initialContext : Id -> Context

@@ -11,22 +11,24 @@ dist-web: build
 
 distribute: dist-web dist-firefox-os dist-android
 
-android: build
+build-android: build
 	mkdir -p android/assets
 	cp build/* android/assets/
 	cp static/fonts/* android/assets
 	cp static/html/* android/assets
+	sed -i 's/animation/-webkit-animation/g' android/assets/*.css
+	sed -i 's/keyframes/-webkit-keyframes/g' android/assets/*.css
 	NIX_PATH=nixpkgs=../nixpkgs nix-build default.nix -A magic
 
-emulate: android
+emulate: build-android
 	NIX_PATH=nixpkgs=../nixpkgs nix-build default.nix -A emulate-magic
 	./result/bin/run-test-emulator
 
-deploy: android
+deploy: build-android
 	sudo adb -d uninstall org.nomath.magic
 	sudo adb -d install -r result/Magic-debug.apk
 
-dist-android: dist-web android
+dist-android: dist-web build-android
 	mkdir -p gh-pages/get-android
 	cp -f result/Magic-debug.apk gh-pages/get-android/magic.apk
 

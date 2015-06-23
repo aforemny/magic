@@ -74,7 +74,8 @@ update (time, action) model =
                                      model.history
             }
           History 0 ->
-            { model | mode <- Play }
+            { model | mode  <- Play
+                    , match <- resetContexts model.match }
           History n ->
             { model | mode <- History (n-1) }
 
@@ -108,7 +109,7 @@ update (time, action) model =
 --                     }
 -- { model'' | past <- if merge player then model''.past else Just (Model model) }
 
-      Clear Nothing -> model
+--      Clear Nothing -> model
 
       Clear (Just i) ->
         modify i model <| \c p ->

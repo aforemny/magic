@@ -25,11 +25,11 @@ public class MainActivity extends Activity
         setContentView(R.layout.main);
 
         final WebView view = (WebView) findViewById(R.id.webview);
-        view.setWebViewClient(new WebViewClient());
+        /*view.setWebViewClient(new WebViewClient());*/
         view.getSettings().setJavaScriptEnabled(true);
         view.getSettings().setDomStorageEnabled(true);
-        view.getSettings().setSupportZoom(false);
-        view.getSettings().setBuiltInZoomControls(false);
+        /*view.getSettings().setSupportZoom(false);
+        view.getSettings().setBuiltInZoomControls(false);*/
         view.setWebChromeClient(new WebChromeClient() {
           public void onConsoleMessage(String msg, int ln, String id) {
             Log.d("MagicLife", msg + " -- From line " + ln + " of " + id);
@@ -38,4 +38,3 @@ public class MainActivity extends Activity
       view.loadUrl("file:///android_asset/index.html");
     }
 }
-

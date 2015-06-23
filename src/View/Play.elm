@@ -24,32 +24,35 @@ view m =
   div
     [ class "play-layer"
     ]
-    [ div
-        [ class "players"
-        ]
-        ( List.map2 single (Dict.values m.contexts) (Dict.values m.players)
-        )
-    ]
+    ( List.map2 single (Dict.values m.contexts) (Dict.values m.players)
+    )
 
 single : Context -> Player -> Html
 single c p =
   div
     [ id ("player" ++ toString p.id)
-    , classList [
-        ("player", True),
-        ("blue",   p.color == Blue),
-        ("purple", p.color == Purple),
-        ("green",  p.color == Green),
-        ("orange", p.color == Orange),
-        ("yellow", p.color == Yellow),
-        ("blue",   True),
-        ("lethal", died p),
-        ("animate-openprime",  c.showOptions == Just True),
-        ("animate-closeprime", c.showOptions == Just False)
-      ]
+    , class "player"
     ]
     [ options c p
-    , h3 [] [ text  p.name                ]
+    , display c p
+    ]
+
+display : Context -> Player -> Html
+display c p =
+  div
+    [ classList [
+        ("display", True),
+        ("lethal",  died p),
+        ("blue",    p.color == Blue),
+        ("purple",  p.color == Purple),
+        ("green",   p.color == Green),
+        ("orange",  p.color == Orange),
+        ("yellow",  p.color == Yellow),
+        ("a-openprime",  c.showOptions == Just True),
+        ("a-closeprime", c.showOptions == Just False)
+      ]
+    ]
+    [ h3 [] [ text  p.name                ]
     , h1 [] [ text (p.life   |> toString) ]
     , h2 [] [ text (p.poison |> toString) ]
 
@@ -59,7 +62,7 @@ single c p =
         [ a
             [ classList [
                 ("settings",        True),
-                ("animation-blink", c.flashSettings)
+                ("a-blink", c.flashSettings)
               ]
             , if Just True == c.showOptions then
                   onClick updates.address (Close p.id)
@@ -78,18 +81,14 @@ single c p =
         ]
     ]
 
---options : Dict Id Player -> Html
---options ps =
---  div [] (List.map options' (Dict.toList ps))
-
 options : Context -> Player -> Html
 options c p =
   div
     [ classList [
-        ("options-layer",       True),
-        ("options-layer-open",  c.showOptions == Just True),
-        ("options-layer-close", c.showOptions == Just False),
-        ("hidetop",             c.showOptions == Nothing)
+        ("options-layer", True),
+        ("a-open",        c.showOptions == Just True),
+        ("a-close",       c.showOptions == Just False),
+        ("hidetop",       c.showOptions == Nothing)
       ]
     ]
     [ div
@@ -187,7 +186,7 @@ incDamage c p =
   div
     [ classList [
         ("incdamage-trigger", True),
-        ("animation-flash",   c.flashDamageInc)
+        ("a-flash",   c.flashDamageInc)
       ]
     , onClick updates.address (Inc p.id 1)
     ]
@@ -198,7 +197,7 @@ decDamage c p =
   div
     [ classList [
         ("decdamage-trigger", True),
-        ("animation-flash",   c.flashDamageDec)
+        ("a-flash",   c.flashDamageDec)
       ]
     , onClick updates.address (Inc p.id (-1))
     ]
@@ -209,7 +208,7 @@ incPoison c p =
   div
     [ classList [
         ("incpoison-trigger", True),
-        ("animation-flash",   c.flashPoisonInc)
+        ("a-flash",   c.flashPoisonInc)
       ]
     , onClick updates.address (Poison p.id 1)
     ]
@@ -221,7 +220,7 @@ decPoison c p =
   div
     [ classList [
         ("decpoison-trigger", True),
-        ("animation-flash",   c.flashPoisonDec)
+        ("a-flash",   c.flashPoisonDec)
       ]
     , onClick updates.address (Poison p.id (-1))
     ]

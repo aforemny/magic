@@ -41,7 +41,7 @@ model =
     input =
         Signal.map (\(ms,x) -> (ms/1000.0,x)) <| timestamp <| Signal.mergeMany
           [ updates.signal
-          , Time.delay (90*Time.millisecond) (Signal.map clear updates.signal)
+          , Time.delay (180*Time.millisecond) (Signal.map clear updates.signal)
           -- , Signal.map (\dt -> Tick (dt/1000)) (Time.fps 24)
           , Signal.map handleGesture gesture
           ]
