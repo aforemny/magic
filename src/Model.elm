@@ -5,19 +5,31 @@ import Theme exposing (Color)
 
 type alias Model =
   { mode      : Mode
+  , lastMode  : Mode
   , match     : Match
   , history   : List Match
+  , swiping   : Int
+  , go        : Maybe Bool -- False means prev
   }
 
-model : Mode -> Match -> List Match -> Model
-model mode match history =
-  { mode = mode, match = match, history = history }
+model : Mode -> Match -> List Match -> Int -> Model
+model mode match history swiping =
+  { mode     = mode
+  , lastMode = mode
+  , match    = match
+  , history  = history
+  , swiping  = swiping
+  , go       = Nothing
+  }
 
 initialModel : Model
 initialModel =
   { mode    = Play
+  , lastMode = Play
   , match   = initialMatch
   , history = []
+  , swiping = 0
+  , go      = Nothing
   }
 
 type Mode =

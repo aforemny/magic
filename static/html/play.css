@@ -4,11 +4,9 @@
 }
 */
 
-.play-layer, .play-layer .player, .play-layer .display {
+.play-layer, .play-layer .player {
   position: absolute;
-  text-align: center;
   overflow: hidden;
-  color: #2e3436;
 }
 
 .play-layer .display {
@@ -17,6 +15,8 @@
   width: 100%;
   top: 0;
   left: 0;
+  color: #2e3436;
+  text-align: center;
 }
 
 .play-layer { height: 100%; width: 100%; top: 0; }

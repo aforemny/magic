@@ -3,6 +3,7 @@ module Action where
 import Maybe exposing (Maybe)
 import Model exposing (Id)
 import Theme exposing (Color)
+import Gesture exposing (Gesture)
 
 type Action =
     NoOp
@@ -12,7 +13,8 @@ type Action =
   | Reset
   | FlipY Id
   | Android String
-  | Clear (Maybe Id)
+  | Clear Id
+  | LongClear
   | ScrollUp Id
   | ScrollDown Id
   | ScrollStop Id
@@ -27,4 +29,5 @@ type Action =
   | GoPrev
   | GoNext
   | Delete Int
+  | Gesture Gesture
 

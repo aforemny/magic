@@ -17,6 +17,7 @@ import Debug
 import Model exposing (..)
 import Theme exposing (..)
 import Action exposing (..)
+import Gesture
 
 updates : Mailbox Action
 updates =
@@ -28,6 +29,15 @@ update (time, action) model =
     merge player = time - player.lastUpdate < 2.0
   in
     case action of
+
+      Gesture (Gesture.Swiping {x,y}) ->
+        { model | swiping <- x }
+
+      Gesture (Gesture.Swipe {x,y}) ->
+        case (x,y) of
+          (-1,0) -> update (time, GoPrev) model
+          ( 1,0) -> update (time, GoNext) model
+          _      -> model
 
       NoOp -> model
 
@@ -67,27 +77,38 @@ update (time, action) model =
       GoNext ->
         case model.mode of
           Play ->
-            { model | match   <- reset model.match
-                    , history <- if completed model.match then
-                                     model.match :: model.history
-                                   else
-                                     model.history
+            { model | mode     <- Play
+                    , lastMode <- Play
+                    , match    <- reset model.match
+                    , history  <- if completed model.match then
+                                      model.match :: model.history
+                                    else
+                                      model.history
+                    , go       <- Just False
             }
           History 0 ->
-            { model | mode  <- Play
-                    , match <- resetContexts model.match }
+            { model | mode     <- Play
+                    , lastMode <- History 0
+                    , match <- resetContexts model.match
+                    , go    <- Just False }
           History n ->
-            { model | mode <- History (n-1) }
+            { model | mode <- History (n-1)
+                    , lastMode <- History n
+                    , go   <- Just False }
 
       GoPrev ->
         case model.mode of
           Play ->
-            { model | mode <- History 0 }
+            { model | mode <- History 0
+                    , lastMode <- Play
+                    , go <- Just True }
           History n ->
             { model | mode <- if List.length model.history > n then
                                   History (n+1)
                                 else
                                   History n
+                    , lastMode <- History n
+                    , go <- Just True
             }
 
 --      FlipY i ->
@@ -109,9 +130,7 @@ update (time, action) model =
 --                     }
 -- { model'' | past <- if merge player then model''.past else Just (Model model) }
 
---      Clear Nothing -> model
-
-      Clear (Just i) ->
+      Clear i ->
         modify i model <| \c p ->
           { noModification |
               context <- Just { c | flashDamageInc <- False
@@ -120,6 +139,9 @@ update (time, action) model =
                                   , flashPoisonDec <- False
                                   , flashSettings  <- False }
           }
+
+      LongClear ->
+        { model | go <- Nothing }
 
       _ -> model
 

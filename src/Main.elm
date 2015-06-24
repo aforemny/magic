@@ -42,27 +42,22 @@ model =
         Signal.map (\(ms,x) -> (ms/1000.0,x)) <| timestamp <| Signal.mergeMany
           [ updates.signal
           , Time.delay (180*Time.millisecond) (Signal.map clear updates.signal)
+          , Time.delay (360*Time.millisecond) (Signal.map longclear updates.signal)
           -- , Signal.map (\dt -> Tick (dt/1000)) (Time.fps 24)
-          , Signal.map handleGesture gesture
+          , Signal.map (Maybe.withDefault NoOp << Maybe.map Gesture) gesture
           ]
-
-    handleGesture g =
-      case g of
-
-        Just (Gesture.Swipe {x,y}) ->
-
-          case (x,y) of
-            (-1,0) -> GoNext
-            ( 1,0) -> GoPrev
-            _      -> NoOp
-
-        _ -> NoOp
 
     clear action =
       case action of
-        Inc    i _ -> Clear (Just i)
-        Poison i _ -> Clear (Just i)
-        _          -> Clear Nothing
+        Inc    i _ -> Clear i
+        Poison i _ -> Clear i
+        _          -> NoOp
+
+    longclear action =
+      case action of
+        GoNext -> LongClear
+        GoPrev -> LongClear
+        _      -> NoOp
 
     start =
       case getStorage of

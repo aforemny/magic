@@ -49,15 +49,30 @@ view s =
     div
       [ class "body"
       ]
-      [ div [class "main"] [main]
-      , div [class "prev"] [prev]
-      , div [class "next"] [next]
-      , div [class "buttons"]
+      [ div
+          [ classList [
+              ("main",          True),
+              ("a-goprev",  s.go == Just True),
+              ("a-gonext",  s.go == Just False && s.lastMode /= Play)
+            ]
+          ]
+          [ main
+          ]
+      , div -- TODO: mode to main
+          [ classList [
+              ("buttons",       True),
+              ("a-goprev", s.go == Just True),
+              ("a-gonext", s.go == Just False && s.mode /= Play)
+            ]
+          ]
           [ div
               [ id "go-prev"
               , onMouseEnter updates.address (Peek   "go-prev")
               , onMouseLeave updates.address (Unpeek "go-prev")
               , onClick      updates.address  GoPrev
+              , classList [
+                  ("hide", lastHistory s.mode s.history)
+                ]
               ]
               []
           , div
@@ -68,5 +83,36 @@ view s =
               ]
               []
           ]
+      , div
+          [ classList [
+              ("prev",     True),
+              ("a-gonextprime",  (s.go == Just False) && s.lastMode /= Play),
+              ("hide", lastHistory s.mode s.history)
+            ]
+          ]
+          [ prev
+          ]
+      , div
+          [ classList [
+              ("next",     True),
+              ("a-goprevprime",  (s.go == Just True)  && s.mode /= Play),
+              ("a-goresetprime", (s.go == Just False) && s.lastMode == Play)
+            ]
+          ]
+          [ next
+          ]
       ]
+
+swipeOffset n =
+  style [("transform", "translateX(" ++ toString 0 ++ "px)")]
+
+lastHistory mode history =
+  case mode of
+    History n -> n == List.length history
+    _         -> False
+
+inHistory mode =
+  case mode of
+    History 0 -> True
+    _         -> False
 

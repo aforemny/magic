@@ -22,6 +22,7 @@ toDict ts =
 type Gesture =
     Tap
   | Swipe { x:Int, y:Int }
+  | Swiping { x:Int, y:Int }
 
 model : Signal Model
 model =
@@ -33,11 +34,22 @@ update t s =
     g = Dict.diff s.touches t
   in
     { s | touches  <- t
-        , gestures <- Dict.map fromJust (Dict.filter isJust (Dict.map eval g))
+        , gestures <-
+            Dict.union (Dict.map fromJust (Dict.filter isJust (Dict.map ongoing  t)))
+                       (Dict.map fromJust (Dict.filter isJust (Dict.map finished g)))
     }
 
-eval : Int -> Touch -> Maybe Gesture
-eval id {x,y,x0,y0,t0} =
+ongoing : Int -> Touch -> Maybe Gesture
+ongoing id {x,y,x0,y0,t0} =
+
+  if | (abs (x - x0) > abs (y - y0)) && (x - x0 >  50) -> Just <| Swiping { x = x-x0, y =  0 }
+     | (abs (x - x0) > abs (y - y0)) && (x - x0 < -50) -> Just <| Swiping { x = x-x0, y =  0 }
+     | (abs (y - y0) > abs (x - x0)) && (y - y0 >  50) -> Just <| Swiping { x =  0, y = y-y0 }
+     | (abs (y - y0) > abs (x - x0)) && (y - y0 < -50) -> Just <| Swiping { x =  0, y = y-y0 }
+     | otherwise                                       -> Nothing
+
+finished : Int -> Touch -> Maybe Gesture
+finished id {x,y,x0,y0,t0} =
 
   if | (abs (x - x0) > abs (y - y0)) && (x - x0 >  150) -> Just <| Swipe { x =  1, y =  0 }
      | (abs (x - x0) > abs (y - y0)) && (x - x0 < -150) -> Just <| Swipe { x = -1, y =  0 }

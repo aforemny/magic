@@ -76,3 +76,79 @@
   from { top: 100%; }
   to   { top:   0;  }
 }
+
+.a-goprev {
+  animation-duration: 0.36s;
+  animation-iteration-count: 1;
+  animation-name: goprev;
+  animation-fill-mode: forwards;
+}
+
+@keyframes goprev {
+  from { left: -100%; }
+  to   { left:    0; }
+}
+
+.a-gonext {
+  animation-duration: 0.36s;
+  animation-iteration-count: 1;
+  animation-name: gonext;
+  animation-fill-mode: none;
+}
+
+@keyframes gonext {
+  from { left: 100%; }
+  to   { left:   0; }
+}
+
+.a-goprevprime {
+  animation-duration: 0.36s;
+  animation-iteration-count: 1;
+  animation-name: goprevprime;
+  animation-fill-mode: forwards;
+}
+
+@keyframes goprevprime {
+  from { left:   0; }
+  to   { left: 100%; }
+}
+
+.a-gonextprime {
+  animation-duration: 0.36s;
+  animation-iteration-count: 1;
+  animation-name: gonextprime;
+  animation-fill-mode: none;
+}
+
+@keyframes gonextprime {
+  from { left:    0; }
+  to   { left: -100%; }
+}
+
+/*
+.a-goreset {
+  animation-duration: 0.36s;
+  animation-iteration-count: 1;
+  animation-name: goreset;
+  animation-fill-mode: none;
+}
+
+@keyframes goreset {
+  from { left: 100%; }
+  to   { left:   0; }
+}
+*/
+
+.a-goresetprime {
+  animation-duration: 0.36s;
+  animation-iteration-count: 1;
+  animation-name: goresetprime;
+  animation-fill-mode: none;
+}
+
+@keyframes goresetprime {
+  from { left: 100%; }
+  to   { left:   0; }
+}
+
+

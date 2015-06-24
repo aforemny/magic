@@ -12,7 +12,11 @@ decode o = decodeValue decodeModel o
 
 decodeModel : Decoder Model
 decodeModel =
-  object3 model ("mode" := decodeMode) ("match" := decodeMatch) ("history" := decodeHistory)
+  object4 model
+    ("mode"    := decodeMode)
+    ("match"   := decodeMatch)
+    ("history" := decodeHistory)
+    ("swping"  := succeed 0)
 
 decodeMode : Decoder Mode
 decodeMode =
