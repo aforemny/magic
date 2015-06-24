@@ -17,7 +17,6 @@ import Debug
 import Model exposing (..)
 import Theme exposing (..)
 import Action exposing (..)
-import Gesture
 
 updates : Mailbox Action
 updates =
@@ -29,12 +28,6 @@ update (time, action) model =
     merge player = time - player.lastUpdate < 2.0
   in
     case action of
-
-      Gesture (Gesture.Swipe {x,y}) ->
-        case (x,y) of
-          (-1,0) -> update (time, GoPrev) model
-          ( 1,0) -> update (time, GoNext) model
-          _      -> model
 
       NoOp -> model
 

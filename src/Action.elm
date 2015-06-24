@@ -3,7 +3,6 @@ module Action where
 import Maybe exposing (Maybe)
 import Model exposing (Id)
 import Theme exposing (Color)
-import Gesture exposing (Gesture)
 
 type Action =
     NoOp
@@ -29,5 +28,3 @@ type Action =
   | GoPrev
   | GoNext
   | Delete Int
-  | Gesture Gesture
-

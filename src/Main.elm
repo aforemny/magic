@@ -17,7 +17,6 @@ import Update exposing (..)
 import Theme exposing (..)
 import Action exposing (..)
 import Result exposing (..)
-import Gesture exposing (gesture,Gesture)
 
 main : Signal Html
 main =
@@ -38,9 +37,7 @@ model : Signal Model
 model =
   let
 
-    gestures = Signal.map (Maybe.withDefault NoOp << Maybe.map Gesture) gesture
-
-    preinput = Signal.merge updates.signal gestures
+    preinput = updates.signal
 
     input =
         Signal.map (\(ms,x) -> (ms/1000.0,x)) <| timestamp <| Signal.mergeMany
@@ -60,7 +57,6 @@ model =
       case action of
         GoNext -> LongClear
         GoPrev -> LongClear
-        Gesture (Gesture.Swipe _) -> LongClear
         _ -> NoOp
 
     start =
