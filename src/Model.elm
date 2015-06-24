@@ -13,13 +13,13 @@ type alias Model =
   , peek      : Maybe Bool -- False means prev
   }
 
-model : Mode -> Match -> List Match -> Int -> Model
-model mode match history swiping =
+model : Mode -> Match -> List Match -> Model
+model mode match history =
   { mode     = mode
   , lastMode = mode
   , match    = match
   , history  = history
-  , swiping  = swiping
+  , swiping  = 0
   , go       = Nothing
   , peek     = Nothing
   }
