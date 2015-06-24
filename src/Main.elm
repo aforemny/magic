@@ -38,13 +38,16 @@ model : Signal Model
 model =
   let
 
+    gestures = Signal.map (Maybe.withDefault NoOp << Maybe.map Gesture) gesture
+
+    preinput = Signal.merge updates.signal gestures
+
     input =
         Signal.map (\(ms,x) -> (ms/1000.0,x)) <| timestamp <| Signal.mergeMany
-          [ updates.signal
-          , Time.delay (180*Time.millisecond) (Signal.map clear updates.signal)
-          , Time.delay (360*Time.millisecond) (Signal.map longclear updates.signal)
+          [ preinput
+          , Time.delay (180*Time.millisecond) (Signal.map clear     preinput)
+          , Time.delay (360*Time.millisecond) (Signal.map longclear preinput)
           -- , Signal.map (\dt -> Tick (dt/1000)) (Time.fps 24)
-          , Signal.map (Maybe.withDefault NoOp << Maybe.map Gesture) gesture
           ]
 
     clear action =
@@ -57,7 +60,8 @@ model =
       case action of
         GoNext -> LongClear
         GoPrev -> LongClear
-        _      -> NoOp
+        Gesture (Gesture.Swipe _) -> LongClear
+        _ -> NoOp
 
     start =
       case getStorage of

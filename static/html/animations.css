@@ -151,4 +151,54 @@
   to   { left:   0; }
 }
 
+.a-peekprev {
+  left: 5%;
+  animation-duration: 0.36s;
+  animation-iteration-count: 1;
+  animation-name: peekprev;
+  animation-fill-mode: forwards;
+}
 
+@keyframes peekprev {
+  from { left:  0; }
+  to   { left: 5%; }
+}
+
+.a-peekprevprime {
+  left: -95%;
+  animation-duration: 0.36s;
+  animation-iteration-count: 1;
+  animation-name: peekprevprime;
+  animation-fill-mode: forwards;
+}
+
+@keyframes peekprevprime {
+  from { left: -100%; }
+  to   { left:  -95%; }
+}
+
+.a-peeknext {
+  left: -5%;
+  animation-duration: 0.36s;
+  animation-iteration-count: 1;
+  animation-name: peeknext;
+  animation-fill-mode: forwards;
+}
+
+@keyframes peeknext {
+  from { left:   0; }
+  to   { left: -5%; }
+}
+
+.a-peeknextprime {
+  left: 95%;
+  animation-duration: 0.36s;
+  animation-iteration-count: 1;
+  animation-name: peeknextprime;
+  animation-fill-mode: forwards;
+}
+
+@keyframes peeknextprime {
+  from { left: 100%; }
+  to   { left:  95%; }
+}

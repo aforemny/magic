@@ -30,8 +30,8 @@ view s =
 
     main =
       case s.mode of
-        Play      -> Play.view (Debug.log "play" s.match)
-        History n -> History.view n (Debug.log "history" (m n))
+        Play      -> Play.view s.match
+        History n -> History.view n (m n)
 
     prev =
       let n = case s.mode of
@@ -51,16 +51,18 @@ view s =
       ]
       [ div
           [ classList [
-              ("main",          True),
-              ("a-goprev",  s.go == Just True),
-              ("a-gonext",  s.go == Just False && s.lastMode /= Play)
+              ("main",       True),
+              ("a-goprev",   s.go == Just True),
+              ("a-gonext",   s.go == Just False && s.lastMode /= Play),
+              ("a-peekprev", s.peek == Just True),
+              ("a-peeknext", s.peek == Just False)
             ]
           ]
           [ main
           ]
-      , div -- TODO: mode to main
+      , div
           [ classList [
-              ("buttons",       True),
+              ("buttons",  True),
               ("a-goprev", s.go == Just True),
               ("a-gonext", s.go == Just False && s.mode /= Play)
             ]
@@ -87,7 +89,7 @@ view s =
           [ classList [
               ("prev",     True),
               ("a-gonextprime",  (s.go == Just False) && s.lastMode /= Play),
-              ("hide", lastHistory s.mode s.history)
+              ("a-peekprevprime", s.peek == Just True)
             ]
           ]
           [ prev
@@ -96,7 +98,8 @@ view s =
           [ classList [
               ("next",     True),
               ("a-goprevprime",  (s.go == Just True)  && s.mode /= Play),
-              ("a-goresetprime", (s.go == Just False) && s.lastMode == Play)
+              ("a-goresetprime", (s.go == Just False) && s.lastMode == Play),
+              ("a-peeknextprime", s.peek == Just False)
             ]
           ]
           [ next

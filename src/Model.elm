@@ -10,6 +10,7 @@ type alias Model =
   , history   : List Match
   , swiping   : Int
   , go        : Maybe Bool -- False means prev
+  , peek      : Maybe Bool -- False means prev
   }
 
 model : Mode -> Match -> List Match -> Int -> Model
@@ -20,6 +21,7 @@ model mode match history swiping =
   , history  = history
   , swiping  = swiping
   , go       = Nothing
+  , peek     = Nothing
   }
 
 initialModel : Model
@@ -30,6 +32,7 @@ initialModel =
   , history = []
   , swiping = 0
   , go      = Nothing
+  , peek    = Nothing
   }
 
 type Mode =

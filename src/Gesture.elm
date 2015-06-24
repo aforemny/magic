@@ -40,19 +40,19 @@ update t s =
     }
 
 ongoing : Int -> Touch -> Maybe Gesture
-ongoing id {x,y,x0,y0,t0} =
+ongoing id {x,y,x0,y0,t0} = Nothing
 
-  if | (abs (x - x0) > abs (y - y0)) && (x - x0 >  50) -> Just <| Swiping { x = x-x0, y =  0 }
-     | (abs (x - x0) > abs (y - y0)) && (x - x0 < -50) -> Just <| Swiping { x = x-x0, y =  0 }
-     | (abs (y - y0) > abs (x - x0)) && (y - y0 >  50) -> Just <| Swiping { x =  0, y = y-y0 }
-     | (abs (y - y0) > abs (x - x0)) && (y - y0 < -50) -> Just <| Swiping { x =  0, y = y-y0 }
-     | otherwise                                       -> Nothing
+--  if | (abs (x - x0) > abs (y - y0)) && (x - x0 >  50) -> Just <| Swiping { x = x-x0, y =  0 }
+--     | (abs (x - x0) > abs (y - y0)) && (x - x0 < -50) -> Just <| Swiping { x = x-x0, y =  0 }
+--     | (abs (y - y0) > abs (x - x0)) && (y - y0 >  50) -> Just <| Swiping { x =  0, y = y-y0 }
+--     | (abs (y - y0) > abs (x - x0)) && (y - y0 < -50) -> Just <| Swiping { x =  0, y = y-y0 }
+--     | otherwise                                       -> Nothing
 
 finished : Int -> Touch -> Maybe Gesture
 finished id {x,y,x0,y0,t0} =
 
-  if | (abs (x - x0) > abs (y - y0)) && (x - x0 >  150) -> Just <| Swipe { x =  1, y =  0 }
-     | (abs (x - x0) > abs (y - y0)) && (x - x0 < -150) -> Just <| Swipe { x = -1, y =  0 }
+  if | (abs (x - x0) > abs (y - y0)) && (x - x0 >  150) -> Just <| Swipe { x = -1, y =  0 }
+     | (abs (x - x0) > abs (y - y0)) && (x - x0 < -150) -> Just <| Swipe { x =  1, y =  0 }
      | (abs (y - y0) > abs (x - x0)) && (y - y0 >  150) -> Just <| Swipe { x =  0, y = -1 }
      | (abs (y - y0) > abs (x - x0)) && (y - y0 < -150) -> Just <| Swipe { x =  0, y =  1 }
      | otherwise                                        -> Just Tap

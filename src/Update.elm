@@ -30,9 +30,6 @@ update (time, action) model =
   in
     case action of
 
-      Gesture (Gesture.Swiping {x,y}) ->
-        { model | swiping <- x }
-
       Gesture (Gesture.Swipe {x,y}) ->
         case (x,y) of
           (-1,0) -> update (time, GoPrev) model
@@ -40,6 +37,13 @@ update (time, action) model =
           _      -> model
 
       NoOp -> model
+
+      Peek s ->
+        case s of
+          "go-prev" -> { model | peek <- Just True }
+          "go-next" -> { model | peek <- Just False }
+
+      Unpeek _ -> { model | peek <- Nothing }
 
       Delete n ->
         { model | history <-
@@ -85,30 +89,38 @@ update (time, action) model =
                                     else
                                       model.history
                     , go       <- Just False
+                    , peek     <- Nothing
             }
           History 0 ->
             { model | mode     <- Play
                     , lastMode <- History 0
                     , match <- resetContexts model.match
-                    , go    <- Just False }
+                    , go    <- Just False
+                    , peek <- Nothing
+            }
           History n ->
             { model | mode <- History (n-1)
                     , lastMode <- History n
-                    , go   <- Just False }
+                    , go   <- Just False
+                    , peek <- Nothing
+            }
 
       GoPrev ->
         case model.mode of
           Play ->
             { model | mode <- History 0
                     , lastMode <- Play
-                    , go <- Just True }
+                    , go <- Just True
+                    , peek <- Nothing
+            }
           History n ->
             { model | mode <- if List.length model.history > n then
                                   History (n+1)
                                 else
                                   History n
                     , lastMode <- History n
-                    , go <- Just True
+                    , go   <- Just True
+                    , peek <- Nothing
             }
 
 --      FlipY i ->
@@ -141,7 +153,7 @@ update (time, action) model =
           }
 
       LongClear ->
-        { model | go <- Nothing }
+        Debug.log "longclear" { model | go <- Nothing }
 
       _ -> model
 
