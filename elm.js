@@ -5045,10 +5045,9 @@ Elm.Model.make = function (_elm) {
                       ,mode: Play
                       ,peek: $Maybe.Nothing
                       ,swiping: 0};
-   var model = F4(function (mode,
+   var model = F3(function (mode,
    match,
-   history,
-   swiping) {
+   history) {
       return {_: {}
              ,go: $Maybe.Nothing
              ,history: history
@@ -5056,7 +5055,7 @@ Elm.Model.make = function (_elm) {
              ,match: match
              ,mode: mode
              ,peek: $Maybe.Nothing
-             ,swiping: swiping};
+             ,swiping: 0};
    });
    var Model = F7(function (a,
    b,
@@ -14718,10 +14717,10 @@ Elm.Storage.Decode.make = function (_elm) {
             case "play":
             return $Json$Decode.succeed($Model.Play);}
          _U.badCase($moduleName,
-         "between lines 24 and 26");
+         "between lines 23 and 25");
       }();
    });
-   var decodeModel = A5($Json$Decode.object4,
+   var decodeModel = A4($Json$Decode.object3,
    $Model.model,
    A2($Json$Decode._op[":="],
    "mode",
@@ -14731,10 +14730,7 @@ Elm.Storage.Decode.make = function (_elm) {
    decodeMatch),
    A2($Json$Decode._op[":="],
    "history",
-   decodeHistory),
-   A2($Json$Decode._op[":="],
-   "swping",
-   $Json$Decode.succeed(0)));
+   decodeHistory));
    var decode = function (o) {
       return A2($Json$Decode.decodeValue,
       decodeModel,
