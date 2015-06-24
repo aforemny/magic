@@ -10,9 +10,13 @@ Elm.Action.make = function (_elm) {
    _U = _N.Utils.make(_elm),
    _L = _N.List.make(_elm),
    $moduleName = "Action",
-   $Maybe = Elm.Maybe.make(_elm),
+   $Gesture = Elm.Gesture.make(_elm),
    $Model = Elm.Model.make(_elm),
    $Theme = Elm.Theme.make(_elm);
+   var Gesture = function (a) {
+      return {ctor: "Gesture"
+             ,_0: a};
+   };
    var Delete = function (a) {
       return {ctor: "Delete"
              ,_0: a};
@@ -58,6 +62,7 @@ Elm.Action.make = function (_elm) {
       return {ctor: "ScrollUp"
              ,_0: a};
    };
+   var LongClear = {ctor: "LongClear"};
    var Clear = function (a) {
       return {ctor: "Clear",_0: a};
    };
@@ -90,6 +95,7 @@ Elm.Action.make = function (_elm) {
                         ,FlipY: FlipY
                         ,Android: Android
                         ,Clear: Clear
+                        ,LongClear: LongClear
                         ,ScrollUp: ScrollUp
                         ,ScrollDown: ScrollDown
                         ,ScrollStop: ScrollStop
@@ -103,7 +109,8 @@ Elm.Action.make = function (_elm) {
                         ,Unpeek: Unpeek
                         ,GoPrev: GoPrev
                         ,GoNext: GoNext
-                        ,Delete: Delete};
+                        ,Delete: Delete
+                        ,Gesture: Gesture};
    return _elm.Action.values;
 };
 Elm.Array = Elm.Array || {};
@@ -1906,6 +1913,156 @@ Elm.Dict.make = function (_elm) {
                       ,toList: toList
                       ,fromList: fromList};
    return _elm.Dict.values;
+};
+Elm.Gesture = Elm.Gesture || {};
+Elm.Gesture.make = function (_elm) {
+   "use strict";
+   _elm.Gesture = _elm.Gesture || {};
+   if (_elm.Gesture.values)
+   return _elm.Gesture.values;
+   var _op = {},
+   _N = Elm.Native,
+   _U = _N.Utils.make(_elm),
+   _L = _N.List.make(_elm),
+   $moduleName = "Gesture",
+   $Basics = Elm.Basics.make(_elm),
+   $Debug = Elm.Debug.make(_elm),
+   $Dict = Elm.Dict.make(_elm),
+   $Graphics$Element = Elm.Graphics.Element.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $Signal = Elm.Signal.make(_elm),
+   $Touch = Elm.Touch.make(_elm);
+   var isJust = F2(function (_v0,
+   x) {
+      return function () {
+         return function () {
+            switch (x.ctor)
+            {case "Just": return true;}
+            return false;
+         }();
+      }();
+   });
+   var fromJust = F2(function (_v4,
+   x) {
+      return function () {
+         return function () {
+            switch (x.ctor)
+            {case "Just": return x._0;}
+            return $Debug.crash("fromJust: Nothing");
+         }();
+      }();
+   });
+   var ongoing = F2(function (id,
+   _v8) {
+      return function () {
+         return $Maybe.Nothing;
+      }();
+   });
+   var Swiping = function (a) {
+      return {ctor: "Swiping"
+             ,_0: a};
+   };
+   var Swipe = function (a) {
+      return {ctor: "Swipe",_0: a};
+   };
+   var Tap = {ctor: "Tap"};
+   var finished = F2(function (id,
+   _v10) {
+      return function () {
+         return _U.cmp($Basics.abs(_v10.x - _v10.x0),
+         $Basics.abs(_v10.y - _v10.y0)) > 0 && _U.cmp(_v10.x - _v10.x0,
+         150) > 0 ? $Maybe.Just(Swipe({_: {}
+                                      ,x: -1
+                                      ,y: 0})) : _U.cmp($Basics.abs(_v10.x - _v10.x0),
+         $Basics.abs(_v10.y - _v10.y0)) > 0 && _U.cmp(_v10.x - _v10.x0,
+         -150) < 0 ? $Maybe.Just(Swipe({_: {}
+                                       ,x: 1
+                                       ,y: 0})) : _U.cmp($Basics.abs(_v10.y - _v10.y0),
+         $Basics.abs(_v10.x - _v10.x0)) > 0 && _U.cmp(_v10.y - _v10.y0,
+         150) > 0 ? $Maybe.Just(Swipe({_: {}
+                                      ,x: 0
+                                      ,y: -1})) : _U.cmp($Basics.abs(_v10.y - _v10.y0),
+         $Basics.abs(_v10.x - _v10.x0)) > 0 && _U.cmp(_v10.y - _v10.y0,
+         -150) < 0 ? $Maybe.Just(Swipe({_: {}
+                                       ,x: 0
+                                       ,y: 1})) : $Maybe.Just(Tap);
+      }();
+   });
+   var update = F2(function (t,s) {
+      return function () {
+         var g = A2($Dict.diff,
+         s.touches,
+         t);
+         return _U.replace([["touches",t]
+                           ,["gestures"
+                            ,A2($Dict.union,
+                            A2($Dict.map,
+                            fromJust,
+                            A2($Dict.filter,
+                            isJust,
+                            A2($Dict.map,ongoing,t))),
+                            A2($Dict.map,
+                            fromJust,
+                            A2($Dict.filter,
+                            isJust,
+                            A2($Dict.map,finished,g))))]],
+         s);
+      }();
+   });
+   var toDict = function (ts) {
+      return $Dict.fromList(A2($List.map,
+      function (t) {
+         return {ctor: "_Tuple2"
+                ,_0: t.id
+                ,_1: t};
+      },
+      ts));
+   };
+   var def = {_: {}
+             ,gestures: $Dict.empty
+             ,touches: $Dict.empty};
+   var model = A3($Signal.foldp,
+   update,
+   def,
+   A2($Signal.map,
+   toDict,
+   $Touch.touches));
+   var main = A2($Signal.map,
+   function ($) {
+      return $Graphics$Element.show(function (_) {
+         return _.gestures;
+      }($));
+   },
+   model);
+   var gesture = A2($Signal.map,
+   function ($) {
+      return $Maybe.map($Basics.snd)($List.head($Dict.toList(function (_) {
+         return _.gestures;
+      }($))));
+   },
+   model);
+   var Model = F2(function (a,b) {
+      return {_: {}
+             ,gestures: b
+             ,touches: a};
+   });
+   _elm.Gesture.values = {_op: _op
+                         ,Model: Model
+                         ,def: def
+                         ,toDict: toDict
+                         ,Tap: Tap
+                         ,Swipe: Swipe
+                         ,Swiping: Swiping
+                         ,model: model
+                         ,update: update
+                         ,ongoing: ongoing
+                         ,finished: finished
+                         ,fromJust: fromJust
+                         ,isJust: isJust
+                         ,main: main
+                         ,gesture: gesture};
+   return _elm.Gesture.values;
 };
 Elm.Graphics = Elm.Graphics || {};
 Elm.Graphics.Collage = Elm.Graphics.Collage || {};
@@ -4448,6 +4605,7 @@ Elm.Main.make = function (_elm) {
    $moduleName = "Main",
    $Action = Elm.Action.make(_elm),
    $Basics = Elm.Basics.make(_elm),
+   $Gesture = Elm.Gesture.make(_elm),
    $Html = Elm.Html.make(_elm),
    $Json$Decode = Elm.Json.Decode.make(_elm),
    $Keyboard = Elm.Keyboard.make(_elm),
@@ -4533,39 +4691,67 @@ Elm.Main.make = function (_elm) {
                     return $Model.initialModel;
                     case "Ok": return _v5._0;}
                  _U.badCase($moduleName,
-                 "between lines 56 and 59");
+                 "between lines 69 and 72");
               }();
             case "Nothing":
             return $Model.initialModel;}
          _U.badCase($moduleName,
-         "between lines 54 and 61");
+         "between lines 67 and 74");
       }();
+      var longclear = function (action) {
+         return function () {
+            switch (action.ctor)
+            {case "Gesture":
+               switch (action._0.ctor)
+                 {case "Swipe":
+                    return $Action.LongClear;}
+                 break;
+               case "GoNext":
+               return $Action.LongClear;
+               case "GoPrev":
+               return $Action.LongClear;}
+            return $Action.NoOp;
+         }();
+      };
       var clear = function (action) {
          return function () {
             switch (action.ctor)
             {case "Inc":
-               return $Action.Clear($Maybe.Just(action._0));
+               return $Action.Clear(action._0);
                case "Poison":
-               return $Action.Clear($Maybe.Just(action._0));}
-            return $Action.Clear($Maybe.Nothing);
+               return $Action.Clear(action._0);}
+            return $Action.NoOp;
          }();
       };
-      var input = $Signal.map(function (_v13) {
+      var gestures = A2($Signal.map,
+      function ($) {
+         return $Maybe.withDefault($Action.NoOp)($Maybe.map($Action.Gesture)($));
+      },
+      $Gesture.gesture);
+      var preinput = A2($Signal.merge,
+      $Update.updates.signal,
+      gestures);
+      var input = $Signal.map(function (_v16) {
          return function () {
-            switch (_v13.ctor)
+            switch (_v16.ctor)
             {case "_Tuple2":
                return {ctor: "_Tuple2"
-                      ,_0: _v13._0 / 1000.0
-                      ,_1: _v13._1};}
+                      ,_0: _v16._0 / 1000.0
+                      ,_1: _v16._1};}
             _U.badCase($moduleName,
-            "on line 41, column 33 to 44");
+            "on line 46, column 33 to 44");
          }();
-      })($Time.timestamp($Signal.mergeMany(_L.fromArray([$Update.updates.signal
+      })($Time.timestamp($Signal.mergeMany(_L.fromArray([preinput
                                                         ,A2($Time.delay,
-                                                        90 * $Time.millisecond,
+                                                        180 * $Time.millisecond,
                                                         A2($Signal.map,
                                                         clear,
-                                                        $Update.updates.signal))]))));
+                                                        preinput))
+                                                        ,A2($Time.delay,
+                                                        360 * $Time.millisecond,
+                                                        A2($Signal.map,
+                                                        longclear,
+                                                        preinput))]))));
       return A3($Signal.foldp,
       $Update.update,
       start,
@@ -4708,9 +4894,9 @@ Elm.Model.make = function (_elm) {
              ,flashDamageInc: b
              ,flashPoisonDec: e
              ,flashPoisonInc: d
-             ,flashSettings: f
+             ,flashSettings: g
              ,id: a
-             ,showOptions: g};
+             ,showOptions: f};
    });
    var initialPlayer = function (i) {
       return {_: {}
@@ -4791,6 +4977,17 @@ Elm.Model.make = function (_elm) {
       false,
       m.players);
    };
+   var resetContexts = function (m) {
+      return _U.replace([["contexts"
+                         ,A2($Dict.map,
+                         F2(function (i,_v2) {
+                            return function () {
+                               return initialContext(i);
+                            }();
+                         }),
+                         m.players)]],
+      m);
+   };
    var reset = function (m) {
       return _U.replace([["players"
                          ,A2($Dict.map,
@@ -4803,7 +5000,7 @@ Elm.Model.make = function (_elm) {
                          m.players)]
                         ,["contexts"
                          ,A2($Dict.map,
-                         F2(function (i,_v2) {
+                         F2(function (i,_v4) {
                             return function () {
                                return initialContext(i);
                             }();
@@ -4841,24 +5038,41 @@ Elm.Model.make = function (_elm) {
    };
    var Play = {ctor: "Play"};
    var initialModel = {_: {}
+                      ,go: $Maybe.Nothing
                       ,history: _L.fromArray([])
+                      ,lastMode: Play
                       ,match: initialMatch
-                      ,mode: Play};
-   var model = F3(function (mode,
+                      ,mode: Play
+                      ,peek: $Maybe.Nothing
+                      ,swiping: 0};
+   var model = F4(function (mode,
    match,
-   history) {
+   history,
+   swiping) {
       return {_: {}
+             ,go: $Maybe.Nothing
              ,history: history
+             ,lastMode: mode
              ,match: match
-             ,mode: mode};
+             ,mode: mode
+             ,peek: $Maybe.Nothing
+             ,swiping: swiping};
    });
-   var Model = F3(function (a,
+   var Model = F7(function (a,
    b,
-   c) {
+   c,
+   d,
+   e,
+   f,
+   g) {
       return {_: {}
-             ,history: c
-             ,match: b
-             ,mode: a};
+             ,go: f
+             ,history: d
+             ,lastMode: b
+             ,match: c
+             ,mode: a
+             ,peek: g
+             ,swiping: e};
    });
    _elm.Model.values = {_op: _op
                        ,Model: Model
@@ -4870,6 +5084,7 @@ Elm.Model.make = function (_elm) {
                        ,match: match
                        ,initialMatch: initialMatch
                        ,reset: reset
+                       ,resetContexts: resetContexts
                        ,completed: completed
                        ,Player: Player
                        ,died: died
@@ -11148,6 +11363,184 @@ Elm.Native.Time.make = function(localRuntime)
 
 };
 
+Elm.Native = Elm.Native || {};
+Elm.Native.Touch = {};
+Elm.Native.Touch.make = function(localRuntime) {
+
+    localRuntime.Native = localRuntime.Native || {};
+    localRuntime.Native.Touch = localRuntime.Native.Touch || {};
+    if (localRuntime.Native.Touch.values)
+    {
+        return localRuntime.Native.Touch.values;
+    }
+
+    var Signal = Elm.Signal.make(localRuntime);
+    var NS = Elm.Native.Signal.make(localRuntime);
+    var List = Elm.Native.List.make(localRuntime);
+    var Utils = Elm.Native.Utils.make(localRuntime);
+
+    function Dict() {
+        this.keys = [];
+        this.values = [];
+
+        this.insert = function(key,value) {
+            this.keys.push(key);
+            this.values.push(value);
+        };
+        this.lookup = function(key) {
+            var i = this.keys.indexOf(key)
+            return i >= 0 ? this.values[i] : {x:0,y:0,t:0};
+        };
+        this.remove = function(key) {
+            var i = this.keys.indexOf(key);
+            if (i < 0) return;
+            var t = this.values[i];
+            this.keys.splice(i,1);
+            this.values.splice(i,1);
+            return t;
+        };
+        this.clear = function() {
+            this.keys = [];
+            this.values = [];
+        };
+    }
+
+    var root = NS.input('touch', []),
+    tapTime = 500,
+    hasTap = false,
+    tap = {_:{},x:0,y:0},
+    dict = new Dict();
+
+    function touch(t) {
+        var r = dict.lookup(t.identifier);
+        var point = Utils.getXY(t);
+        return {
+            _ : {},
+            id: t.identifier,
+            x : point._0,
+            y : point._1,
+            x0: r.x,
+            y0: r.y,
+            t0: r.t
+         };
+    }
+
+    var node = localRuntime.isFullscreen()
+        ? document
+        : localRuntime.node;
+
+    function start(e) {
+        var point = Utils.getXY(e);
+        dict.insert(e.identifier, {
+            x: point._0,
+            y: point._1,
+            t: localRuntime.timer.now()
+        });
+    }
+    function end(e) {
+        var t = dict.remove(e.identifier);
+        if (localRuntime.timer.now() - t.t < tapTime)
+        {
+            hasTap = true;
+            tap = {
+                _: {},
+                x: t.x,
+                y: t.y
+            };
+        }
+    }
+
+    function listen(name, f) {
+        function update(e) {
+            for (var i = e.changedTouches.length; i--; ) {
+                f(e.changedTouches[i]);
+            }
+            var ts = new Array(e.touches.length);
+            for (var i = e.touches.length; i--; ) {
+                ts[i] = touch(e.touches[i]);
+            }
+            localRuntime.notify(root.id, ts);
+            e.preventDefault();
+        }
+        localRuntime.addListener([root.id], node, name, update);
+    }
+
+    listen("touchstart", start);
+    listen("touchmove", function(_){});
+    listen("touchend", end);
+    listen("touchcancel", end);
+    listen("touchleave", end);
+
+    var mouseID = -1;
+    function move(e) {
+        var point = Utils.getXY(e);
+        for (var i = root.value.length; i--; ) {
+            if (root.value[i].id === mouseID)
+            {
+                root.value[i].x = point._0;
+                root.value[i].y = point._1;
+                localRuntime.notify(root.id, root.value);
+                break;
+            }
+        }
+    }
+    localRuntime.addListener([root.id], node, "mousedown", function down(e) {
+        node.addEventListener("mousemove", move);
+        e.identifier = mouseID;
+        start(e);
+        root.value.push(touch(e));
+        localRuntime.notify(root.id, root.value);
+    });
+    localRuntime.addListener([root.id], document, "mouseup", function up(e) {
+        node.removeEventListener("mousemove", move);
+        e.identifier = mouseID;
+        end(e);
+        for (var i = root.value.length; i--; ) {
+            if (root.value[i].id === mouseID)
+            {
+                root.value.splice(i, 1);
+                --mouseID;
+                break;
+            }
+        }
+        localRuntime.notify(root.id, root.value);
+    });
+    localRuntime.addListener([root.id], node, "blur", function blur(e) {
+        node.removeEventListener("mousemove", move);
+        if (root.value.length > 0)
+        {
+            localRuntime.notify(root.id, []);
+            --mouseID;
+        }
+        dict.clear();
+    });
+
+    function dependency(f) {
+        var sig = A2( Signal.map, f, root );
+        root.defaultNumberOfKids += 1;
+        sig.defaultNumberOfKids = 0;
+        return sig;
+    }
+
+    var touches = dependency(List.fromArray);
+
+    var taps = function() {
+        var sig = dependency(function(_) { return tap; });
+        sig.defaultNumberOfKids = 1;
+        function pred(_) {
+            var b = hasTap;
+            hasTap = false;
+            return b;
+        }
+        var sig2 = A3( Signal.filter, pred, {_:{},x:0,y:0}, sig);
+        sig2.defaultNumberOfKids = 0;
+        return sig2;
+    }();
+
+    return localRuntime.Native.Touch.values = { touches: touches, taps: taps };
+
+};
+
 Elm.Native.Transform2D = {};
 Elm.Native.Transform2D.make = function(localRuntime) {
 
@@ -14325,10 +14718,10 @@ Elm.Storage.Decode.make = function (_elm) {
             case "play":
             return $Json$Decode.succeed($Model.Play);}
          _U.badCase($moduleName,
-         "between lines 20 and 22");
+         "between lines 24 and 26");
       }();
    });
-   var decodeModel = A4($Json$Decode.object3,
+   var decodeModel = A5($Json$Decode.object4,
    $Model.model,
    A2($Json$Decode._op[":="],
    "mode",
@@ -14338,7 +14731,10 @@ Elm.Storage.Decode.make = function (_elm) {
    decodeMatch),
    A2($Json$Decode._op[":="],
    "history",
-   decodeHistory));
+   decodeHistory),
+   A2($Json$Decode._op[":="],
+   "swping",
+   $Json$Decode.succeed(0)));
    var decode = function (o) {
       return A2($Json$Decode.decodeValue,
       decodeModel,
@@ -15039,6 +15435,42 @@ Elm.Time.make = function (_elm) {
                       ,since: since};
    return _elm.Time.values;
 };
+Elm.Touch = Elm.Touch || {};
+Elm.Touch.make = function (_elm) {
+   "use strict";
+   _elm.Touch = _elm.Touch || {};
+   if (_elm.Touch.values)
+   return _elm.Touch.values;
+   var _op = {},
+   _N = Elm.Native,
+   _U = _N.Utils.make(_elm),
+   _L = _N.List.make(_elm),
+   $moduleName = "Touch",
+   $Native$Touch = Elm.Native.Touch.make(_elm),
+   $Signal = Elm.Signal.make(_elm),
+   $Time = Elm.Time.make(_elm);
+   var taps = $Native$Touch.taps;
+   var touches = $Native$Touch.touches;
+   var Touch = F6(function (a,
+   b,
+   c,
+   d,
+   e,
+   f) {
+      return {_: {}
+             ,id: c
+             ,t0: f
+             ,x: a
+             ,x0: d
+             ,y: b
+             ,y0: e};
+   });
+   _elm.Touch.values = {_op: _op
+                       ,touches: touches
+                       ,taps: taps
+                       ,Touch: Touch};
+   return _elm.Touch.values;
+};
 Elm.Transform2D = Elm.Transform2D || {};
 Elm.Transform2D.make = function (_elm) {
    "use strict";
@@ -15117,6 +15549,8 @@ Elm.Update.make = function (_elm) {
    $moduleName = "Update",
    $Action = Elm.Action.make(_elm),
    $Basics = Elm.Basics.make(_elm),
+   $Debug = Elm.Debug.make(_elm),
+   $Gesture = Elm.Gesture.make(_elm),
    $List = Elm.List.make(_elm),
    $Maybe = Elm.Maybe.make(_elm),
    $Model = Elm.Model.make(_elm),
@@ -15135,9 +15569,23 @@ Elm.Update.make = function (_elm) {
                     switch (_v0._1.ctor)
                     {case "Blur": return model;
                        case "Clear":
-                       switch (_v0._1._0.ctor)
-                         {case "Nothing": return model;}
-                         break;
+                       return A2($Model.modify,
+                         _v0._1._0,
+                         model)(F2(function (c,p) {
+                            return _U.replace([["context"
+                                               ,$Maybe.Just(_U.replace([["flashDamageInc"
+                                                                        ,false]
+                                                                       ,["flashDamageDec"
+                                                                        ,false]
+                                                                       ,["flashPoisonInc"
+                                                                        ,false]
+                                                                       ,["flashPoisonDec"
+                                                                        ,false]
+                                                                       ,["flashSettings"
+                                                                        ,false]],
+                                               c))]],
+                            $Model.noModification);
+                         }));
                        case "Close":
                        return A2($Model.modify,
                          _v0._1._0,
@@ -15168,45 +15616,95 @@ Elm.Update.make = function (_elm) {
                                           _v0._1._0 + 1,
                                           model.history))]],
                          model);
+                       case "Gesture":
+                       switch (_v0._1._0.ctor)
+                         {case "Swipe":
+                            return function () {
+                                 var _v21 = {ctor: "_Tuple2"
+                                            ,_0: _v0._1._0._0.x
+                                            ,_1: _v0._1._0._0.y};
+                                 switch (_v21.ctor)
+                                 {case "_Tuple2":
+                                    switch (_v21._0)
+                                      {case -1: switch (_v21._1)
+                                           {case 0: return A2(update,
+                                                {ctor: "_Tuple2"
+                                                ,_0: _v0._0
+                                                ,_1: $Action.GoPrev},
+                                                model);}
+                                           break;
+                                         case 1: switch (_v21._1)
+                                           {case 0: return A2(update,
+                                                {ctor: "_Tuple2"
+                                                ,_0: _v0._0
+                                                ,_1: $Action.GoNext},
+                                                model);}
+                                           break;}
+                                      break;}
+                                 return model;
+                              }();}
+                         break;
                        case "GoNext":
                        return function () {
-                            var _v17 = model.mode;
-                            switch (_v17.ctor)
+                            var _v24 = model.mode;
+                            switch (_v24.ctor)
                             {case "History":
-                               switch (_v17._0)
+                               switch (_v24._0)
                                  {case 0:
                                     return _U.replace([["mode"
-                                                       ,$Model.Play]],
+                                                       ,$Model.Play]
+                                                      ,["lastMode"
+                                                       ,$Model.History(0)]
+                                                      ,["match"
+                                                       ,$Model.resetContexts(model.match)]
+                                                      ,["go",$Maybe.Just(false)]
+                                                      ,["peek",$Maybe.Nothing]],
                                       model);}
                                  return _U.replace([["mode"
-                                                    ,$Model.History(_v17._0 - 1)]],
+                                                    ,$Model.History(_v24._0 - 1)]
+                                                   ,["lastMode"
+                                                    ,$Model.History(_v24._0)]
+                                                   ,["go",$Maybe.Just(false)]
+                                                   ,["peek",$Maybe.Nothing]],
                                  model);
                                case "Play":
-                               return _U.replace([["match"
+                               return _U.replace([["mode"
+                                                  ,$Model.Play]
+                                                 ,["lastMode",$Model.Play]
+                                                 ,["match"
                                                   ,$Model.reset(model.match)]
                                                  ,["history"
                                                   ,$Model.completed(model.match) ? A2($List._op["::"],
                                                   model.match,
-                                                  model.history) : model.history]],
+                                                  model.history) : model.history]
+                                                 ,["go",$Maybe.Just(false)]
+                                                 ,["peek",$Maybe.Nothing]],
                                  model);}
                             _U.badCase($moduleName,
-                            "between lines 68 and 81");
+                            "between lines 82 and 108");
                          }();
                        case "GoPrev":
                        return function () {
-                            var _v19 = model.mode;
-                            switch (_v19.ctor)
+                            var _v26 = model.mode;
+                            switch (_v26.ctor)
                             {case "History":
                                return _U.replace([["mode"
                                                   ,_U.cmp($List.length(model.history),
-                                                  _v19._0) > 0 ? $Model.History(_v19._0 + 1) : $Model.History(_v19._0)]],
+                                                  _v26._0) > 0 ? $Model.History(_v26._0 + 1) : $Model.History(_v26._0)]
+                                                 ,["lastMode"
+                                                  ,$Model.History(_v26._0)]
+                                                 ,["go",$Maybe.Just(true)]
+                                                 ,["peek",$Maybe.Nothing]],
                                  model);
                                case "Play":
                                return _U.replace([["mode"
-                                                  ,$Model.History(0)]],
+                                                  ,$Model.History(0)]
+                                                 ,["lastMode",$Model.Play]
+                                                 ,["go",$Maybe.Just(true)]
+                                                 ,["peek",$Maybe.Nothing]],
                                  model);}
                             _U.badCase($moduleName,
-                            "between lines 82 and 99");
+                            "between lines 109 and 133");
                          }();
                        case "Inc":
                        return A2($Model.modify,
@@ -15226,6 +15724,12 @@ Elm.Update.make = function (_elm) {
                                                c))]],
                             $Model.noModification);
                          }));
+                       case "LongClear":
+                       return A2($Debug.log,
+                         "longclear",
+                         _U.replace([["go"
+                                     ,$Maybe.Nothing]],
+                         model));
                        case "Name":
                        return A2($Model.modify,
                          _v0._1._0,
@@ -15249,6 +15753,20 @@ Elm.Update.make = function (_elm) {
                                                c))]],
                             $Model.noModification);
                          }));
+                       case "Peek":
+                       return function () {
+                            switch (_v0._1._0)
+                            {case "go-next":
+                               return _U.replace([["peek"
+                                                  ,$Maybe.Just(false)]],
+                                 model);
+                               case "go-prev":
+                               return _U.replace([["peek"
+                                                  ,$Maybe.Just(true)]],
+                                 model);}
+                            _U.badCase($moduleName,
+                            "between lines 42 and 46");
+                         }();
                        case "Poison":
                        return A2($Model.modify,
                          _v0._1._0,
@@ -15268,12 +15786,16 @@ Elm.Update.make = function (_elm) {
                                                                         0) < 0]],
                                                c))]],
                             $Model.noModification);
-                         }));}
+                         }));
+                       case "Unpeek":
+                       return _U.replace([["peek"
+                                          ,$Maybe.Nothing]],
+                         model);}
                     return model;
                  }();
               }();}
          _U.badCase($moduleName,
-         "between lines 27 and 123");
+         "between lines 28 and 158");
       }();
    });
    var updates = $Signal.mailbox($Action.NoOp);
@@ -15295,15 +15817,44 @@ Elm.View.make = function (_elm) {
    $moduleName = "View",
    $Action = Elm.Action.make(_elm),
    $Basics = Elm.Basics.make(_elm),
-   $Debug = Elm.Debug.make(_elm),
    $Html = Elm.Html.make(_elm),
    $Html$Attributes = Elm.Html.Attributes.make(_elm),
    $Html$Events = Elm.Html.Events.make(_elm),
    $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
    $Model = Elm.Model.make(_elm),
    $Update = Elm.Update.make(_elm),
    $View$History = Elm.View.History.make(_elm),
    $View$Play = Elm.View.Play.make(_elm);
+   var inHistory = function (mode) {
+      return function () {
+         switch (mode.ctor)
+         {case "History":
+            switch (mode._0)
+              {case 0: return true;}
+              break;}
+         return false;
+      }();
+   };
+   var lastHistory = F2(function (mode,
+   history) {
+      return function () {
+         switch (mode.ctor)
+         {case "History":
+            return _U.eq(mode._0,
+              $List.length(history));}
+         return false;
+      }();
+   });
+   var swipeOffset = function (n) {
+      return $Html$Attributes.style(_L.fromArray([{ctor: "_Tuple2"
+                                                  ,_0: "transform"
+                                                  ,_1: A2($Basics._op["++"],
+                                                  "translateX(",
+                                                  A2($Basics._op["++"],
+                                                  $Basics.toString(0),
+                                                  "px)"))}]));
+   };
    var view = function (s) {
       return function () {
          var m = function (n) {
@@ -15312,27 +15863,23 @@ Elm.View.make = function (_elm) {
             s.history));
          };
          var main = function () {
-            var _v0 = s.mode;
-            switch (_v0.ctor)
+            var _v4 = s.mode;
+            switch (_v4.ctor)
             {case "History":
                return A2($View$History.view,
-                 _v0._0,
-                 A2($Debug.log,
-                 "history",
-                 m(_v0._0)));
+                 _v4._0,
+                 m(_v4._0));
                case "Play":
-               return $View$Play.view(A2($Debug.log,
-                 "play",
-                 s.match));}
+               return $View$Play.view(s.match);}
             _U.badCase($moduleName,
             "between lines 32 and 36");
          }();
          var prev = function () {
             var n = function () {
-               var _v2 = s.mode;
-               switch (_v2.ctor)
+               var _v6 = s.mode;
+               switch (_v6.ctor)
                {case "History":
-                  return _v2._0 + 1;
+                  return _v6._0 + 1;
                   case "Play": return 0;}
                _U.badCase($moduleName,
                "between lines 37 and 41");
@@ -15342,14 +15889,14 @@ Elm.View.make = function (_elm) {
             m(n));
          }();
          var next = function () {
-            var _v4 = s.mode;
-            switch (_v4.ctor)
-            {case "History": switch (_v4._0)
+            var _v8 = s.mode;
+            switch (_v8.ctor)
+            {case "History": switch (_v8._0)
                  {case 0:
                     return $View$Play.view(s.match);}
                  return A2($View$History.view,
-                 _v4._0,
-                 m(_v4._0 - 1));
+                 _v8._0,
+                 m(_v8._0 - 1));
                case "Play":
                return $View$Play.view($Model.initialMatch);}
             _U.badCase($moduleName,
@@ -15358,16 +15905,40 @@ Elm.View.make = function (_elm) {
          return A2($Html.div,
          _L.fromArray([$Html$Attributes.$class("body")]),
          _L.fromArray([A2($Html.div,
-                      _L.fromArray([$Html$Attributes.$class("main")]),
+                      _L.fromArray([$Html$Attributes.classList(_L.fromArray([{ctor: "_Tuple2"
+                                                                             ,_0: "main"
+                                                                             ,_1: true}
+                                                                            ,{ctor: "_Tuple2"
+                                                                             ,_0: "a-goprev"
+                                                                             ,_1: _U.eq(s.go,
+                                                                             $Maybe.Just(true))}
+                                                                            ,{ctor: "_Tuple2"
+                                                                             ,_0: "a-gonext"
+                                                                             ,_1: _U.eq(s.go,
+                                                                             $Maybe.Just(false)) && !_U.eq(s.lastMode,
+                                                                             $Model.Play)}
+                                                                            ,{ctor: "_Tuple2"
+                                                                             ,_0: "a-peekprev"
+                                                                             ,_1: _U.eq(s.peek,
+                                                                             $Maybe.Just(true))}
+                                                                            ,{ctor: "_Tuple2"
+                                                                             ,_0: "a-peeknext"
+                                                                             ,_1: _U.eq(s.peek,
+                                                                             $Maybe.Just(false))}]))]),
                       _L.fromArray([main]))
                       ,A2($Html.div,
-                      _L.fromArray([$Html$Attributes.$class("prev")]),
-                      _L.fromArray([prev]))
-                      ,A2($Html.div,
-                      _L.fromArray([$Html$Attributes.$class("next")]),
-                      _L.fromArray([next]))
-                      ,A2($Html.div,
-                      _L.fromArray([$Html$Attributes.$class("buttons")]),
+                      _L.fromArray([$Html$Attributes.classList(_L.fromArray([{ctor: "_Tuple2"
+                                                                             ,_0: "buttons"
+                                                                             ,_1: true}
+                                                                            ,{ctor: "_Tuple2"
+                                                                             ,_0: "a-goprev"
+                                                                             ,_1: _U.eq(s.go,
+                                                                             $Maybe.Just(true))}
+                                                                            ,{ctor: "_Tuple2"
+                                                                             ,_0: "a-gonext"
+                                                                             ,_1: _U.eq(s.go,
+                                                                             $Maybe.Just(false)) && !_U.eq(s.mode,
+                                                                             $Model.Play)}]))]),
                       _L.fromArray([A2($Html.div,
                                    _L.fromArray([$Html$Attributes.id("go-prev")
                                                 ,A2($Html$Events.onMouseEnter,
@@ -15378,7 +15949,12 @@ Elm.View.make = function (_elm) {
                                                 $Action.Unpeek("go-prev"))
                                                 ,A2($Html$Events.onClick,
                                                 $Update.updates.address,
-                                                $Action.GoPrev)]),
+                                                $Action.GoPrev)
+                                                ,$Html$Attributes.classList(_L.fromArray([{ctor: "_Tuple2"
+                                                                                          ,_0: "hide"
+                                                                                          ,_1: A2(lastHistory,
+                                                                                          s.mode,
+                                                                                          s.history)}]))]),
                                    _L.fromArray([]))
                                    ,A2($Html.div,
                                    _L.fromArray([$Html$Attributes.id("go-next")
@@ -15391,11 +15967,47 @@ Elm.View.make = function (_elm) {
                                                 ,A2($Html$Events.onClick,
                                                 $Update.updates.address,
                                                 $Action.GoNext)]),
-                                   _L.fromArray([]))]))]));
+                                   _L.fromArray([]))]))
+                      ,A2($Html.div,
+                      _L.fromArray([$Html$Attributes.classList(_L.fromArray([{ctor: "_Tuple2"
+                                                                             ,_0: "prev"
+                                                                             ,_1: true}
+                                                                            ,{ctor: "_Tuple2"
+                                                                             ,_0: "a-gonextprime"
+                                                                             ,_1: _U.eq(s.go,
+                                                                             $Maybe.Just(false)) && !_U.eq(s.lastMode,
+                                                                             $Model.Play)}
+                                                                            ,{ctor: "_Tuple2"
+                                                                             ,_0: "a-peekprevprime"
+                                                                             ,_1: _U.eq(s.peek,
+                                                                             $Maybe.Just(true))}]))]),
+                      _L.fromArray([prev]))
+                      ,A2($Html.div,
+                      _L.fromArray([$Html$Attributes.classList(_L.fromArray([{ctor: "_Tuple2"
+                                                                             ,_0: "next"
+                                                                             ,_1: true}
+                                                                            ,{ctor: "_Tuple2"
+                                                                             ,_0: "a-goprevprime"
+                                                                             ,_1: _U.eq(s.go,
+                                                                             $Maybe.Just(true)) && !_U.eq(s.mode,
+                                                                             $Model.Play)}
+                                                                            ,{ctor: "_Tuple2"
+                                                                             ,_0: "a-goresetprime"
+                                                                             ,_1: _U.eq(s.go,
+                                                                             $Maybe.Just(false)) && _U.eq(s.lastMode,
+                                                                             $Model.Play)}
+                                                                            ,{ctor: "_Tuple2"
+                                                                             ,_0: "a-peeknextprime"
+                                                                             ,_1: _U.eq(s.peek,
+                                                                             $Maybe.Just(false))}]))]),
+                      _L.fromArray([next]))]));
       }();
    };
    _elm.View.values = {_op: _op
-                      ,view: view};
+                      ,view: view
+                      ,swipeOffset: swipeOffset
+                      ,lastHistory: lastHistory
+                      ,inHistory: inHistory};
    return _elm.View.values;
 };
 Elm.View = Elm.View || {};
@@ -15533,7 +16145,7 @@ Elm.View.Play.make = function (_elm) {
                                                              ,_0: "decpoison-trigger"
                                                              ,_1: true}
                                                             ,{ctor: "_Tuple2"
-                                                             ,_0: "animation-flash"
+                                                             ,_0: "a-flash"
                                                              ,_1: c.flashPoisonDec}]))
                    ,A2($Html$Events.onClick,
                    $Update.updates.address,
@@ -15547,7 +16159,7 @@ Elm.View.Play.make = function (_elm) {
                                                              ,_0: "incpoison-trigger"
                                                              ,_1: true}
                                                             ,{ctor: "_Tuple2"
-                                                             ,_0: "animation-flash"
+                                                             ,_0: "a-flash"
                                                              ,_1: c.flashPoisonInc}]))
                    ,A2($Html$Events.onClick,
                    $Update.updates.address,
@@ -15561,7 +16173,7 @@ Elm.View.Play.make = function (_elm) {
                                                              ,_0: "decdamage-trigger"
                                                              ,_1: true}
                                                             ,{ctor: "_Tuple2"
-                                                             ,_0: "animation-flash"
+                                                             ,_0: "a-flash"
                                                              ,_1: c.flashDamageDec}]))
                    ,A2($Html$Events.onClick,
                    $Update.updates.address,
@@ -15575,7 +16187,7 @@ Elm.View.Play.make = function (_elm) {
                                                              ,_0: "incdamage-trigger"
                                                              ,_1: true}
                                                             ,{ctor: "_Tuple2"
-                                                             ,_0: "animation-flash"
+                                                             ,_0: "a-flash"
                                                              ,_1: c.flashDamageInc}]))
                    ,A2($Html$Events.onClick,
                    $Update.updates.address,
@@ -15633,11 +16245,11 @@ Elm.View.Play.make = function (_elm) {
                                                              ,_0: "options-layer"
                                                              ,_1: true}
                                                             ,{ctor: "_Tuple2"
-                                                             ,_0: "options-layer-open"
+                                                             ,_0: "a-open"
                                                              ,_1: _U.eq(c.showOptions,
                                                              $Maybe.Just(true))}
                                                             ,{ctor: "_Tuple2"
-                                                             ,_0: "options-layer-close"
+                                                             ,_0: "a-close"
                                                              ,_1: _U.eq(c.showOptions,
                                                              $Maybe.Just(false))}
                                                             ,{ctor: "_Tuple2"
@@ -15685,14 +16297,15 @@ Elm.View.Play.make = function (_elm) {
                    _L.fromArray([]),
                    _L.fromArray([$Html.text("OK")]))]))]))]));
    });
-   var single = F2(function (c,p) {
+   var display = F2(function (c,
+   p) {
       return A2($Html.div,
-      _L.fromArray([$Html$Attributes.id(A2($Basics._op["++"],
-                   "player",
-                   $Basics.toString(p.id)))
-                   ,$Html$Attributes.classList(_L.fromArray([{ctor: "_Tuple2"
-                                                             ,_0: "player"
+      _L.fromArray([$Html$Attributes.classList(_L.fromArray([{ctor: "_Tuple2"
+                                                             ,_0: "display"
                                                              ,_1: true}
+                                                            ,{ctor: "_Tuple2"
+                                                             ,_0: "lethal"
+                                                             ,_1: $Model.died(p)}
                                                             ,{ctor: "_Tuple2"
                                                              ,_0: "blue"
                                                              ,_1: _U.eq(p.color,
@@ -15714,21 +16327,14 @@ Elm.View.Play.make = function (_elm) {
                                                              ,_1: _U.eq(p.color,
                                                              $Theme.Yellow)}
                                                             ,{ctor: "_Tuple2"
-                                                             ,_0: "blue"
-                                                             ,_1: true}
-                                                            ,{ctor: "_Tuple2"
-                                                             ,_0: "lethal"
-                                                             ,_1: $Model.died(p)}
-                                                            ,{ctor: "_Tuple2"
-                                                             ,_0: "animate-openprime"
+                                                             ,_0: "a-openprime"
                                                              ,_1: _U.eq(c.showOptions,
                                                              $Maybe.Just(true))}
                                                             ,{ctor: "_Tuple2"
-                                                             ,_0: "animate-closeprime"
+                                                             ,_0: "a-closeprime"
                                                              ,_1: _U.eq(c.showOptions,
                                                              $Maybe.Just(false))}]))]),
-      _L.fromArray([A2(options,c,p)
-                   ,A2($Html.h3,
+      _L.fromArray([A2($Html.h3,
                    _L.fromArray([]),
                    _L.fromArray([$Html.text(p.name)]))
                    ,A2($Html.h1,
@@ -15744,7 +16350,7 @@ Elm.View.Play.make = function (_elm) {
                                                                                        ,_0: "settings"
                                                                                        ,_1: true}
                                                                                       ,{ctor: "_Tuple2"
-                                                                                       ,_0: "animation-blink"
+                                                                                       ,_0: "a-blink"
                                                                                        ,_1: c.flashSettings}]))
                                              ,_U.eq($Maybe.Just(true),
                                              c.showOptions) ? A2($Html$Events.onClick,
@@ -15766,19 +16372,27 @@ Elm.View.Play.make = function (_elm) {
                                 ,A2(incPoison,c,p)
                                 ,A2(decPoison,c,p)]))]));
    });
+   var single = F2(function (c,p) {
+      return A2($Html.div,
+      _L.fromArray([$Html$Attributes.id(A2($Basics._op["++"],
+                   "player",
+                   $Basics.toString(p.id)))
+                   ,$Html$Attributes.$class("player")]),
+      _L.fromArray([A2(options,c,p)
+                   ,A2(display,c,p)]));
+   });
    var view = function (m) {
       return A2($Html.div,
       _L.fromArray([$Html$Attributes.$class("play-layer")]),
-      _L.fromArray([A2($Html.div,
-      _L.fromArray([$Html$Attributes.$class("players")]),
       A3($List.map2,
       single,
       $Dict.values(m.contexts),
-      $Dict.values(m.players)))]));
+      $Dict.values(m.players)));
    };
    _elm.View.Play.values = {_op: _op
                            ,view: view
                            ,single: single
+                           ,display: display
                            ,options: options
                            ,colorButton: colorButton
                            ,undo: undo

@@ -1,108 +1,204 @@
-/*
-div.animate-open {
-  top: 0;
-  animation-duration: 1.8s;
+.a-flash {
+  background: white;
+  animation-duration: 0.18s;
   animation-iteration-count: 1;
-  animation-name: open;
-}
-
-div.animate-close {
-  top: -100%;
-  animation-duration: 1.8s;
-  animation-iteration-count: 1;
-  animation-name: close;
-}
-
-div.animate-openprime {
-  top: 0;
-  animation-duration: 1.8s;
-  animation-iteration-count: 1;
-  animation-name: openprime;
-}
-
-div.animate-closeprime {
-  top: 100%;
-  animation-duration: 1.8s;
-  animation-iteration-count: 1;
-  animation-name: closeprime;
-}
-*/
-
-@keyframes openprime {
-  from {
-    top: 0;
-  }
-
-  to {
-    top: 100%;
-  }
-}
-
-@keyframes closeprime {
-  from {
-    top: 100%;
-  }
-
-  to {
-    top: 0;
-  }
-}
-
-@keyframes open {
-  from {
-    top: -100%;
-  }
-
-  to {
-    top: 0;
-  }
-}
-
-@keyframes close {
-  from {
-    top: 0;
-  }
-
-  to {
-    top: -100%;
-  }
-}
-
-div .animation-blink {
-  animation-duration: 0.1s;
-  animation-iteration-count: infinite;
-  animation-name: blink;
-  -webkit-animation-duration: 0.1s;
-  -webkit-animation-iteration-count: 1;
-  -webkit-animation-name: blink;
-}
-
-div .animation-flash {
-  animation-duration: 0.1s;
-  animation-iteration-count: infinite;
   animation-name: flash;
-  -webkit-animation-duration: 0.1s;
-  -webkit-animation-iteration-count: 1;
-  -webkit-animation-name: flash;
+  animation-fill-mode: none;
 }
 
 @keyframes flash {
-  from {
-    background: none;
-  }
+  from { background: white; }
+  to   { background: transparent; }
+}
 
-  to {
-    background: white;
-  }
+.a-blink {
+  opacity: 1.0;
+  animation-duration: 0.18s;
+  animation-iteration-count: 1;
+  animation-name: blink;
+  animation-fill-mode: none;
 }
 
 @keyframes blink {
-  from {
-    opacity: 0.3;
-  }
-
-  to {
-    opacity: 1.0;
-  }
+  from { opacity: 0.3; }
+  to   { opacity: 1.0; }
 }
 
+
+.a-open {
+  top: 0;
+  animation-duration: 0.36s;
+  animation-iteration-count: 1;
+  animation-name: open;
+  animation-fill-mode: forwards;
+}
+
+@keyframes open {
+  from { top: -100%; }
+  to   { top:  0; }
+}
+
+.a-close {
+  top: -100%;
+  animation-duration: 0.36s;
+  animation-iteration-count: 1;
+  animation-name: close;
+  animation-fill-mode: forwards;
+}
+
+@keyframes close {
+  from { top:  0; }
+  to   { top: -100%; }
+}
+
+.a-openprime {
+  top: 100%;
+  animation-duration: 0.36s;
+  animation-iteration-count: 1;
+  animation-name: openprime;
+  animation-fill-mode: forwards;
+}
+
+@keyframes openprime {
+  from { top:   0;  }
+  to   { top: 100%; }
+}
+
+.a-closeprime {
+  top: 0;
+  animation-duration: 0.36s;
+  animation-iteration-count: 1;
+  animation-name: closeprime;
+  animation-fill-mode: forwards;
+}
+
+@keyframes closeprime {
+  from { top: 100%; }
+  to   { top:   0;  }
+}
+
+.a-goprev {
+  animation-duration: 0.36s;
+  animation-iteration-count: 1;
+  animation-name: goprev;
+  animation-fill-mode: forwards;
+}
+
+@keyframes goprev {
+  from { left: -100%; }
+  to   { left:    0; }
+}
+
+.a-gonext {
+  animation-duration: 0.36s;
+  animation-iteration-count: 1;
+  animation-name: gonext;
+  animation-fill-mode: none;
+}
+
+@keyframes gonext {
+  from { left: 100%; }
+  to   { left:   0; }
+}
+
+.a-goprevprime {
+  animation-duration: 0.36s;
+  animation-iteration-count: 1;
+  animation-name: goprevprime;
+  animation-fill-mode: forwards;
+}
+
+@keyframes goprevprime {
+  from { left:   0; }
+  to   { left: 100%; }
+}
+
+.a-gonextprime {
+  animation-duration: 0.36s;
+  animation-iteration-count: 1;
+  animation-name: gonextprime;
+  animation-fill-mode: none;
+}
+
+@keyframes gonextprime {
+  from { left:    0; }
+  to   { left: -100%; }
+}
+
+/*
+.a-goreset {
+  animation-duration: 0.36s;
+  animation-iteration-count: 1;
+  animation-name: goreset;
+  animation-fill-mode: none;
+}
+
+@keyframes goreset {
+  from { left: 100%; }
+  to   { left:   0; }
+}
+*/
+
+.a-goresetprime {
+  animation-duration: 0.36s;
+  animation-iteration-count: 1;
+  animation-name: goresetprime;
+  animation-fill-mode: none;
+}
+
+@keyframes goresetprime {
+  from { left: 100%; }
+  to   { left:   0; }
+}
+
+.a-peekprev {
+  left: 5%;
+  animation-duration: 0.36s;
+  animation-iteration-count: 1;
+  animation-name: peekprev;
+  animation-fill-mode: forwards;
+}
+
+@keyframes peekprev {
+  from { left:  0; }
+  to   { left: 5%; }
+}
+
+.a-peekprevprime {
+  left: -95%;
+  animation-duration: 0.36s;
+  animation-iteration-count: 1;
+  animation-name: peekprevprime;
+  animation-fill-mode: forwards;
+}
+
+@keyframes peekprevprime {
+  from { left: -100%; }
+  to   { left:  -95%; }
+}
+
+.a-peeknext {
+  left: -5%;
+  animation-duration: 0.36s;
+  animation-iteration-count: 1;
+  animation-name: peeknext;
+  animation-fill-mode: forwards;
+}
+
+@keyframes peeknext {
+  from { left:   0; }
+  to   { left: -5%; }
+}
+
+.a-peeknextprime {
+  left: 95%;
+  animation-duration: 0.36s;
+  animation-iteration-count: 1;
+  animation-name: peeknextprime;
+  animation-fill-mode: forwards;
+}
+
+@keyframes peeknextprime {
+  from { left: 100%; }
+  to   { left:  95%; }
+}

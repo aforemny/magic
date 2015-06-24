@@ -19,6 +19,11 @@
 </body>
 
 <script type="text/javascript">
+  window.onload = function() {
+    document.onseletstart = function() { return false; }
+    document.onmousedown = function() { return false; }
+  }
+
   var storedState   = localStorage.getItem('state');
   var startingState = null;
   if (storedState !== null) {

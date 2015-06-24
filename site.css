@@ -80,29 +80,6 @@ a {
   color: #eeeeec;
 }
 
+.hide { display: none !important; }
 .hidetop { top: -100% !important; }
-
-/* animations */
-
-.animation-peeknext {
-  animation-name: peeknext;
-  animation-duration: 1.8s;
-  animation-iteration-count: 1;
-}
-
-.animation-peekprev {
-  animation-name: peekprev;
-  animation-duration: 1.8s;
-  animation-iteration-count: 1;
-}
-
-@keyframes peeknext {
-  from { left: 100%; }
-  to   { left:  80%; }
-}
-
-@keyframes peekprev {
-  from { left: -100%; }
-  to   { left:  -80%; }
-}
 
